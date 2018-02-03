@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace Fulbito_Rest
 {
@@ -40,6 +41,12 @@ namespace Fulbito_Rest
                     name: "default",
                     template: "{controller}/{action}/{id?}");
             });
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions()
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+            });
+            app.UseAuthentication();
         }
     }
 }
