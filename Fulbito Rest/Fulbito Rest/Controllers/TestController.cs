@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Fulbito_Rest.Controllers
+namespace FulbitoRest.Controllers
 {
     [Produces("application/json")]
     [Route("api/Test")]
@@ -25,6 +25,13 @@ namespace Fulbito_Rest.Controllers
         {
             //http://localhost:65520/api/test/param?param="hi"
             return param;
+        }
+
+        [HttpGet]
+        [Route("Index")]
+        public ViewResult Index()
+        {
+            return View("Index");
         }
     }
 }

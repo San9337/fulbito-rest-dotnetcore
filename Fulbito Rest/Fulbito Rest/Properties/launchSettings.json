@@ -19,7 +19,7 @@
     "Fulbito_Rest": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/Test/Hello",
+      "launchUrl": "api/Test/Index",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
