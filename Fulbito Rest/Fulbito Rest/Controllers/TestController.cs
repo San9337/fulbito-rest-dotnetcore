@@ -4,12 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using FulbitoRest.Technical.Interception;
 
 namespace FulbitoRest.Controllers
 {
     [Produces("application/json")]
     [Route("api/Test")]
-    public class TestController : Controller
+    public class TestController : BaseController
     {
         [HttpGet]
         [Route("Hello")]

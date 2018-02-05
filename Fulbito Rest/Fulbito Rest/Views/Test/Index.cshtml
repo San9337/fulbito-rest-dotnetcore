@@ -16,7 +16,8 @@
 </head>
 <body>
     <h1>Fulbito</h1>
-    <button id="boton">Start</button>
+    <button id="connect">Connect to Hub</button>
+    <button id="send">Send message (Ping Pong Notification)</button>
     <script type="text/javascript">
 
         let connection = new signalR.HubConnection('/NotificationTest');
@@ -26,9 +27,11 @@
             console.log(data);
         });
 
-        $("#boton").click(function () {
-            connection.start()
-                .then(() => connection.invoke('test', 'Hello'));
+        $("#connect").click(function () {
+            connection.start();
+        });
+        $("#send").click(function () {
+            connection.invoke('test', 'Notification message');
         });
 
     </script>

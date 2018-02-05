@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.HttpOverrides;
 using FulbitoRest.Hubs;
+using FulbitoRest.Technical.Logging;
+using FulbitoRest.Technical.Interception;
 
 namespace Fulbito_Rest
 {
@@ -27,6 +29,8 @@ namespace Fulbito_Rest
         {
             services.AddMvc();
             services.AddSignalR();
+            services.AddSingleton<ICustomLogger, Logger>();
+            services.AddScoped<LoggingFilterAttribute>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
