@@ -31,6 +31,7 @@ namespace Fulbito_Rest
             services.AddSignalR();
             services.AddSingleton<ICustomLogger, Logger>();
             services.AddScoped<LoggingFilterAttribute>();
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +60,12 @@ namespace Fulbito_Rest
             app.UseSignalR(routes =>
             {
                 routes.MapHub<NotificationTestHub>(nameof(NotificationTestHub).Replace("Hub","")); //Hub name used for registration
+            });
+
+            app.UseCors(policy => {
+                policy.AllowAnyHeader();
+                policy.AllowAnyMethod();
+                policy.AllowAnyOrigin();
             });
         }
     }
