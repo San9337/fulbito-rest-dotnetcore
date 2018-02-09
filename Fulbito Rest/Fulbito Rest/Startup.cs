@@ -27,7 +27,16 @@ namespace Fulbito_Rest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+            services.AddCors(p => p.AddPolicy("AllowAllPolicy", policyBuilder =>
+            {
+                policyBuilder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                ;
+            }
+            ));
+
             services.AddMvc();
             services.AddSignalR();
             services.AddSingleton<ICustomLogger, Logger>();
@@ -37,16 +46,11 @@ namespace Fulbito_Rest
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseCors(policyBuilder => {
-                policyBuilder
-                .AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                //.WithOrigins("*")
-                //.WithMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
-                //.WithExposedHeaders("Authorization", "Content-Type", "Accept", "Origin", "User-Agent", "DNT", "Cache-Control", "Keep-Alive", "X-Mx-ReqToken", "X-Requested-With", "If-Modified-Since")
-                ;
-            });
+            app.UseCors("AllowAllPolicy"
+            //.WithOrigins("*")
+            //.WithMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+            //.WithExposedHeaders("Authorization", "Content-Type", "Accept", "Origin", "User-Agent", "DNT", "Cache-Control", "Keep-Alive", "X-Mx-ReqToken", "X-Requested-With", "If-Modified-Since")
+            );
 
             if (env.IsDevelopment())
             {
