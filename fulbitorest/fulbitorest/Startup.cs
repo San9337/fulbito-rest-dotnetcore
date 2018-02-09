@@ -57,6 +57,11 @@ namespace Fulbito_Rest
                 app.UseDeveloperExceptionPage();
             }
             app.UseStaticFiles();
+            app.UseAuthentication();
+            app.UseForwardedHeaders(new ForwardedHeadersOptions()
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+            });
 
             app.UseMvc(routes =>
             {
@@ -65,16 +70,11 @@ namespace Fulbito_Rest
                     template: "{controller}/{action}/{id?}"
                 );
             });
-
-            app.UseForwardedHeaders(new ForwardedHeadersOptions()
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
-            });
-            app.UseAuthentication();
-
+            app.UseFileServer();
             app.UseSignalR(routes =>
             {
-                routes.MapHub<NotificationTestHub>(nameof(NotificationTestHub).Replace("Hub","")); //Hub name used for registration
+                //npm install @aspnet/signalr-client
+                routes.MapHub<NotificationTestHub>(nameof(NotificationTestHub).Replace("Hub", "")); //Hub name used for registration
             });
         }
     }
