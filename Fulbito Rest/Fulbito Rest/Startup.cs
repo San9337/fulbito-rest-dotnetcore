@@ -27,16 +27,25 @@ namespace Fulbito_Rest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddMvc();
             services.AddSignalR();
             services.AddSingleton<ICustomLogger, Logger>();
             services.AddScoped<LoggingFilterAttribute>();
-            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors(policy => {
+                policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .WithOrigins("*")
+                .WithMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+                .WithExposedHeaders("Authorization", "Content-Type", "Accept", "Origin", "User-Agent", "DNT", "Cache-Control", "Keep-Alive", "X-Mx-ReqToken", "X-Requested-With", "If-Modified-Since");
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -60,12 +69,6 @@ namespace Fulbito_Rest
             app.UseSignalR(routes =>
             {
                 routes.MapHub<NotificationTestHub>(nameof(NotificationTestHub).Replace("Hub","")); //Hub name used for registration
-            });
-
-            app.UseCors(policy => {
-                policy.AllowAnyHeader();
-                policy.AllowAnyMethod();
-                policy.AllowAnyOrigin();
             });
         }
     }
