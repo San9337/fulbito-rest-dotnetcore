@@ -37,13 +37,15 @@ namespace Fulbito_Rest
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseCors(policy => {
-                policy.AllowAnyOrigin()
+            app.UseCors(policyBuilder => {
+                policyBuilder
+                .AllowAnyOrigin()
                 .AllowAnyHeader()
                 .AllowAnyMethod()
-                .WithOrigins("*")
-                .WithMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
-                .WithExposedHeaders("Authorization", "Content-Type", "Accept", "Origin", "User-Agent", "DNT", "Cache-Control", "Keep-Alive", "X-Mx-ReqToken", "X-Requested-With", "If-Modified-Since");
+                //.WithOrigins("*")
+                //.WithMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+                //.WithExposedHeaders("Authorization", "Content-Type", "Accept", "Origin", "User-Agent", "DNT", "Cache-Control", "Keep-Alive", "X-Mx-ReqToken", "X-Requested-With", "If-Modified-Since")
+                ;
             });
 
             if (env.IsDevelopment())
