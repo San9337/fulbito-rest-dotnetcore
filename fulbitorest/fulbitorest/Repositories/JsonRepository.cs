@@ -6,7 +6,7 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace fulbitorest.JsonRepository
+namespace fulbitorest.Repositories
 {
     public class JsonRepository<T> : IRepository<T> where T : class
     {

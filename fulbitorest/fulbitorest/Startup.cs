@@ -16,7 +16,7 @@ using FulbitoRest.Services;
 using FulbitoRest.Technical.Security;
 using datalayer.Contracts;
 using model;
-using fulbitorest.JsonRepository;
+using FulbitoRest.Repositories;
 
 namespace Fulbito_Rest
 {
@@ -87,7 +87,7 @@ namespace Fulbito_Rest
             services.AddScoped<LoggingFilterAttribute>();
             services.AddScoped<AuthenticateAttribute>();
 
-            services.AddSingleton<IRepository<UserCredentials>, JsonRepository<UserCredentials>>();
+            services.AddSingleton<IRepository<UserCredentials>, InMemoryRepository<UserCredentials>>();
         }
     }
 }
