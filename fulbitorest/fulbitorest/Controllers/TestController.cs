@@ -8,6 +8,7 @@ using FulbitoRest.Technical.Interception;
 using apidata;
 using System.Net.Http;
 using System.Net;
+using FulbitoRest.Technical.Security;
 
 namespace FulbitoRest.Controllers
 {
@@ -19,6 +20,13 @@ namespace FulbitoRest.Controllers
         {
             //http://localhost:65520/api/test/hello
             return "Hi Eze";
+        }
+
+        [HttpGet]
+        [ServiceFilter(typeof(AuthenticateAttribute))]
+        public string HelloSecure()
+        {
+            return "Authenticated Hi";
         }
 
         [HttpGet]

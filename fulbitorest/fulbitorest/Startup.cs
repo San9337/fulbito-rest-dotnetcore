@@ -12,6 +12,11 @@ using Microsoft.AspNetCore.HttpOverrides;
 using FulbitoRest.Hubs;
 using FulbitoRest.Technical.Logging;
 using FulbitoRest.Technical.Interception;
+using FulbitoRest.Services;
+using FulbitoRest.Technical.Security;
+using datalayer.Contracts;
+using model;
+using datalayer.JsonRepository;
 
 namespace Fulbito_Rest
 {
@@ -77,7 +82,12 @@ namespace Fulbito_Rest
         private static void AddDiServices(IServiceCollection services)
         {
             services.AddSingleton<ICustomLogger, Logger>();
+            services.AddSingleton<LoginService>();
+
             services.AddScoped<LoggingFilterAttribute>();
+            services.AddScoped<AuthenticateAttribute>();
+
+            services.AddSingleton<IRepository<UserCredentials>, JsonRepository<UserCredentials>>();
         }
     }
 }

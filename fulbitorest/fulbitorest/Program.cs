@@ -24,11 +24,12 @@ namespace Fulbito_Rest
                 .UseKestrel(options =>
                 {
                     //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel?tabs=aspnetcore2x
-
                     options.Listen(IPAddress.Loopback, 65520);
-                    //options.Listen(IPAddress.Loopback, 65001, listenOptions =>
+
+                    //https://www.humankode.com/asp-net-core/develop-locally-with-https-self-signed-certificates-and-asp-net-core
+                    //options.Listen(IPAddress.Loopback, 65521, listenOptions =>
                     //{
-                    //    listenOptions.UseHttps("UndefinedCert.pfx", "SomePassword");
+                    //    listenOptions.UseHttps("the file", "the pass");
                     //});
                 })
                 .Build();

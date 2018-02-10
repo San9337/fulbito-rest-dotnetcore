@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Compile Remove="Technical\Logging\ILogger.cs" />
+    <Compile Remove="Technical\Security\RequireHttpsAttribute.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +28,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\apidata\apidata.csproj" />
+    <ProjectReference Include="..\datalayer\datalayer.csproj" />
+    <ProjectReference Include="..\model\model.csproj" />
   </ItemGroup>
-
+  
 </Project>

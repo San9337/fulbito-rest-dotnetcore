@@ -20,6 +20,11 @@ namespace FulbitoRest.Hubs
         public override Task OnConnectedAsync()
         {
             _logger.Log("Connection");
+
+            //https://docs.microsoft.com/en-us/aspnet/signalr/overview/guide-to-the-api/mapping-users-to-connections
+            var connectionId = base.Context.Connection.ConnectionId;
+            var user = base.Context.Connection.User;
+
             return base.OnConnectedAsync();
         }
 
