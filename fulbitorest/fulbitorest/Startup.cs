@@ -28,41 +28,36 @@ namespace Fulbito_Rest
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(p => p.AddPolicy("AllowAllPolicy", policyBuilder =>
-            {
                 policyBuilder
                 .AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                ;
-            }
-            ));
+                )
+            );
 
             services.AddMvc();
             services.AddSignalR();
-            services.AddSingleton<ICustomLogger, Logger>();
-            services.AddScoped<LoggingFilterAttribute>();
+
+            AddDiServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseCors("AllowAllPolicy"
-            //.WithOrigins("*")
-            //.WithMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
-            //.WithExposedHeaders("Authorization", "Content-Type", "Accept", "Origin", "User-Agent", "DNT", "Cache-Control", "Keep-Alive", "X-Mx-ReqToken", "X-Requested-With", "If-Modified-Since")
-            );
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseStaticFiles();
             app.UseAuthentication();
+
+            app.UseCors("AllowAllPolicy");
             app.UseForwardedHeaders(new ForwardedHeadersOptions()
             {
+                //Required for nginx proxy integration
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
             });
 
+            app.UseStaticFiles();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -70,12 +65,19 @@ namespace Fulbito_Rest
                     template: "{controller}/{action}/{id?}"
                 );
             });
+
             app.UseFileServer();
             app.UseSignalR(routes =>
             {
                 //npm install @aspnet/signalr-client
                 routes.MapHub<NotificationTestHub>(nameof(NotificationTestHub).Replace("Hub", "")); //Hub name used for registration
             });
+        }
+
+        private static void AddDiServices(IServiceCollection services)
+        {
+            services.AddSingleton<ICustomLogger, Logger>();
+            services.AddScoped<LoggingFilterAttribute>();
         }
     }
 }
