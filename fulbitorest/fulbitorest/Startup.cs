@@ -16,7 +16,7 @@ using FulbitoRest.Services;
 using FulbitoRest.Technical.Security;
 using datalayer.Contracts;
 using model;
-using datalayer.JsonRepository;
+using fulbitorest.JsonRepository;
 
 namespace Fulbito_Rest
 {

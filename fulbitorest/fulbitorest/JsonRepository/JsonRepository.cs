@@ -1,11 +1,12 @@
 ﻿using datalayer.Contracts;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
-namespace datalayer.JsonRepository
+namespace fulbitorest.JsonRepository
 {
     public class JsonRepository<T> : IRepository<T> where T : class
     {
