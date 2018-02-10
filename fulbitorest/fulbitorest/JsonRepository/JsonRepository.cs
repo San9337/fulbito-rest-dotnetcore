@@ -10,17 +10,12 @@ namespace fulbitorest.JsonRepository
 {
     public class JsonRepository<T> : IRepository<T> where T : class
     {
-        static readonly string FolderName = "fake-database-jsons";
-        static readonly string FileName = FolderName+"\\"+typeof(T).Name;
+        static readonly string FileName = typeof(T).Name;
 
         private List<T> memoryList = new List<T>();
 
         public JsonRepository()
         {
-            if (!Directory.Exists(FolderName))
-            {
-                Directory.CreateDirectory(FolderName);
-            }
             if(!File.Exists(FileName))
             {
                 File.OpenWrite(FileName).Close();
