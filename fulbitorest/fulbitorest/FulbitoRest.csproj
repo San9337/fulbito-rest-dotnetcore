@@ -25,4 +25,8 @@
     <None Include="wwwroot\scripts\signalr-client-1.0.0-alpha2-final.min.js" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\apidata\apidata.csproj" />
+  </ItemGroup>
+
 </Project>

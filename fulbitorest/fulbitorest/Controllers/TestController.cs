@@ -5,15 +5,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using FulbitoRest.Technical.Interception;
+using apidata;
+using System.Net.Http;
+using System.Net;
 
 namespace FulbitoRest.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Test")]
     public class TestController : BaseController
     {
         [HttpGet]
-        [Route("Hello")]
         public string Hello()
         {
             //http://localhost:65520/api/test/hello
@@ -21,15 +22,48 @@ namespace FulbitoRest.Controllers
         }
 
         [HttpGet]
-        [Route("Param")]
-        public string Param(string param)
+        public UserCredentialsData Param(string param)
         {
             //http://localhost:65520/api/test/param?param="hi"
-            return param;
+            return new UserCredentialsData()
+            {
+                User = "test",
+                Password = param
+            };
+        }
+
+        [HttpPost]
+        public HttpResponseMessage Post([FromBody]UserCredentialsData data)
+        {
+            return new HttpResponseMessage()
+            {
+                StatusCode = HttpStatusCode.Created,
+                ReasonPhrase = "Created: " + data.User
+            };
+        }
+
+        [HttpDelete]
+        public HttpResponseMessage Delete(int id)
+        {
+            //If doesnt exist return 404
+            return new HttpResponseMessage() {
+                StatusCode = HttpStatusCode.OK,
+                ReasonPhrase = "Deleted: " + id.ToString()
+            };
+        }
+
+        [HttpPut]
+        public HttpResponseMessage Put(int id, [FromBody]UserCredentialsData data)
+        {
+            //If doesnt exist return 404
+            return new HttpResponseMessage()
+            {
+                StatusCode = HttpStatusCode.OK,
+                ReasonPhrase = "Updated: " + id.ToString()
+            };
         }
 
         [HttpGet]
-        [Route("Index")]
         public ViewResult Index()
         {
             return View("Index");

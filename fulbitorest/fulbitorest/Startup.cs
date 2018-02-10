@@ -62,7 +62,7 @@ namespace Fulbito_Rest
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller}/{action}/{id?}"
+                    template: "api/{controller}/{action}/{id?}"
                 );
             });
 
