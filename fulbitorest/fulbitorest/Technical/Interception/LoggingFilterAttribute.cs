@@ -21,7 +21,7 @@ namespace FulbitoRest.Technical.Interception
         /// </summary>
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-            _logger.Log(GetRequestDescriptor(context));
+            //_logger.Log(GetRequestDescriptor(context));
         }
 
         /// <summary>

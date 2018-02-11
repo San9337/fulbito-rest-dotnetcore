@@ -13,12 +13,13 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using FulbitoRest.Controllers;
 
 namespace fulbitorest.Controllers
 {
     [Produces("application/json")]
     //https://github.com/blowdart/AspNetAuthorizationWorkshop <-----Check for middleware implementation
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly LoginService _loginService;
         private readonly IConfiguration _configuration;
@@ -30,26 +31,26 @@ namespace fulbitorest.Controllers
         }
 
         [HttpPost]
-        public async Task<object> Register([FromBody]UserCredentialsData credentials)
+        public string Register([FromBody]UserCredentialsData credentials)
         {
             var newCredentials = _loginService.Register(credentials.User, credentials.Password);
             if (newCredentials == null)
                 throw new ApplicationException("Could not register user");
 
-            return await GenerateJwtToken(newCredentials);
+            return GenerateJwtToken(newCredentials);
         }
 
         [HttpPost]
-        public async Task<object> Login([FromBody]UserCredentialsData credentials)
+        public string Login([FromBody]UserCredentialsData credentials)
         {
             var userCredentials = _loginService.Login(credentials.User, credentials.Password);
             if(userCredentials == null)
                 throw new ApplicationException("Invalid login");
 
-            return await GenerateJwtToken(userCredentials);
+            return GenerateJwtToken(userCredentials);
         }
 
-        private async Task<object> GenerateJwtToken(UserCredentials userCredentials)
+        private string GenerateJwtToken(UserCredentials userCredentials)
         {
             var claims = new List<Claim>
             {
