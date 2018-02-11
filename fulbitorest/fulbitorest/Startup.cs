@@ -17,6 +17,11 @@ using FulbitoRest.Technical.Security;
 using datalayer.Contracts;
 using model;
 using FulbitoRest.Repositories;
+using Microsoft.AspNetCore.Identity;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Fulbito_Rest
 {
@@ -40,11 +45,15 @@ namespace Fulbito_Rest
                 )
             );
 
+            AddJasonWebTokens(services);
+
             services.AddMvc();
             services.AddSignalR();
 
             AddDiServices(services);
         }
+
+        
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -53,6 +62,7 @@ namespace Fulbito_Rest
             {
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseAuthentication();
 
             app.UseCors("AllowAllPolicy");
@@ -88,6 +98,33 @@ namespace Fulbito_Rest
             services.AddScoped<AuthenticateAttribute>();
 
             services.AddSingleton<IRepository<UserCredentials>, InMemoryRepository<UserCredentials>>();
+        }
+
+        private void AddJasonWebTokens(IServiceCollection services)
+        {
+            //https://medium.com/@lugrugzo/asp-net-core-2-0-webapi-jwt-authentication-with-identity-mysql-3698eeba6ff8
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
+
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(jwtOptions =>
+                {
+                    jwtOptions.RequireHttpsMetadata = false;
+                    jwtOptions.SaveToken = true;
+
+                    jwtOptions.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = Configuration["JwtIssuer"], //appsettings.json
+                        ValidAudience = Configuration["JwtIssuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtKey"])),
+                        ClockSkew = TimeSpan.Zero // remove delay of token when expire
+                    };
+                });
         }
     }
 }

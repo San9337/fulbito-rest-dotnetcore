@@ -9,6 +9,7 @@ using apidata;
 using System.Net.Http;
 using System.Net;
 using FulbitoRest.Technical.Security;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FulbitoRest.Controllers
 {
@@ -23,9 +24,15 @@ namespace FulbitoRest.Controllers
         }
 
         [HttpGet]
-        [ServiceFilter(typeof(AuthenticateAttribute))]
+        [Authorize]
         public string HelloSecure()
         {
+            //JwtRegisteredClaimNames.Sub, userCredentials.User)
+            //JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            //ClaimTypes.NameIdentifier, userCredentials.User)
+            var user = base.User;
+            var claims = user.Claims;
+
             return "Authenticated Hi";
         }
 
