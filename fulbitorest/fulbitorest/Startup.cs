@@ -156,7 +156,7 @@ namespace Fulbito_Rest
             public async Task Invoke(HttpContext context)
             {
                 Console.Write("Intercepted something");
-                if (context.Request.ContentType.Equals("application/json"))
+                if (context.Request.ContentType!= null && context.Request.ContentType.Equals("application/json"))
                 {
                     string body = new StreamReader(context.Request.Body).ReadToEnd();
 
