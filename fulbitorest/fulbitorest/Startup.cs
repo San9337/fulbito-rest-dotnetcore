@@ -1,17 +1,10 @@
-﻿using datalayer.Contracts;
-using FulbitoRest.Configuration;
+﻿using FulbitoRest.Configuration;
 using FulbitoRest.Hubs;
-using FulbitoRest.Repositories;
-using FulbitoRest.Services;
-using FulbitoRest.Technical.Interception;
-using FulbitoRest.Technical.Logging;
-using FulbitoRest.Technical.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using model;
 
 namespace Fulbito_Rest
 {

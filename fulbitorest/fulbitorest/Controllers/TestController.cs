@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using FulbitoRest.Technical.Interception;
-using apidata;
-using System.Net.Http;
-using System.Net;
-using FulbitoRest.Technical.Security;
+﻿using apidata;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Net.Http;
 
 namespace FulbitoRest.Controllers
 {
