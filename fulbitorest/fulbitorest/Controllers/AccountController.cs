@@ -31,13 +31,17 @@ namespace fulbitorest.Controllers
         }
 
         [HttpPost]
-        public string Register([FromBody]UserCredentialsData credentials)
+        public HttpResponseMessage Register([FromBody]UserCredentialsData credentials)
         {
             var newCredentials = _loginService.Register(credentials.User, credentials.Password);
             if (newCredentials == null)
                 throw new ApplicationException("Could not register user");
 
-            return GenerateJwtToken(newCredentials);
+            return new HttpResponseMessage()
+            {
+                StatusCode = System.Net.HttpStatusCode.Created,
+                ReasonPhrase = "Created user: " + credentials.User
+            };
         }
 
         [HttpPost]
