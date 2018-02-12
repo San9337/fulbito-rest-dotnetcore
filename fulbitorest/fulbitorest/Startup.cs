@@ -25,6 +25,7 @@ using System.Text;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
 using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace Fulbito_Rest
 {
@@ -67,17 +68,7 @@ namespace Fulbito_Rest
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.Use(async (context, next) => {
-                if (context.Request.ContentType.Equals("application/json"))
-                {
-                    string body = new StreamReader(context.Request.Body).ReadToEnd();
-
-                    Console.WriteLine("SE RECIBIO: " + body.Replace("\n", "NN").Replace("\r", "RR"));
-
-                    context.Request.Body = new MemoryStream(Encoding.UTF8.GetBytes(body));
-                }
-                await next.Invoke();
-            });
+            app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             if (env.IsDevelopment())
             {
@@ -147,6 +138,35 @@ namespace Fulbito_Rest
                         ClockSkew = TimeSpan.Zero // remove delay of token when expire
                     };
                 });
+        }
+
+        public class RequestResponseLoggingMiddleware
+        {
+            private readonly RequestDelegate _next;
+            private readonly ILogger _logger;
+
+            public RequestResponseLoggingMiddleware(RequestDelegate next,
+                                                    ILoggerFactory loggerFactory)
+            {
+                _next = next;
+                _logger = loggerFactory
+                          .CreateLogger<RequestResponseLoggingMiddleware>();
+            }
+
+            public async Task Invoke(HttpContext context)
+            {
+                Console.Write("Intercepted something");
+                if (context.Request.ContentType.Equals("application/json"))
+                {
+                    string body = new StreamReader(context.Request.Body).ReadToEnd();
+
+                    Console.WriteLine("SE RECIBIO: " + body.Replace("\n", "NN").Replace("\r", "RR"));
+                    body = body.Replace("\r\n", "\n");
+
+                    context.Request.Body = new MemoryStream(Encoding.UTF8.GetBytes(body));
+                }
+                await _next(context);
+            }
         }
     }
 }
