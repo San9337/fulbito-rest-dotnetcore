@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Compile Remove="Technical\Logging\ILogger.cs" />
-    <Compile Remove="Technical\Security\RequireHttpsAttribute.cs" />
   </ItemGroup>
 
   <ItemGroup>
