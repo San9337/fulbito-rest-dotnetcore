@@ -7,9 +7,11 @@ using System.Net.Http;
 namespace FulbitoRest.Controllers
 {
     [Produces("application/json")]
+    [Route("api/test")]
     public class TestController : BaseController
     {
         [HttpGet]
+        [Route("hello")]
         public string Hello()
         {
             //http://localhost:65520/api/test/hello
@@ -17,6 +19,7 @@ namespace FulbitoRest.Controllers
         }
 
         [HttpGet]
+        [Route("hellosecure")]
         [Authorize]
         public string HelloSecure()
         {
@@ -30,6 +33,7 @@ namespace FulbitoRest.Controllers
         }
 
         [HttpGet]
+        [Route("param")]
         public UserCredentialsData Param(string param)
         {
             //http://localhost:65520/api/test/param?param="hi"
@@ -41,6 +45,7 @@ namespace FulbitoRest.Controllers
         }
 
         [HttpPost]
+        [Route("post")]
         public HttpResponseMessage Post([FromBody]UserCredentialsData data)
         {
             return new HttpResponseMessage()
@@ -51,6 +56,7 @@ namespace FulbitoRest.Controllers
         }
 
         [HttpDelete]
+        [Route("delete")]
         public HttpResponseMessage Delete(int id)
         {
             //If doesnt exist return 404
@@ -61,6 +67,7 @@ namespace FulbitoRest.Controllers
         }
 
         [HttpPut]
+        [Route("put")]
         public HttpResponseMessage Put(int id, [FromBody]UserCredentialsData data)
         {
             //If doesnt exist return 404
@@ -72,6 +79,7 @@ namespace FulbitoRest.Controllers
         }
 
         [HttpGet]
+        [Route("")]
         public ViewResult Index()
         {
             return View("Index");

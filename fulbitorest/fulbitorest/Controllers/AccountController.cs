@@ -18,6 +18,7 @@ using FulbitoRest.Controllers;
 namespace fulbitorest.Controllers
 {
     [Produces("application/json")]
+    [Route("api/account")]
     //https://github.com/blowdart/AspNetAuthorizationWorkshop <-----Check for middleware implementation
     public class AccountController : BaseController
     {
@@ -31,6 +32,7 @@ namespace fulbitorest.Controllers
         }
 
         [HttpPost]
+        [Route("register")]
         public HttpResponseMessage Register([FromBody]UserCredentialsData credentials)
         {
             var newCredentials = _loginService.Register(credentials.User, credentials.Password);
@@ -45,6 +47,7 @@ namespace fulbitorest.Controllers
         }
 
         [HttpPost]
+        [Route("login")]
         public string Login([FromBody]UserCredentialsData credentials)
         {
             var userCredentials = _loginService.Login(credentials.User, credentials.Password);

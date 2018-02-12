@@ -22,16 +22,22 @@ namespace Fulbito_Rest
         {
             services.AddFulbitoCors();
             services.AddFulbitoJsonWebTokens(Configuration);
-
+            
             services
                 .AddMvc()
                 .AddJsonOptions(opt => {
                     opt.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
                 });
-
             services.AddSignalR();
 
             services.AddDiServices();
+            services.AddSwaggerGen(options => {
+                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
+                {
+                    Title = "Fulbito",
+                    Version = "v1",
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +73,10 @@ namespace Fulbito_Rest
                 routes.MapHub<NotificationTestHub>(nameof(NotificationTestHub).Replace("Hub", "")); //Hub name used for registration
             });
 
+            app.UseSwagger();
+            app.UseSwaggerUI(options => {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Fulbito v1");
+            });
         }
     }
 }
