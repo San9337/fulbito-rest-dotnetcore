@@ -56,25 +56,36 @@ namespace FulbitoRest.Controllers
         }
 
         [HttpDelete]
-        [Route("delete")]
-        public HttpResponseMessage Delete(int id)
+        [Route("delete/{id}")]
+        public HttpResponseMessage Delete(string id)
         {
             //If doesnt exist return 404
             return new HttpResponseMessage() {
                 StatusCode = HttpStatusCode.OK,
-                ReasonPhrase = "Deleted: " + id.ToString()
+                ReasonPhrase = "Deleted: " + id
             };
         }
 
         [HttpPut]
-        [Route("put")]
-        public HttpResponseMessage Put(int id, [FromBody]UserCredentialsData data)
+        [Route("put/{id}")]
+        public HttpResponseMessage Put(string id, [FromBody]UserCredentialsData data)
         {
             //If doesnt exist return 404
             return new HttpResponseMessage()
             {
                 StatusCode = HttpStatusCode.OK,
-                ReasonPhrase = "Updated: " + id.ToString()
+                ReasonPhrase = "Replaced: " + id
+            };
+        }
+
+        [HttpPatch]
+        [Route("patch/{id}")]
+        public HttpResponseMessage Patch(string id, [FromBody]UserCredentialsData newData)
+        {
+            return new HttpResponseMessage()
+            {
+                StatusCode = HttpStatusCode.OK,
+                ReasonPhrase = "Updated: " + id
             };
         }
 

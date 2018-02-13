@@ -36,6 +36,7 @@ namespace Fulbito_Rest
                 {
                     Title = "Fulbito",
                     Version = "v1",
+                    Description = "TFS: https://fulbito.visualstudio.com"
                 });
             });
         }

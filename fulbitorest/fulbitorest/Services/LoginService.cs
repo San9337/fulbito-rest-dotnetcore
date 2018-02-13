@@ -1,4 +1,5 @@
-﻿using datalayer.Contracts;
+﻿using apidata;
+using datalayer.Contracts;
 using model;
 using System;
 using System.Collections.Generic;
@@ -20,15 +21,15 @@ namespace FulbitoRest.Services
         public UserCredentials Login(string username, string password)
         {
             //Look in table or something
-            return Credentials.FirstOrDefault(c => c.AreValid(username, password));
+            return Credentials.FirstOrDefault(c => c.AreCredentialsValid(username, password));
         }
 
-        internal UserCredentials Register(string username, string password)
+        internal UserCredentials Register(UserCredentials credentials)
         {
-            if (Credentials.Any(c => c.User == username))
+            if (Credentials.Any(c => c.User == credentials.User))
                 return null;
 
-            var newUser = new UserCredentials(username, password);
+            var newUser = new UserCredentials(credentials.User, credentials.Password, credentials.Email);
             _credentialsRepository.Add(newUser);
 
             return newUser;

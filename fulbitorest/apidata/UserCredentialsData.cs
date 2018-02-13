@@ -13,5 +13,8 @@ namespace apidata
 
         [DataMember(Name ="password")]
         public string Password { get; set; }
+
+        [DataMember(Name ="email")]
+        public string Email { get; set; }
     }
 }

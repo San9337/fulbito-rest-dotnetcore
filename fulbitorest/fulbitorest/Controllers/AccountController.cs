@@ -14,6 +14,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using FulbitoRest.Controllers;
+using FulbitoRest.Technical.Security;
+using Microsoft.AspNetCore.Authentication;
+using apidata.Mapping;
 
 namespace fulbitorest.Controllers
 {
@@ -35,8 +38,8 @@ namespace fulbitorest.Controllers
         [Route("register")]
         public HttpResponseMessage Register([FromBody]UserCredentialsData credentials)
         {
-            var newCredentials = _loginService.Register(credentials.User, credentials.Password);
-            if (newCredentials == null)
+            var newCredentials = _loginService.Register(credentials.MapTo<UserCredentials>());
+            if (newCredentials == null || !newCredentials.AreValid())
                 throw new ApplicationException("Could not register user");
 
             return new HttpResponseMessage()
@@ -59,16 +62,13 @@ namespace fulbitorest.Controllers
 
         private string GenerateJwtToken(UserCredentials userCredentials)
         {
-            var claims = new List<Claim>
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, userCredentials.User),//TODO the email
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, userCredentials.User) //TODO The user Id 
-            };
+            var claims = FulbitoClaims.CreateClaims(userCredentials);
+            var identity = new ClaimsIdentity(claims);
+            HttpContext.SignInAsync(new ClaimsPrincipal(identity));
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.Now.AddDays(Convert.ToDouble(_configuration["JwtExpireDays"]));
+            var expires = DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["JwtExpireMinutes"]));
 
             var token = new JwtSecurityToken(
                 _configuration["JwtIssuer"],
