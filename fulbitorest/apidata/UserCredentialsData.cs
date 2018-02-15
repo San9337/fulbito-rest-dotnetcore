@@ -8,7 +8,7 @@ namespace apidata
     [DataContract]
     public class UserCredentialsData
     {
-        [DataMember(Name ="user")]
+        [DataMember(Name ="nickname")]
         public string User { get; set; }
 
         [DataMember(Name ="password")]
