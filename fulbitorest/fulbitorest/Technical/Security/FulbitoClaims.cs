@@ -16,7 +16,8 @@ namespace FulbitoRest.Technical.Security
             {
                 new Claim(JwtRegisteredClaimNames.Email, userCredentials.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.NameId, userCredentials.User)
+                new Claim(JwtRegisteredClaimNames.NameId, userCredentials.User),
+                new Claim("LoginMethod","normal")
             };
         }
 

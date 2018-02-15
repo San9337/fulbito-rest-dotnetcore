@@ -17,6 +17,8 @@ using FulbitoRest.Controllers;
 using FulbitoRest.Technical.Security;
 using Microsoft.AspNetCore.Authentication;
 using apidata.Mapping;
+using System.Net;
+using apidata.Responses;
 
 namespace fulbitorest.Controllers
 {
@@ -36,26 +38,30 @@ namespace fulbitorest.Controllers
 
         [HttpPost]
         [Route("register")]
-        public HttpResponseMessage Register([FromBody]UserCredentialsData credentials)
+        public TokenResponseData Register([FromBody]UserCredentialsData credentials)
         {
             var newCredentials = _loginService.Register(credentials.MapTo<UserCredentials>());
 
-            return new HttpResponseMessage()
+            return new TokenResponseData()
             {
-                StatusCode = System.Net.HttpStatusCode.Created,
-                ReasonPhrase = "Created user: " + credentials.User
+                IsSuccess = true,
+                Token = GenerateJwtToken(newCredentials),
             };
         }
 
         [HttpPost]
         [Route("login")]
-        public string Login([FromBody]UserCredentialsData credentials)
+        public TokenResponseData Login([FromBody]UserCredentialsData credentials)
         {
             var userCredentials = _loginService.Login(credentials.User, credentials.Password);
             if(userCredentials == null)
                 throw new ApplicationException("Invalid redentials for login");
 
-            return GenerateJwtToken(userCredentials);
+            return new TokenResponseData()
+            {
+                IsSuccess = true,
+                Token = GenerateJwtToken(userCredentials),
+            };
         }
 
         private string GenerateJwtToken(UserCredentials userCredentials)
