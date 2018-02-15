@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Text;
 
@@ -30,9 +31,18 @@ namespace model
             return username == User && Password == password;
         }
 
-        public bool AreValid()
+        public ValidationResult Validate()
         {
-            return IsValidField(this.Email) && IsValidField(this.Password) && IsValidField(this.User);
+            if (!IsValidField(this.Email))
+                return new ValidationResult("Mail is required");
+
+            if (!IsValidField(this.Password))
+                return new ValidationResult("Password is required");
+
+            if (!IsValidField(this.User))
+                return new ValidationResult("User name is required");
+
+            return ValidationResult.Success;
         }
 
         private bool IsValidField(string field)

@@ -1,8 +1,11 @@
-﻿using FulbitoRest.Configuration;
+﻿using datalayer.Contracts;
+using FulbitoRest.Configuration;
 using FulbitoRest.Hubs;
+using FulbitoRest.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -30,7 +33,6 @@ namespace Fulbito_Rest
                 });
             services.AddSignalR();
 
-            services.AddDiServices();
             services.AddSwaggerGen(options => {
                 options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
                 {
@@ -38,6 +40,12 @@ namespace Fulbito_Rest
                     Version = "v1",
                     Description = "TFS: https://fulbito.visualstudio.com"
                 });
+            });
+
+            services.AddDiServices();
+
+            services.AddDbContext<FulbitoDbContext>(options => {
+                options.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
             });
         }
 

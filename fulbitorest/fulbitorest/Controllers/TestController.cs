@@ -1,11 +1,14 @@
 ﻿using apidata;
+using FulbitoRest.Technical.Interception;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Net;
 using System.Net.Http;
 
 namespace FulbitoRest.Controllers
 {
+    
     [Produces("application/json")]
     [Route("api/test")]
     public class TestController : BaseController
@@ -87,6 +90,13 @@ namespace FulbitoRest.Controllers
                 StatusCode = HttpStatusCode.OK,
                 ReasonPhrase = "Updated: " + id
             };
+        }
+
+        [HttpGet]
+        [Route("error")]
+        public void Error(string msg)
+        {
+            throw new ApplicationException(msg);
         }
 
         [HttpGet]

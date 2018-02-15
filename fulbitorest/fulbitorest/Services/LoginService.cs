@@ -1,5 +1,6 @@
 ﻿using apidata;
 using datalayer.Contracts;
+using FulbitoRest.Exceptions;
 using model;
 using System;
 using System.Collections.Generic;
@@ -26,8 +27,13 @@ namespace FulbitoRest.Services
 
         internal UserCredentials Register(UserCredentials credentials)
         {
+            var validation = credentials.Validate();
+
+            if(validation != null)
+                throw new UnexpectedInputException(validation.ErrorMessage);
+            
             if (Credentials.Any(c => c.User == credentials.User))
-                return null;
+                throw new UnexpectedInputException(nameof(UserCredentials.User), " user name already exists");
 
             var newUser = new UserCredentials(credentials.User, credentials.Password, credentials.Email);
             _credentialsRepository.Add(newUser);

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace FulbitoRest.Controllers
 {
     [ServiceFilter(typeof(LoggingFilterAttribute))]
+    [ExceptionFormatter]
     public class BaseController : Controller
     {
     }

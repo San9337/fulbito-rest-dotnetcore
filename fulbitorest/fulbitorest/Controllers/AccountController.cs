@@ -39,8 +39,6 @@ namespace fulbitorest.Controllers
         public HttpResponseMessage Register([FromBody]UserCredentialsData credentials)
         {
             var newCredentials = _loginService.Register(credentials.MapTo<UserCredentials>());
-            if (newCredentials == null || !newCredentials.AreValid())
-                throw new ApplicationException("Could not register user");
 
             return new HttpResponseMessage()
             {
@@ -55,7 +53,7 @@ namespace fulbitorest.Controllers
         {
             var userCredentials = _loginService.Login(credentials.User, credentials.Password);
             if(userCredentials == null)
-                throw new ApplicationException("Invalid login");
+                throw new ApplicationException("Invalid redentials for login");
 
             return GenerateJwtToken(userCredentials);
         }
