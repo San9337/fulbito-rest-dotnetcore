@@ -82,6 +82,7 @@ namespace FulbitoRest.Controllers
 
         [HttpPatch]
         [Route("patch/{id}")]
+        [Consumes("application/json")]
         public HttpResponseMessage Patch(string id, [FromBody]UserCredentialsData newData)
         {
             return new HttpResponseMessage()

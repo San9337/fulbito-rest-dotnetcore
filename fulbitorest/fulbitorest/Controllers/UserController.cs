@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using apidata.DataContracts;
-using FulbitoRest.Repositories;
-using FulbitoRest.Exceptions;
+﻿using apidata.DataContracts;
 using apidata.Mapping;
+using FulbitoRest.Exceptions;
+using FulbitoRest.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace fulbitorest.Controllers
 {
     [Produces("application/json")]
-    [Route("api/User")]
-    //[Authorize]
+    [Route("api/user")]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly FulbitoDbContext _context;
@@ -46,9 +42,9 @@ namespace fulbitorest.Controllers
             return "user deleted";
         }
 
-        //[HttpPatch]
-        //[Route("")]
-        public UserData Patch([FromBody]UserData data)
+        [HttpPatch]
+        [Route("patch/{id}")]
+        public UserData Patch(string id, [FromBody]UserData data)
         {
             var user = GetUser(data.Id);
 

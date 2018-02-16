@@ -5,10 +5,6 @@ namespace apidata.DataContracts
     [DataContract]
     public class UserData
     {
-        public UserData()
-        {
-        }
-
         [DataMember(Name = "id")]
         public int Id { get; set; }
 
