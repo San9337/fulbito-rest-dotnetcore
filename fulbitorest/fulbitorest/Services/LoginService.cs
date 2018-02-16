@@ -1,7 +1,10 @@
 ﻿using apidata;
 using datalayer.Contracts;
 using FulbitoRest.Exceptions;
+using FulbitoRest.Repositories;
+using Microsoft.EntityFrameworkCore;
 using model;
+using model.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,34 +14,50 @@ namespace FulbitoRest.Services
 {
     public class LoginService
     {
-        private IRepository<UserCredentials> _credentialsRepository;
-        private IList<UserCredentials> Credentials => _credentialsRepository.All().ToList();
+        private readonly FulbitoDbContext _context;
 
-        public LoginService(IRepository<UserCredentials> credentialsRepository)
+        public LoginService(FulbitoDbContext context)
         {
-            _credentialsRepository = credentialsRepository;
+            _context = context;
         }
 
-        public UserCredentials Login(string username, string password)
+        public User Login(string email, string password)
         {
             //Look in table or something
-            return Credentials.FirstOrDefault(c => c.AreCredentialsValid(username, password));
+            //return _context.Users.FirstOrDefault(u => u.Credentials.AreCredentialsValid(email, password));
+            return _context.UserCredentials
+                .Where(c => c.HashedPassword == UserCredentials.GetHash(password))
+                .Include(c => c.User)
+                .FirstOrDefault()
+                .User;
         }
 
-        internal UserCredentials Register(UserCredentials credentials)
+        internal User Register(string nickName, string email, string password)
         {
-            var validation = credentials.Validate();
+            if (UserAlreadyExists(email))
+                throw new UnexpectedInputException(nameof(UserCredentials.Email), "Email already exists");
 
-            if(validation != null)
+            var newCredentials = new UserCredentials(nickName,password,email);
+            var validation = newCredentials.Validate();
+
+            if (validation != null)
                 throw new UnexpectedInputException(validation.ErrorMessage);
-            
-            if (Credentials.Any(c => c.User == credentials.User))
-                throw new UnexpectedInputException(nameof(UserCredentials.User), " user name already exists");
 
-            var newUser = new UserCredentials(credentials.User, credentials.Password, credentials.Email);
-            _credentialsRepository.Add(newUser);
+            var newUser = new User()
+            {
+                Credentials = newCredentials,
+                NickName = nickName,
+            };
+
+            _context.Users.Add(newUser);
+            _context.SaveChanges();
 
             return newUser;
+        }
+
+        private bool UserAlreadyExists(string email)
+        {
+            return _context.Users.Any(u => u.Email == email);
         }
     }
 }

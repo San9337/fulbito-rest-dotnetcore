@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using FulbitoRest.Services;
-using System.Net.Http;
-using apidata;
-using model;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.Extensions.Configuration;
+﻿using apidata.DataContracts;
+using apidata.Responses;
 using FulbitoRest.Controllers;
+using FulbitoRest.Services;
 using FulbitoRest.Technical.Security;
 using Microsoft.AspNetCore.Authentication;
-using apidata.Mapping;
-using System.Net;
-using apidata.Responses;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using model;
+using model.Model;
+using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace fulbitorest.Controllers
 {
@@ -40,7 +35,7 @@ namespace fulbitorest.Controllers
         [Route("register")]
         public TokenResponseData Register([FromBody]UserCredentialsData credentials)
         {
-            var newCredentials = _loginService.Register(credentials.MapTo<UserCredentials>());
+            var newCredentials = _loginService.Register(credentials.NickName, credentials.Email, credentials.Password);
 
             return new TokenResponseData()
             {
@@ -53,20 +48,22 @@ namespace fulbitorest.Controllers
         [Route("login")]
         public TokenResponseData Login([FromBody]UserCredentialsData credentials)
         {
-            var userCredentials = _loginService.Login(credentials.User, credentials.Password);
-            if(userCredentials == null)
+            var user = _loginService.Login(credentials.Email, credentials.Password);
+            if(user == null)
                 throw new ApplicationException("Invalid redentials for login");
 
             return new TokenResponseData()
             {
                 IsSuccess = true,
-                Token = GenerateJwtToken(userCredentials),
+                Token = GenerateJwtToken(user),
             };
         }
 
-        private string GenerateJwtToken(UserCredentials userCredentials)
+        private string GenerateJwtToken(User user)
         {
-            var claims = FulbitoClaims.CreateClaims(userCredentials);
+            var userCredentials = user.Credentials;
+
+            var claims = FulbitoClaims.CreateClaims(user);
             var identity = new ClaimsIdentity(claims);
             HttpContext.SignInAsync(new ClaimsPrincipal(identity));
 

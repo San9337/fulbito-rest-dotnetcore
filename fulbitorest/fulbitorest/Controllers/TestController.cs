@@ -1,5 +1,4 @@
-﻿using apidata;
-using FulbitoRest.Technical.Interception;
+﻿using apidata.DataContracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -8,7 +7,7 @@ using System.Net.Http;
 
 namespace FulbitoRest.Controllers
 {
-    
+
     [Produces("application/json")]
     [Route("api/test")]
     public class TestController : BaseController
@@ -42,7 +41,7 @@ namespace FulbitoRest.Controllers
             //http://localhost:65520/api/test/param?param="hi"
             return new UserCredentialsData()
             {
-                User = "test",
+                NickName = "test",
                 Password = param
             };
         }
@@ -54,7 +53,7 @@ namespace FulbitoRest.Controllers
             return new HttpResponseMessage()
             {
                 StatusCode = HttpStatusCode.Created,
-                ReasonPhrase = "Created: " + data.User
+                ReasonPhrase = "Created: " + data.NickName
             };
         }
 

@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DataContracts\PlayerData.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\model\model.csproj" />
   </ItemGroup>
 

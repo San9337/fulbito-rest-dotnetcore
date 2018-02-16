@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using model;
+using model.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +24,17 @@ namespace FulbitoRest.Repositories
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ForMySqlUseIdentityColumns();
+
+            modelBuilder.Entity<UserCredentials>().HasIndex(uc => uc.Email);
+            modelBuilder.Entity<User>().HasIndex(u => u.Id);
+
             base.OnModelCreating(modelBuilder);
         }
+
+        public DbSet<User> Users { get; set; }
+        public DbSet<UserCredentials> UserCredentials { get; set; }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<Country> Countries { get; set; }
     }
 }

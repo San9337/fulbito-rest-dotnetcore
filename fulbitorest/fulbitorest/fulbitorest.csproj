@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\UserController.cs" />
     <Compile Remove="Exceptions\WrongInputException.cs" />
     <Compile Remove="Repositories\MySqlRepository.cs" />
     <Compile Remove="Technical\Interception\ExceptionFilterAttribute.cs" />

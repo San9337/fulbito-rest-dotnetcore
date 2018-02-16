@@ -13,7 +13,7 @@ namespace FulbitoRest.Configuration
         public static void AddDiServices(this IServiceCollection services)
         {
             services.AddSingleton<ICustomLogger, Logger>();
-            services.AddSingleton<LoginService>();
+            services.AddScoped<LoginService>(); //Scoped because of DbContext consume
 
             services.AddScoped<LoggingFilterAttribute>();
 

@@ -10,7 +10,7 @@ namespace apidata.Mapping
         /// <summary>
         /// Works as long the property names match exactly
         /// </summary>
-        public static TTo MapTo<TTo>(this object from) where TTo : class,new()
+        internal static TTo MapTo<TTo>(this object from) where TTo : class,new()
         {
             var to = (TTo)Activator.CreateInstance(typeof(TTo));
 
@@ -20,7 +20,12 @@ namespace apidata.Mapping
             {
                 var toProp = toProperties.FirstOrDefault(p => p.Name == fromProp.Name);
                 if(toProp != null)
-                    toProp.SetValue(to, fromProp.GetValue(from));
+                {
+                    if(fromProp.PropertyType == toProp.PropertyType)
+                        toProp.SetValue(to, fromProp.GetValue(from));
+                    else if(toProp.PropertyType == typeof(string))
+                        toProp.SetValue(to, fromProp.GetValue(from).ToString());
+                }
             }
 
             return to;
