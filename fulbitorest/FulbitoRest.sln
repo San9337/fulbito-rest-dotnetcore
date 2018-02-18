@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "model", "model\model.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "datalayer", "datalayer\datalayer.csproj", "{ED2DF5FA-4D0E-4D1A-999C-A3569A77138E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{4BE45F3D-D6B3-49DC-A01E-00CB18475AB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "model.tests", "model.tests\model.tests.csproj", "{554E557F-812D-4BFF-8B28-707B70F54A64}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +37,16 @@ Global
 		{ED2DF5FA-4D0E-4D1A-999C-A3569A77138E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED2DF5FA-4D0E-4D1A-999C-A3569A77138E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED2DF5FA-4D0E-4D1A-999C-A3569A77138E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{554E557F-812D-4BFF-8B28-707B70F54A64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{554E557F-812D-4BFF-8B28-707B70F54A64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{554E557F-812D-4BFF-8B28-707B70F54A64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{554E557F-812D-4BFF-8B28-707B70F54A64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{554E557F-812D-4BFF-8B28-707B70F54A64} = {4BE45F3D-D6B3-49DC-A01E-00CB18475AB0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0971A1EC-DF12-4E0A-9989-1DCF1417D105}

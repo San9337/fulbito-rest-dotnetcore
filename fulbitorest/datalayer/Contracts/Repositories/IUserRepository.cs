@@ -9,5 +9,6 @@ namespace datalayer.Contracts.Repositories
     {
         bool AlreadyExists(string email);
         User GetUserForCredentials(string email, string password);
+        User GetByEmail(string email);
     }
 }

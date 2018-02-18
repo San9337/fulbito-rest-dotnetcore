@@ -1,4 +1,5 @@
 ﻿using model;
+using model.Enums;
 using model.Model;
 using System;
 using System.Collections.Generic;
@@ -6,12 +7,13 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using model.Utils;
 
 namespace FulbitoRest.Technical.Security
 {
     public static class FulbitoClaims
     {
-        public static IEnumerable<Claim> CreateClaims(User user)
+        public static IEnumerable<Claim> CreateClaims(User user, AuthenticationMethod authMethod)
         {
             var userCredentials = user.Credentials;
             return new List<Claim>
@@ -19,7 +21,7 @@ namespace FulbitoRest.Technical.Security
                 new Claim(JwtRegisteredClaimNames.Email, userCredentials.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
-                new Claim("LoginMethod","normal")
+                new Claim("loginmethod",authMethod.GetDescription())
             };
         }
 

@@ -23,8 +23,8 @@ namespace Fulbito_Rest
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddFulbitoCors();
-            services.AddFulbitoJsonWebTokens(Configuration);
-            
+            services.AddFulbitoAuthentication(Configuration);
+
             services
                 .AddMvc()
                 .AddJsonOptions(opt => {

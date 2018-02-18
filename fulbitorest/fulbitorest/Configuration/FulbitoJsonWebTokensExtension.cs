@@ -10,7 +10,7 @@ namespace FulbitoRest.Configuration
 {
     public static class FulbitoJsonWebTokensExtension
     {
-        public static void AddFulbitoJsonWebTokens(this IServiceCollection services, IConfiguration configuration)
+        public static void AddFulbitoAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             //https://medium.com/@lugrugzo/asp-net-core-2-0-webapi-jwt-authentication-with-identity-mysql-3698eeba6ff8
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
@@ -34,7 +34,12 @@ namespace FulbitoRest.Configuration
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtKey"])),
                         ClockSkew = TimeSpan.Zero // remove delay of token when expire
                     };
-                });
+                })
+                //https://github.com/aspnet/Security/issues/1310
+                //.AddFacebook(options => {
+                    //maybe unnecesary, left as reference
+                //})
+                ;
         }
     }
 }

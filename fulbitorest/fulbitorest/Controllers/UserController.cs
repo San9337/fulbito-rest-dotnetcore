@@ -2,20 +2,15 @@
 using apidata.Mapping;
 using apidata.Utils;
 using datalayer.Contracts.Repositories;
-using datalayer.FulbitoContext;
-using FulbitoRest.Repositories;
 using FulbitoRest.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using model.Exceptions;
-using System.Linq;
 
 namespace fulbitorest.Controllers
 {
     [Produces("application/json")]
     [Route("api/user")]
-    //[Authorize]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;

@@ -49,5 +49,18 @@ namespace datalayer.Repositories
 
             return Get(matchingCredentialsId.First());
         }
+
+        /// <summary>
+        /// Call this when user was authenticated by external source 
+        /// </summary>
+        public User GetByEmail(string email)
+        {
+            var credentials = FulbitoContext.UserCredentials.FirstOrDefault(c => c.Email == email);
+
+            if (credentials == null)
+                throw new UnexpectedInputException("Email received by external source doesnt exist: " + email);
+
+            return Get(credentials.Id);
+        }
     }
 }

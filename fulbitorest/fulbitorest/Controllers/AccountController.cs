@@ -9,11 +9,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using model.Enums;
 using model.Model;
+using Newtonsoft.Json;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace fulbitorest.Controllers
 {
@@ -39,17 +43,13 @@ namespace fulbitorest.Controllers
 
             var newCredentials = _loginService.Register(credentials.NickName, credentials.Email, credentials.Password);
 
-            return new TokenResponseData()
-            {
-                IsSuccess = true,
-                Token = GenerateJwtToken(newCredentials),
-            };
+            return TokenResponseData.Success(GenerateJwtToken(newCredentials, AuthenticationMethod.Fulbito));
         }
 
 
         [HttpPost]
         [Route("login")]
-        public TokenResponseData Login([FromBody]UserCredentialsData credentials)
+        public TokenResponseData FulbitoLogin([FromBody]UserCredentialsData credentials)
         {
             credentials.ValidateBody();
 
@@ -57,18 +57,29 @@ namespace fulbitorest.Controllers
             if(user == null)
                 throw new ApplicationException("Invalid redentials for login");
 
-            return new TokenResponseData()
-            {
-                IsSuccess = true,
-                Token = GenerateJwtToken(user),
-            };
+            return TokenResponseData.Success(GenerateJwtToken(user, AuthenticationMethod.Fulbito));
         }
 
-        private string GenerateJwtToken(User user)
+        //https://leastprivilege.com/2013/12/23/advanced-oauth2-assertion-flow-why/
+        //https://stackoverflow.com/questions/24180034/authenticated-access-to-webapi-via-facebook-token-from-android-app
+        [HttpPost]
+        [Route("facebook")]
+        //[RequireHttps]
+        public async Task<TokenResponseData> FacebookLogin([FromBody] string fbToken)
+        {
+            var user = await _loginService.LoginWithFacebook(fbToken);
+
+            if (user == null)
+                return TokenResponseData.Failure;
+
+            return TokenResponseData.Success(GenerateJwtToken(user, AuthenticationMethod.Facebook));
+        }
+
+        private string GenerateJwtToken(User user, AuthenticationMethod method)
         {
             var userCredentials = user.Credentials;
 
-            var claims = FulbitoClaims.CreateClaims(user);
+            var claims = FulbitoClaims.CreateClaims(user, method);
             var identity = new ClaimsIdentity(claims);
             HttpContext.SignInAsync(new ClaimsPrincipal(identity));
 
