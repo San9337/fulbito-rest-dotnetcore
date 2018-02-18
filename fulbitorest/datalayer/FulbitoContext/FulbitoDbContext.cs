@@ -1,12 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using model;
 using model.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace FulbitoRest.Repositories
+namespace datalayer.FulbitoContext
 {
     //port: 3306
     //https://github.com/jasonsturges/mysql-dotnet-core
@@ -34,7 +30,8 @@ namespace FulbitoRest.Repositories
 
         public DbSet<User> Users { get; set; }
         public DbSet<UserCredentials> UserCredentials { get; set; }
-        public DbSet<Location> Locations { get; set; }
         public DbSet<Country> Countries { get; set; }
+        public DbSet<State> States { get; set; }
+        public DbSet<City> Cities { get; set; }
     }
 }

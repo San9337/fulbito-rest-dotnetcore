@@ -25,14 +25,15 @@ namespace apidata.DataContracts
 
         [DataMember(Name = "teamFan")]
         public string RealTeam { get; set; }
-
-        [DataMember(Name = "location")]
-        public string LocationName { get; set; }
-
-        [DataMember(Name = "country")]
-        public string CountryName { get; set; }
         
         [DataMember(Name = "foot")]
         public string SkilledFoot { get; set; }
+
+        [DataMember(Name = "country")]
+        public string CountryName { get; set; }
+        [DataMember(Name = "state")]
+        public string StateName { get; set; }
+        [DataMember(Name = "city")]
+        public string CityName { get; set; }
     }
 }

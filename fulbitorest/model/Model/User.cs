@@ -1,13 +1,16 @@
 ﻿using model.Enums;
+using model.Exceptions;
+using model.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using model.Business;
 
 namespace model.Model
 {
-    public class User
+    public class User : IEntity
     {
         [Key]
         public int Id { get; set; }
@@ -25,7 +28,26 @@ namespace model.Model
         public string Email => Credentials.Email;
 
         public string RealTeam { get; set; }
-        public string LocationName { get; set; }
-        public string CountryName { get; set; }
+
+        public virtual Country Country { get; set; }
+        public virtual State State { get; set; }
+        public virtual City City { get; set; }
+
+        public User()
+        {
+        }
+        public User(UserCredentials credentials)
+        {
+            Credentials = credentials ?? throw new DevException("Creating user with null credentials");
+
+            credentials.User = this;
+        }
+
+        public void SetLocation(Location location)
+        {
+            Country = location.Country;
+            State = location.State;
+            City = location.City;
+        }
     }
 }

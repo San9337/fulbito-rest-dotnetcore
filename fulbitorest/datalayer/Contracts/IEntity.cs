@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace model.Model
+namespace datalayer.Contracts
 {
-    public class Player
+    interface IEntity
     {
-        public int Id { get; set; }
     }
 }

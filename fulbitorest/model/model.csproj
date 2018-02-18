@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Authentication\Password.cs" />
     <Compile Remove="Model\Player.cs" />
     <Compile Remove="Model\RealTeam.cs" />
   </ItemGroup>

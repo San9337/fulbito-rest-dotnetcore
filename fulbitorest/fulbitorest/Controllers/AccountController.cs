@@ -1,5 +1,6 @@
 ﻿using apidata.DataContracts;
 using apidata.Responses;
+using apidata.Utils;
 using FulbitoRest.Controllers;
 using FulbitoRest.Services;
 using FulbitoRest.Technical.Security;
@@ -8,7 +9,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using model;
 using model.Model;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -35,6 +35,8 @@ namespace fulbitorest.Controllers
         [Route("register")]
         public TokenResponseData Register([FromBody]UserCredentialsData credentials)
         {
+            credentials.ValidateBody();
+
             var newCredentials = _loginService.Register(credentials.NickName, credentials.Email, credentials.Password);
 
             return new TokenResponseData()
@@ -44,10 +46,13 @@ namespace fulbitorest.Controllers
             };
         }
 
+
         [HttpPost]
         [Route("login")]
         public TokenResponseData Login([FromBody]UserCredentialsData credentials)
         {
+            credentials.ValidateBody();
+
             var user = _loginService.Login(credentials.Email, credentials.Password);
             if(user == null)
                 throw new ApplicationException("Invalid redentials for login");

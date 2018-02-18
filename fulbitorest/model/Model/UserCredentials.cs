@@ -1,13 +1,14 @@
-﻿using model.Model;
+﻿using model.Interfaces;
+using model.Model;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace model
+namespace model.Model
 {
-    public class UserCredentials
+    public class UserCredentials : IEntity
     {
         [Key, ForeignKey(nameof(User))]
         public int Id { get; set; }

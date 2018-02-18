@@ -1,7 +1,6 @@
-﻿using datalayer.Contracts;
+﻿using datalayer.FulbitoContext;
 using FulbitoRest.Configuration;
 using FulbitoRest.Hubs;
-using FulbitoRest.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;

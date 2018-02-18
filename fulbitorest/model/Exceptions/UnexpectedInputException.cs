@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FulbitoRest.Exceptions
+namespace model.Exceptions
 {
     /// <summary>
     /// Throw whenever the parameters of a method breaks the "HAPPY PATH"

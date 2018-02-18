@@ -11,6 +11,7 @@ using System.Net;
 
 namespace Fulbito_Rest
 {
+    //TODO: leer esto https://wildermuth.com/2017/07/06/Program-cs-in-ASP-NET-Core-2-0
     public class Program
     {
         public static void Main(string[] args)

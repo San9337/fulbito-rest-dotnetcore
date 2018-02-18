@@ -1,31 +1,37 @@
 ﻿using apidata.DataContracts;
 using apidata.Mapping;
-using FulbitoRest.Exceptions;
+using apidata.Utils;
+using datalayer.Contracts.Repositories;
+using datalayer.FulbitoContext;
 using FulbitoRest.Repositories;
+using FulbitoRest.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using model.Exceptions;
 using System.Linq;
 
 namespace fulbitorest.Controllers
 {
     [Produces("application/json")]
     [Route("api/user")]
-    [Authorize]
+    //[Authorize]
     public class UserController : Controller
     {
-        private readonly FulbitoDbContext _context;
+        private readonly IUserRepository _userRepository;
+        private readonly LocationService _locationService;
 
-        public UserController(FulbitoDbContext context)
+        public UserController(IUserRepository userRepo, LocationService locationServ)
         {
-            _context = context;
+            _userRepository = userRepo;
+            _locationService = locationServ;
         }
         
         [HttpGet]
         [Route("{id:int}")]
         public UserData Get(int id)
         {
-            var user = GetUser(id);
+            var user = _userRepository.Get(id);
 
             return user.Map();
         }
@@ -34,42 +40,38 @@ namespace fulbitorest.Controllers
         [Route("{id:int}")]
         public string Delete(int id)
         {
-            var user = GetUser(id);
-
-            _context.Remove(user);
-            _context.SaveChanges();
+            _userRepository.Delete(id);
 
             return "user deleted";
         }
 
-        [HttpPatch]
-        [Route("patch/{id}")]
-        public UserData Patch(string id, [FromBody]UserData data)
+        [HttpPost]
+        [Route("{id:int}")]
+        public UserData Post(int id, [FromBody]UserData data)
         {
-            var user = GetUser(data.Id);
+            return Put(id, data);
+        }
+
+        [HttpPut]
+        [Route("{id:int}")]
+        public UserData Put(int id, [FromBody]UserData data)
+        {
+            data.ValidateBody();
+
+            var user = _userRepository.Get(id);
 
             user.Age = data.Age;
-            user.CountryName = data.CountryName;
             user.Gender = data.Gender == "male" ? model.Enums.Gender.Male : model.Enums.Gender.Female;
-            user.LocationName = data.LocationName;
             user.ProfilePictureUrl = data.ProfilePictureUrl;
             user.RealTeam = data.RealTeam;
             user.SkilledFoot = data.SkilledFoot;
 
-            _context.SaveChanges();
+            var location = _locationService.GetOrCreate(data.CountryName, data.StateName, data.CityName);
+            user.SetLocation(location);
 
-            return data;
-        }
+            _userRepository.Save(user);
 
-        private model.Model.User GetUser(int id)
-        {
-            var user = _context.Users
-                .Where(u => u.Id == id)
-                .Include(u => u.Credentials)
-                .FirstOrDefault();
-            if (user == null)
-                throw new UnexpectedInputException("User doesn't exist");
-            return user;
+            return user.Map();
         }
     }
 }

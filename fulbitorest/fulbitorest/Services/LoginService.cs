@@ -1,63 +1,48 @@
-﻿using apidata;
-using datalayer.Contracts;
-using FulbitoRest.Exceptions;
-using FulbitoRest.Repositories;
+﻿using datalayer.Contracts.Repositories;
+using datalayer.FulbitoContext;
 using Microsoft.EntityFrameworkCore;
 using model;
+using model.Exceptions;
 using model.Model;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace FulbitoRest.Services
 {
     public class LoginService
     {
-        private readonly FulbitoDbContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public LoginService(FulbitoDbContext context)
+        public LoginService(IUserRepository userRepo)
         {
-            _context = context;
+            _userRepository = userRepo;
         }
 
-        public User Login(string email, string password)
+        internal User Login(string email, string password)
         {
-            //Look in table or something
-            //return _context.Users.FirstOrDefault(u => u.Credentials.AreCredentialsValid(email, password));
-            return _context.UserCredentials
-                .Where(c => c.HashedPassword == UserCredentials.GetHash(password))
-                .Include(c => c.User)
-                .FirstOrDefault()
-                .User;
+            return _userRepository.GetUserForCredentials(email, password);
         }
 
         internal User Register(string nickName, string email, string password)
         {
-            if (UserAlreadyExists(email))
+            if (_userRepository.AlreadyExists(email))
                 throw new UnexpectedInputException(nameof(UserCredentials.Email), "Email already exists");
 
             var newCredentials = new UserCredentials(nickName,password,email);
-            var validation = newCredentials.Validate();
 
+            var validation = newCredentials.Validate();
             if (validation != null)
                 throw new UnexpectedInputException(validation.ErrorMessage);
 
-            var newUser = new User()
+            var newUser = new User(newCredentials)
             {
-                Credentials = newCredentials,
                 NickName = nickName,
             };
 
-            _context.Users.Add(newUser);
-            _context.SaveChanges();
+            _userRepository.Add(newUser);
 
             return newUser;
         }
 
-        private bool UserAlreadyExists(string email)
-        {
-            return _context.Users.Any(u => u.Email == email);
-        }
+
     }
 }

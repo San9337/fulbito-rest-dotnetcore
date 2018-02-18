@@ -1,22 +1,18 @@
-﻿using System;
+﻿using model.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace model.Model
 {
-    public class Location
+    public class State : IEntity
     {
         [Key]
         public int Id { get; set; }
 
         public string Name { get; set; }
-        
         public virtual Country Country { get; set; }
 
-        public override string ToString()
-        {
-            return Name;
-        }
     }
 }
