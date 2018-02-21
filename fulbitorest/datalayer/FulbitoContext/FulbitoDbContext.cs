@@ -22,8 +22,7 @@ namespace datalayer.FulbitoContext
         {
             modelBuilder.ForMySqlUseIdentityColumns();
 
-            modelBuilder.Entity<UserCredentials>().HasIndex(uc => uc.Email);
-            modelBuilder.Entity<User>().HasIndex(u => u.Id);
+            modelBuilder.ConfigureEntities();
 
             base.OnModelCreating(modelBuilder);
         }
@@ -33,5 +32,6 @@ namespace datalayer.FulbitoContext
         public DbSet<Country> Countries { get; set; }
         public DbSet<State> States { get; set; }
         public DbSet<City> Cities { get; set; }
+        public DbSet<Team> Teams { get; set; }
     }
 }

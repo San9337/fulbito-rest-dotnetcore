@@ -32,7 +32,8 @@ namespace FulbitoRest.Configuration
                         ValidIssuer = configuration["JwtIssuer"], //appsettings.json
                         ValidAudience = configuration["JwtIssuer"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtKey"])),
-                        ClockSkew = TimeSpan.Zero // remove delay of token when expire
+                        ClockSkew = TimeSpan.Zero, // remove delay of token when expire
+                        
                     };
                 })
                 //https://github.com/aspnet/Security/issues/1310

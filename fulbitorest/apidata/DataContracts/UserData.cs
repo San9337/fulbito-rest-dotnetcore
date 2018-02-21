@@ -18,7 +18,7 @@ namespace apidata.DataContracts
         public int Age { get; set; }
 
         [DataMember(Name = "gender")]
-        public string Gender { get; set; }
+        public int GenderId { get; set; }
 
         [DataMember(Name = "urlProfilePicture")]
         public string ProfilePictureUrl { get; set; }
@@ -27,7 +27,7 @@ namespace apidata.DataContracts
         public string RealTeam { get; set; }
         
         [DataMember(Name = "foot")]
-        public string SkilledFoot { get; set; }
+        public int SkilledFootId { get; set; }
 
         [DataMember(Name = "country")]
         public string CountryName { get; set; }

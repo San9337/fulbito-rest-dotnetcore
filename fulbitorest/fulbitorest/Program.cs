@@ -12,6 +12,7 @@ using System.Net;
 namespace Fulbito_Rest
 {
     //TODO: leer esto https://wildermuth.com/2017/07/06/Program-cs-in-ASP-NET-Core-2-0
+    //https://exceptionnotfound.net/working-with-environments-and-launch-settings-in-asp-net-core/
     public class Program
     {
         public static void Main(string[] args)

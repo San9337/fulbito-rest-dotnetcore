@@ -20,14 +20,14 @@ namespace model.Model
         public string NickName { get; set; }
         public int Age { get; set; }
         public string ProfilePictureUrl { get; set; }
-        public string SkilledFoot { get; set; }
 
+        public Foot SkilledFoot { get; set; }
         public Gender Gender { get; set; }
 
         public virtual UserCredentials Credentials { get; set; }
         public string Email => Credentials.Email;
 
-        public string RealTeam { get; set; }
+        public virtual Team RealTeam { get; set; }
 
         public virtual Country Country { get; set; }
         public virtual State State { get; set; }

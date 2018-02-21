@@ -107,3 +107,13 @@ namespace FulbitoRest.Controllers
         }
     }
 }
+
+
+
+
+
+//Get Team Fan (EQUIPO - PAIS)
+//Popular tablas equipos de futbol
+//Undefined gender
+//Token de 2 horas, investigar refresh tokens
+//Login facebook

@@ -5,6 +5,9 @@ using datalayer.Contracts.Repositories;
 using FulbitoRest.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using model.Enums;
+using model.Model;
+using model.Utils;
 
 namespace fulbitorest.Controllers
 {
@@ -15,11 +18,13 @@ namespace fulbitorest.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly LocationService _locationService;
+        private readonly ITeamRepository _teamRepository;
 
-        public UserController(IUserRepository userRepo, LocationService locationServ)
+        public UserController(IUserRepository userRepo, LocationService locationServ, ITeamRepository teamRepo)
         {
             _userRepository = userRepo;
             _locationService = locationServ;
+            _teamRepository = teamRepo;
         }
         
         [HttpGet]
@@ -56,10 +61,16 @@ namespace fulbitorest.Controllers
             var user = _userRepository.Get(id);
 
             user.Age = data.Age;
-            user.Gender = data.Gender == "male" ? model.Enums.Gender.Male : model.Enums.Gender.Female;
+            user.Gender = (Gender)data.GenderId;
             user.ProfilePictureUrl = data.ProfilePictureUrl;
-            user.RealTeam = data.RealTeam;
-            user.SkilledFoot = data.SkilledFoot;
+            user.SkilledFoot = (Foot)data.SkilledFootId;
+
+            if (!string.IsNullOrEmpty(data.RealTeam))
+            {
+                var teamData = data.RealTeam.Split(" - ");
+                var team = _teamRepository.Get(teamData[0], teamData[1]);
+                user.RealTeam = team;
+            }
 
             var location = _locationService.GetOrCreate(data.CountryName, data.StateName, data.CityName);
             user.SetLocation(location);
@@ -68,5 +79,14 @@ namespace fulbitorest.Controllers
 
             return user.Map();
         }
+
+        [HttpGet]
+        [Route("gender/{id:int}")]
+        public string GetGender(int id)
+        {
+            var user = _userRepository.Get(id);
+            return user.Gender.GetDescription();
+        }
+
     }
 }

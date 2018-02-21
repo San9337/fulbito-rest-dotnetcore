@@ -52,9 +52,9 @@ namespace Fulbito_Rest
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
+            if (env.IsProduction())
+                app.UseDeveloperExceptionPage();
 
             app.UseAuthentication();
 

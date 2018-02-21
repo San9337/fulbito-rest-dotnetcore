@@ -19,6 +19,7 @@ namespace FulbitoRest.Configuration
             services.AddScoped<LocationService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
+            services.AddScoped<ITeamRepository, TeamRepository>();
 
             services.AddScoped<LoggingFilterAttribute>();
 
