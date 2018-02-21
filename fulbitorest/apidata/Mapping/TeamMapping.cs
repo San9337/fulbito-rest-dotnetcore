@@ -12,7 +12,8 @@ namespace apidata.Mapping
         {
             return new TeamData()
             {
-                NameAndCountry = team.Name + " - " + team.CountryName
+                Id = team.Id,
+                TeamDescription = team.Name + " - " + team.CountryName
             };
         }
     }

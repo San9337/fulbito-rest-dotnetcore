@@ -50,7 +50,7 @@ namespace fulbitorest.Controllers
         }
 
         [HttpGet]
-        [Route("team")]
+        [Route("teamfan")]
         public async Task<List<TeamData>> GetTeam(string searchQuery)
         {
             var results = await _teamRepository.GetMatchingTeams(searchQuery);

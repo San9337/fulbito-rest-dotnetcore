@@ -8,7 +8,9 @@ namespace apidata.DataContracts
     [DataContract]
     public class TeamData
     {
-        [DataMember(Name = "codeName")]
-        public string NameAndCountry { get; set; }
+        [DataMember(Name ="id")]
+        public int Id { get; set; }
+        [DataMember(Name = "description")]
+        public string TeamDescription { get; set; }
     }
 }

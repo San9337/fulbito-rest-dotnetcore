@@ -24,7 +24,7 @@ namespace apidata.Mapping
                     if(fromProp.PropertyType == toProp.PropertyType)
                         toProp.SetValue(to, fromProp.GetValue(from));
                     else if(toProp.PropertyType == typeof(string))
-                        toProp.SetValue(to, fromProp.GetValue(from).ToString());
+                        toProp.SetValue(to, fromProp.GetValue(from)?.ToString());
                 }
             }
 
