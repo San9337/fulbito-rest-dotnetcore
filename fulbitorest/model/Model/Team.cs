@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace model.Model
@@ -13,6 +14,9 @@ namespace model.Model
 
         public string Name { get; set; }
         public string CountryName { get; set; }
+
+        [NotMapped]
+        public string FormattedName => Name + " - " + CountryName;
 
         public Team()
         {

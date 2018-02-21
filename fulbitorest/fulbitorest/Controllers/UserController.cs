@@ -65,9 +65,9 @@ namespace fulbitorest.Controllers
             user.ProfilePictureUrl = data.ProfilePictureUrl;
             user.SkilledFoot = (Foot)data.SkilledFootId;
 
-            if (!string.IsNullOrEmpty(data.RealTeam))
+            if (!string.IsNullOrEmpty(data.RealTeamName))
             {
-                var teamData = data.RealTeam.Split(" - ");
+                var teamData = data.RealTeamName.Split(" - ");
                 var team = _teamRepository.Get(teamData[0], teamData[1]);
                 user.RealTeam = team;
             }

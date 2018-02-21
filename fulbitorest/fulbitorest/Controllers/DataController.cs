@@ -15,7 +15,7 @@ namespace fulbitorest.Controllers
 {
     [Produces("application/json")]
     [Route("api/Data")]
-    //[Authorize]
+    [Authorize]
     public class DataController : Controller
     {
         private readonly ITeamRepository _teamRepository;

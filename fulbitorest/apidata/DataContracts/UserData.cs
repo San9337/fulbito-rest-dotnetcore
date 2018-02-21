@@ -24,8 +24,10 @@ namespace apidata.DataContracts
         public string ProfilePictureUrl { get; set; }
 
         [DataMember(Name = "teamFan")]
-        public string RealTeam { get; set; }
-        
+        public string RealTeamName { get; set; }
+        [DataMember(Name = "teamId")]
+        public int RealTeamId { get; set; }
+
         [DataMember(Name = "foot")]
         public int SkilledFootId { get; set; }
 
@@ -35,5 +37,6 @@ namespace apidata.DataContracts
         public string StateName { get; set; }
         [DataMember(Name = "city")]
         public string CityName { get; set; }
+        
     }
 }

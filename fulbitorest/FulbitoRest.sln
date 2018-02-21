@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "datalayer", "datalayer\data
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{4BE45F3D-D6B3-49DC-A01E-00CB18475AB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "model.tests", "model.tests\model.tests.csproj", "{554E557F-812D-4BFF-8B28-707B70F54A64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "model.tests", "model.tests\model.tests.csproj", "{554E557F-812D-4BFF-8B28-707B70F54A64}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
