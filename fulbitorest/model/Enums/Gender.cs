@@ -7,11 +7,11 @@ namespace model.Enums
 {
     public enum Gender
     {
-        [Description("undefined")]
+        [Description("USER_GENDER_OTHER")]
         Undefined = 0,
-        [Description("male")]
+        [Description("USER_GENDER_MALE")]
         Male = 1,
-        [Description("female")]
+        [Description("USER_GENDER_FEMALE")]
         Female = 2,
         
     }

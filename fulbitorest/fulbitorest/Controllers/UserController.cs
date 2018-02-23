@@ -17,14 +17,14 @@ namespace fulbitorest.Controllers
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
-        private readonly LocationService _locationService;
-        private readonly ITeamRepository _teamRepository;
+        private readonly UserService _userService;
 
-        public UserController(IUserRepository userRepo, LocationService locationServ, ITeamRepository teamRepo)
+        public UserController(
+            IUserRepository userRepo, 
+            UserService userService)
         {
             _userRepository = userRepo;
-            _locationService = locationServ;
-            _teamRepository = teamRepo;
+            _userService = userService;
         }
         
         [HttpGet]
@@ -58,24 +58,7 @@ namespace fulbitorest.Controllers
         {
             data.ValidateBody();
 
-            var user = _userRepository.Get(id);
-
-            user.Age = data.Age;
-            user.Gender = (Gender)data.GenderId;
-            user.ProfilePictureUrl = data.ProfilePictureUrl;
-            user.SkilledFoot = (Foot)data.SkilledFootId;
-
-            if (!string.IsNullOrEmpty(data.RealTeamName))
-            {
-                var teamData = data.RealTeamName.Split(" - ");
-                var team = _teamRepository.Get(teamData[0], teamData[1]);
-                user.RealTeam = team;
-            }
-
-            var location = _locationService.GetOrCreate(data.CountryName, data.StateName, data.CityName);
-            user.SetLocation(location);
-
-            _userRepository.Save(user);
+            var user = _userService.Update(id,data);
 
             return user.Map();
         }

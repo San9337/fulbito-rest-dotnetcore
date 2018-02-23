@@ -7,11 +7,13 @@ namespace model.Enums
 {
     public enum Foot
     {
-        [Description("left-foot")]
-        Left = 0,
-        [Description("right-foot")]
-        Right = 1,
-        [Description("both-foot")]
-        Both = 2
+        [Description("USER_FOOT_UNDEFINED")]
+        Undefined = 0,
+        [Description("USER_FOOT_LEFT")]
+        Left = 1,
+        [Description("USER_FOOT_RIGHT")]
+        Right = 2,
+        [Description("USER_FOOT_BOTH")]
+        Both = 3
     }
 }

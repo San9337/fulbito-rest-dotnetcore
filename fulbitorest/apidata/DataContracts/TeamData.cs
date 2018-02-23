@@ -11,6 +11,6 @@ namespace apidata.DataContracts
         [DataMember(Name ="id")]
         public int Id { get; set; }
         [DataMember(Name = "description")]
-        public string TeamDescription { get; set; }
+        public string Description { get; set; }
     }
 }

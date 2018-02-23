@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using apidata.DataContracts;
+using model.Model;
+using datalayer.Contracts.Repositories;
+using model.Enums;
+
+namespace FulbitoRest.Services
+{
+    public class UserService
+    {
+        private readonly IUserRepository _userRepository;
+        private readonly ITeamRepository _teamRepository;
+        private readonly LocationService _locationService;
+
+        public UserService(IUserRepository userRepository, ITeamRepository teamRepository, LocationService locationService)
+        {
+            _userRepository = userRepository;
+            _teamRepository = teamRepository;
+            _locationService = locationService;
+        }
+
+        internal User Update(int id, UserData data)
+        {
+            var user = _userRepository.Get(id);
+
+            user.Age = data.Age;
+            user.Gender = (Gender)data.GenderId;
+            user.ProfilePictureUrl = data.ProfilePictureUrl;
+            user.SkilledFoot = (Foot)data.SkilledFootId;
+
+            if (!string.IsNullOrEmpty(data.RealTeamName))
+            {
+                var teamData = data.RealTeamName.Split(" - ");
+                var team = _teamRepository.Get(teamData[0], teamData[1]);
+                user.RealTeam = team;
+            }
+
+            var location = _locationService.GetOrCreate(data.CountryName, data.StateName, data.CityName);
+            user.SetLocation(location);
+
+            _userRepository.Save(user);
+
+            return user;
+        }
+    }
+}

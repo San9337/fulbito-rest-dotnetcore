@@ -17,9 +17,12 @@ namespace FulbitoRest.Configuration
             services.AddSingleton<ICustomLogger, Logger>();
             services.AddScoped<LoginService>(); //Scoped because of DbContext consume
             services.AddScoped<LocationService>();
+            services.AddScoped<UserService>();
+
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILocationRepository, LocationRepository>();
             services.AddScoped<ITeamRepository, TeamRepository>();
+            
 
             services.AddScoped<LoggingFilterAttribute>();
 

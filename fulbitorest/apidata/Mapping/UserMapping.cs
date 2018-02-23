@@ -22,7 +22,6 @@ namespace apidata.Mapping
                 data.RealTeamId = user.RealTeam.Id;
                 data.RealTeamName = user.RealTeam.FormattedName;
             }
-            
 
             return data;
         }
