@@ -11,10 +11,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using model.Enums;
 using model.Model;
-using Newtonsoft.Json;
+using model.Model.Security;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net.Http;
+using System.Security;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,40 +24,74 @@ namespace fulbitorest.Controllers
     [Produces("application/json")]
     [Route("api/account")]
     //https://github.com/blowdart/AspNetAuthorizationWorkshop <-----Check for middleware implementation
+    //http://www.c-sharpcorner.com/article/handle-refresh-token-using-asp-net-core-2-0-and-json-web-token/ <-----tokens
     public class AccountController : BaseController
     {
         private readonly LoginService _loginService;
         private readonly IConfiguration _configuration;
+        private readonly RefreshTokenParser _tokenParser;
 
-        public AccountController(LoginService login, IConfiguration configuration)
+        public AccountController(LoginService login, IConfiguration configuration, RefreshTokenParser tokenParser)
         {
             _loginService = login;
             _configuration = configuration;
+            _tokenParser = tokenParser;
         }
 
         [HttpPost]
         [Route("register")]
-        public TokenResponseData Register([FromBody]UserCredentialsData credentials)
+        public RefreshTokenResponseData Register([FromBody]UserCredentialsData credentials)
         {
             credentials.ValidateBody();
 
-            var newCredentials = _loginService.Register(credentials.NickName, credentials.Email, credentials.Password);
+            var auth = _loginService.Register(credentials.NickName, credentials.Email, credentials.Password);
 
-            return TokenResponseData.Success(GenerateJwtToken(newCredentials, AuthenticationMethod.Fulbito));
+            return RefreshTokenResponseData.Success(
+                access: GenerateJwtAccessToken(auth.User, AuthenticationMethod.Fulbito),
+                refresh: GenerateSignedJwtRefreshToken(auth)
+                );
         }
 
 
         [HttpPost]
         [Route("login")]
-        public TokenResponseData FulbitoLogin([FromBody]UserCredentialsData credentials)
+        public RefreshTokenResponseData FulbitoLogin([FromBody]UserCredentialsData credentials)
         {
             credentials.ValidateBody();
 
-            var user = _loginService.Login(credentials.Email, credentials.Password);
-            if(user == null)
+            var auth = _loginService.Login(credentials.Email, credentials.Password);
+            if (auth == null)
                 throw new ApplicationException("Invalid redentials for login");
 
-            return TokenResponseData.Success(GenerateJwtToken(user, AuthenticationMethod.Fulbito));
+            return RefreshTokenResponseData.Success(
+                access: GenerateJwtAccessToken(auth.User, AuthenticationMethod.Fulbito),
+                refresh: GenerateSignedJwtRefreshToken(auth)
+            );
+        }
+
+        [HttpPost]
+        [Route("auth")]
+        public RefreshTokenResponseData Auth([FromBody]RefreshRequestData data)
+        {
+            data.ValidateBody();
+            //grant_type	the value must be refresh_token
+            //client_id the client_id is assigned by manager
+            //client_secret   the client_secret is assigned by manager
+            //refresh_token   after authentication the server will return a refresh_tokens
+            try
+            {
+                var refreshToken = ValidateAndRetrieveRefreshToken(data.SignedRefreshToken);
+
+                var authContext = _loginService.RefreshToken(refreshToken);
+
+                return RefreshTokenResponseData.Success(
+                    access: GenerateJwtAccessToken(authContext.User, authContext.AuthMethod),
+                    refresh: GenerateSignedJwtRefreshToken(authContext)
+                );
+            }catch(SecurityException ex)
+            {
+                return RefreshTokenResponseData.Failure(ex.Message);
+            }
         }
 
         //https://leastprivilege.com/2013/12/23/advanced-oauth2-assertion-flow-why/
@@ -65,37 +99,61 @@ namespace fulbitorest.Controllers
         [HttpPost]
         [Route("facebook")]
         //[RequireHttps]
-        public async Task<TokenResponseData> FacebookLogin([FromBody] string fbToken)
+        public async Task<RefreshTokenResponseData> FacebookLogin([FromBody] string fbToken)
         {
-            var user = await _loginService.LoginWithFacebook(fbToken);
+            try
+            {
+                var auth = await _loginService.LoginWithFacebook(fbToken);
 
-            if (user == null)
-                return TokenResponseData.Failure;
-
-            return TokenResponseData.Success(GenerateJwtToken(user, AuthenticationMethod.Facebook));
+                return RefreshTokenResponseData.Success(
+                    access: GenerateJwtAccessToken(auth.User, AuthenticationMethod.Facebook),
+                    refresh: GenerateSignedJwtRefreshToken(auth)
+                );
+            }catch(Exception ex)
+            {
+                return RefreshTokenResponseData.Failure(ex.Message);
+            }
         }
 
-        private string GenerateJwtToken(User user, AuthenticationMethod method)
+        private string GenerateJwtAccessToken(User user, AuthenticationMethod method)
         {
-            var userCredentials = user.Credentials;
-
-            var claims = FulbitoClaims.CreateClaims(user, method);
-            var identity = new ClaimsIdentity(claims);
-            HttpContext.SignInAsync(new ClaimsPrincipal(identity));
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtKey"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["JwtExpireMinutes"]));
+            var fulbitoClaims = FulbitoClaims.CreateClaims(user, method);
 
             var token = new JwtSecurityToken(
                 _configuration["JwtIssuer"],
                 _configuration["JwtIssuer"],
-                claims,
-                expires: expires,
-                signingCredentials: creds
+                fulbitoClaims,
+                expires: DateTime.Now.AddSeconds(10*Convert.ToDouble(_configuration["JwtExpireMinutes"])),
+                signingCredentials: ContentSecurityHelper.GetSigninCredentials(_configuration["JwtKey"])
             );
 
+            SignInAsync(fulbitoClaims);
+
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        /// <summary>
+        /// Load the claims to the HttpContext
+        /// </summary>
+        private void SignInAsync(System.Collections.Generic.IEnumerable<Claim> claims)
+        {
+            var identity = new ClaimsIdentity(claims);
+            HttpContext.SignInAsync(new ClaimsPrincipal(identity));
+        }
+
+        private string GenerateSignedJwtRefreshToken(AuthContext authContext)
+        {
+            var key = _configuration["JwtRefreshKey"];
+            var refreshToken = authContext.RefreshToken;
+
+            return _tokenParser.FormatToken(refreshToken, key);
+        }
+
+        private string ValidateAndRetrieveRefreshToken(string tokenWithSignature)
+        {
+            var key = _configuration["JwtRefreshKey"];
+
+            return _tokenParser.ValidateAndRetrieve(tokenWithSignature, key);
         }
     }
 }

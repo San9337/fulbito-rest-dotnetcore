@@ -9,7 +9,7 @@ using model.Enums;
 
 namespace FulbitoRest.Services
 {
-    public class UserService
+    public class UserService : IService
     {
         private readonly IUserRepository _userRepository;
         private readonly ITeamRepository _teamRepository;

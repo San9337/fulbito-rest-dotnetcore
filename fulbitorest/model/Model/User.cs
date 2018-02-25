@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using model.Business;
+using model.Model.Security;
 
 namespace model.Model
 {

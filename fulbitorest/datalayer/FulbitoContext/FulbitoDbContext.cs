@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using model;
 using model.Model;
+using model.Model.Security;
 
 namespace datalayer.FulbitoContext
 {
@@ -33,5 +34,6 @@ namespace datalayer.FulbitoContext
         public DbSet<State> States { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Team> Teams { get; set; }
+        public DbSet<AuthContext> AuthContexts { get; set; }
     }
 }

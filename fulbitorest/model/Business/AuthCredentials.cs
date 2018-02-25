@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace model.Interfaces
+namespace model.Business
 {
-    public interface IEntity
+    public class AuthCredentials
     {
-        int Id { get; }
     }
 }

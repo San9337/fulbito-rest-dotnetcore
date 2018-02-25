@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace model.Model
+namespace model.Model.Security
 {
     public class UserCredentials : IEntity
     {

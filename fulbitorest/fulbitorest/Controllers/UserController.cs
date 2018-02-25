@@ -5,8 +5,6 @@ using datalayer.Contracts.Repositories;
 using FulbitoRest.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using model.Enums;
-using model.Model;
 using model.Utils;
 
 namespace fulbitorest.Controllers

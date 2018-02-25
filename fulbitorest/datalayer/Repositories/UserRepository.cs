@@ -8,6 +8,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using model.Exceptions;
 using model;
+using model.Model.Security;
 
 namespace datalayer.Repositories
 {
@@ -30,7 +31,7 @@ namespace datalayer.Repositories
             if (user == null)
                 throw new UnexpectedInputException("User doesn't exist");
 
-            return base.Get(id);
+            return user;
         }
 
         public bool AlreadyExists(string email)

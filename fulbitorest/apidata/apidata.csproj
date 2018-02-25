@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DataContracts\ExternalLoginRequestData.cs" />
     <Compile Remove="DataContracts\PlayerData.cs" />
   </ItemGroup>
 

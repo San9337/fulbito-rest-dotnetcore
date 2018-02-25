@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FulbitoRest.Services
 {
-    public class LocationService
+    public class LocationService : IService
     {
         private readonly ILocationRepository _locationRepository;
 

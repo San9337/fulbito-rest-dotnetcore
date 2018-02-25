@@ -1,32 +1,36 @@
 ﻿using datalayer.Contracts.Repositories;
-using datalayer.FulbitoContext;
-using Microsoft.EntityFrameworkCore;
-using model;
+using model.Enums;
 using model.Exceptions;
 using model.Model;
-using System.Linq;
+using model.Model.Security;
+using Newtonsoft.Json;
 using System;
 using System.Net.Http;
-using Newtonsoft.Json;
+using System.Security;
 using System.Threading.Tasks;
 
 namespace FulbitoRest.Services
 {
-    public class LoginService
+    public class LoginService : IService
     {
-        private readonly IUserRepository _userRepository;
+        private readonly double refreshTokenExpiration = 5;
 
-        public LoginService(IUserRepository userRepo)
+        private readonly IUserRepository _userRepository;
+        private readonly IAuthContextRepository _authRepository;
+
+        public LoginService(IUserRepository userRepo, IAuthContextRepository authRepo)
         {
             _userRepository = userRepo;
+            _authRepository = authRepo;
         }
 
-        internal User Login(string email, string password)
+        internal AuthContext Login(string email, string password)
         {
-            return _userRepository.GetUserForCredentials(email, password);
+            var user = _userRepository.GetUserForCredentials(email, password);
+            return ResetToken(user, AuthenticationMethod.Fulbito);
         }
 
-        internal User Register(string nickName, string email, string password)
+        internal AuthContext Register(string nickName, string email, string password)
         {
             if (_userRepository.AlreadyExists(email))
                 throw new UnexpectedInputException(nameof(UserCredentials.Email), "Email already exists");
@@ -44,10 +48,10 @@ namespace FulbitoRest.Services
 
             _userRepository.Add(newUser);
 
-            return newUser;
+            return ResetToken(newUser, AuthenticationMethod.Fulbito);
         }
 
-        internal async Task<User> LoginWithFacebook(string fbToken)
+        internal async Task<AuthContext> LoginWithFacebook(string fbToken)
         {
             var path = "https://graph.facebook.com/me?access_token=" + fbToken;
             var uri = new Uri(path);
@@ -64,7 +68,40 @@ namespace FulbitoRest.Services
             var fbUser = JsonConvert.DeserializeObject<FacebookUserViewModel>(content);
 
             var email = fbUser.Email;
-            return _userRepository.GetByEmail(email);
+            var user = _userRepository.GetByEmail(email);
+
+            return ResetToken(user, AuthenticationMethod.Facebook);
+        }
+
+        internal AuthContext ResetToken(User user, AuthenticationMethod authMethod)
+        {
+            if(!_authRepository.Exists(user.Id))
+                _authRepository.Add(new AuthContext(user, authMethod));
+            
+            var auth = _authRepository.Get(user.Id);
+            auth.Reset(refreshTokenExpiration);
+
+            _authRepository.Save(auth);
+
+            return auth;
+        }
+
+        internal AuthContext RefreshToken(string currentRefreshToken)
+        {
+            //TODO: Validate identity inside refresh token
+            var authContext = _authRepository.GetAuthContext(currentRefreshToken);
+            
+            if(!authContext.IsRefreshValid(currentRefreshToken))
+            {
+                authContext.Revoked = true;
+                _authRepository.Save(authContext);
+                throw new SecurityException("Token has been revoked");
+            }
+
+            authContext.Refresh(currentRefreshToken, refreshTokenExpiration);
+            _authRepository.Save(authContext);
+
+            return authContext;
         }
     }
 

@@ -1,15 +1,13 @@
-﻿using System;
+﻿using apidata.DataContracts;
+using apidata.Mapping;
+using datalayer.Contracts.Repositories;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using model.Enums;
+using model.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using apidata.DataContracts;
-using model.Enums;
-using apidata.Mapping;
-using model.Utils;
-using datalayer.Contracts.Repositories;
-using Microsoft.AspNetCore.Authorization;
 
 namespace fulbitorest.Controllers
 {

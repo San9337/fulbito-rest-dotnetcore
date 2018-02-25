@@ -25,9 +25,6 @@ namespace FulbitoRest.Controllers
         [Authorize]
         public string HelloSecure()
         {
-            //JwtRegisteredClaimNames.Sub, userCredentials.User)
-            //JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-            //ClaimTypes.NameIdentifier, userCredentials.User)
             var user = base.User;
             var claims = user.Claims;
 

@@ -34,13 +34,19 @@ namespace datalayer.Repositories
             FulbitoContext = context;
         }
 
+        public bool Exists(int id)
+        {
+            return FulbitoContext.Set<T>().Any(e => e.Id == id);
+        }
+
         public virtual T Get(int id)
         {
-            var entity = FulbitoContext.Set<T>().FirstOrDefault(x => x.Id == id);
+            T entity = FulbitoContext.Set<T>().FirstOrDefault(x => x.Id == id);
             if (entity == null)
-                throw new FulbitoException(typeof(T).Name + " doesn't exist");
+                throw new FulbitoException(nameof(T) + " with id "+id+" doesnt exist");
             return entity;
         }
+
 
         public void Save(T entityWithChanges)
         {
@@ -66,5 +72,7 @@ namespace datalayer.Repositories
         {
             return FulbitoContext.Set<T>();
         }
+
+        
     }
 }

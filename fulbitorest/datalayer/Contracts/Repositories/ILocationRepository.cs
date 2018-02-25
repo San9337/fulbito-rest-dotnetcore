@@ -3,7 +3,7 @@ using model.Model;
 
 namespace datalayer.Contracts.Repositories
 {
-    public interface ILocationRepository
+    public interface ILocationRepository : IRepository
     {
         Location SaveLocation(Location newLocation);
 

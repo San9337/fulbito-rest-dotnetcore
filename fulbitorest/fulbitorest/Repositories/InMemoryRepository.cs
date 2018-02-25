@@ -25,6 +25,11 @@ namespace FulbitoRest.Repositories
             list.Remove(Get(id));
         }
 
+        public bool Exists(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public T Get(int id)
         {
             return list.FirstOrDefault(i => i.Id == id);
