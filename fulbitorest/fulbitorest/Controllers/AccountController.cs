@@ -123,7 +123,7 @@ namespace fulbitorest.Controllers
                 _configuration["JwtIssuer"],
                 _configuration["JwtIssuer"],
                 fulbitoClaims,
-                expires: DateTime.Now.AddSeconds(10*Convert.ToDouble(_configuration["JwtExpireMinutes"])),
+                expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["JwtExpireMinutes"])),
                 signingCredentials: ContentSecurityHelper.GetSigninCredentials(_configuration["JwtKey"])
             );
 
