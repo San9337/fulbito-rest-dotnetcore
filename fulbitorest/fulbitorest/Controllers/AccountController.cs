@@ -99,11 +99,12 @@ namespace fulbitorest.Controllers
         [HttpPost]
         [Route("facebook")]
         //[RequireHttps]
-        public async Task<RefreshTokenResponseData> FacebookLogin([FromBody] string fbToken)
+        public async Task<RefreshTokenResponseData> FacebookLogin([FromBody] ThirdPartyLoginRequestData data)
         {
+            data.ValidateBody();
             try
             {
-                var auth = await _loginService.LoginWithFacebook(fbToken);
+                var auth = await _loginService.LoginWithFacebook(data.Token);
 
                 return RefreshTokenResponseData.Success(
                     access: GenerateJwtAccessToken(auth.User, AuthenticationMethod.Facebook),

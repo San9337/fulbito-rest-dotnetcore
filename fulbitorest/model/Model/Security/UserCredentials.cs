@@ -1,4 +1,5 @@
-﻿using model.Interfaces;
+﻿using model.Enums;
+using model.Interfaces;
 using model.Model;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -17,7 +18,8 @@ namespace model.Model.Security
 
         public string Email { get; set; }
         public string HashedPassword { get; set; }
-        public virtual User User { get; set; } 
+        public virtual User User { get; set; }
+        public AuthenticationMethod AuthMethod { get; set; }
 
         public UserCredentials()
         {
@@ -29,6 +31,14 @@ namespace model.Model.Security
 
             if(!string.IsNullOrEmpty(password))
                 HashedPassword = GetHash(password);
+
+            AuthMethod = AuthenticationMethod.Fulbito;
+        }
+        public UserCredentials(string email)
+        {
+            Email = email;
+            HashedPassword = null;
+            AuthMethod = AuthenticationMethod.Facebook;
         }
 
         public bool AreCredentialsValid(string email, string password)
@@ -41,7 +51,7 @@ namespace model.Model.Security
             if (!IsValidField(this.Email))
                 return new ValidationResult("Mail is required");
 
-            if (HashedPassword == null)
+            if (AuthMethod == AuthenticationMethod.Fulbito && HashedPassword == null)
                 return new ValidationResult("Password is required");
 
             return ValidationResult.Success;

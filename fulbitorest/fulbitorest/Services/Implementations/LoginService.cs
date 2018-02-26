@@ -53,7 +53,8 @@ namespace FulbitoRest.Services
 
         internal async Task<AuthContext> LoginWithFacebook(string fbToken)
         {
-            var path = "https://graph.facebook.com/me?access_token=" + fbToken;
+            //$fields = 'id,email,first_name,last_name,link,name';
+            var path = "https://graph.facebook.com/me?access_token=" + fbToken + "&fields=email,name,first_name,last_name";
             var uri = new Uri(path);
 
             var client = new HttpClient();
@@ -68,6 +69,16 @@ namespace FulbitoRest.Services
             var fbUser = JsonConvert.DeserializeObject<FacebookUserViewModel>(content);
 
             var email = fbUser.Email;
+            if (email == null)
+                throw new FulbitoException("Facebook didnt send the user's email");
+
+            if (!_userRepository.AlreadyExists(email))
+            {
+                var newUser = new User(new UserCredentials(email));
+                newUser.Name = fbUser.Username;
+                _userRepository.Add(newUser);
+            }
+
             var user = _userRepository.GetByEmail(email);
 
             return ResetToken(user, AuthenticationMethod.Facebook);
@@ -113,7 +124,7 @@ namespace FulbitoRest.Services
         public string FirstName { get; set; }
         [JsonProperty("last_name")]
         public string LastName { get; set; }
-        [JsonProperty("username")]
+        [JsonProperty("name")]
         public string Username { get; set; }
         [JsonProperty("email")]
         public string Email { get; set; }
