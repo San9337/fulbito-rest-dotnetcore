@@ -23,13 +23,11 @@ namespace apidata.DataContracts
         [DataMember(Name = "urlProfilePicture")]
         public string ProfilePictureUrl { get; set; }
 
-        [DataMember(Name = "teamFan")]
-        public string RealTeamName { get; set; }
         [DataMember(Name = "teamId")]
-        public int RealTeamId { get; set; }
+        public int? RealTeamId { get; set; }
 
         [DataMember(Name = "foot")]
-        public int SkilledFootId { get; set; }
+        public FootData Foot { get; set; }
 
         [DataMember(Name = "country")]
         public string CountryName { get; set; }

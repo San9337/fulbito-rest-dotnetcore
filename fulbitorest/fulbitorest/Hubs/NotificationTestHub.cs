@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace FulbitoRest.Hubs
 {
+    /// <summary>
+    /// For testing notifications
+    /// </summary>
     public class NotificationTestHub : Hub
     {
         private readonly ICustomLogger _logger;

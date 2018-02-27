@@ -2,12 +2,17 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace FulbitoRest.Configuration
 {
+    /// <summary>
+    /// Configures the JWT authentication, setting it as the default schema
+    /// </summary>
     public static class FulbitoJsonWebTokensExtension
     {
         public static void AddFulbitoAuthentication(this IServiceCollection services, IConfiguration configuration)
@@ -29,9 +34,9 @@ namespace FulbitoRest.Configuration
 
                     jwtOptions.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidIssuer = configuration["JwtIssuer"], //appsettings.json
-                        ValidAudience = configuration["JwtIssuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtKey"])),
+                        ValidIssuer = configuration["Jwt:Issuer"], //appsettings.json
+                        ValidAudience = configuration["Jwt:Issuer"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"])),
                         ClockSkew = TimeSpan.Zero, // remove delay of token when expire
                         
                     };

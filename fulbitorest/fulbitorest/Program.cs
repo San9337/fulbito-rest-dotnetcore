@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -12,17 +7,28 @@ using System.Net;
 using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("fulbitorest.tests")]
 
+//TODO: leer esto https://wildermuth.com/2017/07/06/Program-cs-in-ASP-NET-Core-2-0
 namespace Fulbito_Rest
 {
-    //TODO: leer esto https://wildermuth.com/2017/07/06/Program-cs-in-ASP-NET-Core-2-0
-    //https://exceptionnotfound.net/working-with-environments-and-launch-settings-in-asp-net-core/
+    /// <summary>
+    /// 
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
             BuildWebHost(args).Run();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()

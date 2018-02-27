@@ -14,6 +14,9 @@ using System.Linq;
 
 namespace FulbitoRest.Configuration
 {
+    /// <summary>
+    /// Registers all injected dependencies
+    /// </summary>
     public static class FulbitoDependencyInyectionExtension
     {
         public static void AddDiServices(this IServiceCollection services)

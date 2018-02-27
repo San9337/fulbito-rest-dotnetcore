@@ -4,10 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net;
 using System.Net.Http;
+using model.Enums;
 
 namespace FulbitoRest.Controllers
 {
-
+    /// <summary>
+    /// For testing stuff
+    /// </summary>
     [Produces("application/json")]
     [Route("api/test")]
     public class TestController : BaseController

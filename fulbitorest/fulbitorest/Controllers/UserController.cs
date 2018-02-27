@@ -9,9 +9,12 @@ using model.Utils;
 
 namespace fulbitorest.Controllers
 {
+    /// <summary>
+    /// User = Player
+    /// </summary>
     [Produces("application/json")]
     [Route("api/user")]
-    [Authorize]
+    //[Authorize]
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;

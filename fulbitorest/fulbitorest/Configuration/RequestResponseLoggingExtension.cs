@@ -19,6 +19,9 @@ namespace FulbitoRest.Configuration
         }
     }
 
+    /// <summary>
+    /// Intercepts requests and logs them
+    /// </summary>
     public class RequestResponseLoggingMiddleware
     {
         private readonly RequestDelegate _next;

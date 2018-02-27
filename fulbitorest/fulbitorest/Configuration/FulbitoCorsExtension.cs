@@ -2,6 +2,9 @@
 
 namespace FulbitoRest.Configuration
 {
+    /// <summary>
+    /// Definition for the CORS configuration (enabled policies)
+    /// </summary>
     public static class FulbitoCorsExtension
     {
         public const string AllowAllPolicy = "AllowAll";

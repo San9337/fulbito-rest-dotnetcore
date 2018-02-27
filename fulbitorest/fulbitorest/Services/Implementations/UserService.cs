@@ -29,12 +29,11 @@ namespace FulbitoRest.Services
             user.Age = data.Age;
             user.Gender = (Gender)data.GenderId;
             user.ProfilePictureUrl = data.ProfilePictureUrl;
-            user.SkilledFoot = (Foot)data.SkilledFootId;
+            user.SkilledFoot = (Foot)data.Foot.Id;
 
-            if (!string.IsNullOrEmpty(data.RealTeamName))
+            if (data.RealTeamId != null)
             {
-                var teamData = data.RealTeamName.Split(" - ");
-                var team = _teamRepository.Get(teamData[0], teamData[1]);
+                var team = _teamRepository.Get(data.RealTeamId ?? 0);
                 user.RealTeam = team;
             }
 

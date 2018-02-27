@@ -57,7 +57,7 @@ namespace apidata.tests.Mapping
         {
             foreach(var property in typeof(T).GetProperties())
             {
-                Assert.IsNotNull(property.GetValue(result));
+                Assert.IsNotNull(property.GetValue(result), property.Name +" of type " + property.PropertyType.Name);
             }
         }
     }

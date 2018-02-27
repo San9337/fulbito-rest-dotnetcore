@@ -19,12 +19,15 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
+//https://github.com/blowdart/AspNetAuthorizationWorkshop <-----Check for setting up roles and policies
+//http://www.c-sharpcorner.com/article/handle-refresh-token-using-asp-net-core-2-0-and-json-web-token/ <-----jwt tokens standards
 namespace fulbitorest.Controllers
 {
+    /// <summary>
+    /// All security related endpoints go here
+    /// </summary>
     [Produces("application/json")]
     [Route("api/account")]
-    //https://github.com/blowdart/AspNetAuthorizationWorkshop <-----Check for middleware implementation
-    //http://www.c-sharpcorner.com/article/handle-refresh-token-using-asp-net-core-2-0-and-json-web-token/ <-----tokens
     public class AccountController : BaseController
     {
         private readonly LoginService _loginService;
@@ -121,11 +124,11 @@ namespace fulbitorest.Controllers
             var fulbitoClaims = FulbitoClaims.CreateClaims(user, method);
 
             var token = new JwtSecurityToken(
-                _configuration["JwtIssuer"],
-                _configuration["JwtIssuer"],
+                _configuration["Jwt:Issuer"],
+                _configuration["Jwt:Issuer"],
                 fulbitoClaims,
-                expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["JwtExpireMinutes"])),
-                signingCredentials: ContentSecurityHelper.GetSigninCredentials(_configuration["JwtKey"])
+                expires: DateTime.Now.AddMinutes(Convert.ToDouble(_configuration["Jwt:ExpireMinutes"])),
+                signingCredentials: ContentSecurityHelper.GetSigninCredentials(_configuration["Jwt:Key"])
             );
 
             SignInAsync(fulbitoClaims);
@@ -144,7 +147,7 @@ namespace fulbitorest.Controllers
 
         private string GenerateSignedJwtRefreshToken(AuthContext authContext)
         {
-            var key = _configuration["JwtRefreshKey"];
+            var key = _configuration["Jwt:RefreshKey"];
             var refreshToken = authContext.RefreshToken;
 
             return _tokenParser.FormatToken(refreshToken, key);
@@ -152,7 +155,7 @@ namespace fulbitorest.Controllers
 
         private string ValidateAndRetrieveRefreshToken(string tokenWithSignature)
         {
-            var key = _configuration["JwtRefreshKey"];
+            var key = _configuration["Jwt:RefreshKey"];
 
             return _tokenParser.ValidateAndRetrieve(tokenWithSignature, key);
         }
