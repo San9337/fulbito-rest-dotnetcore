@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.IO;
 
 namespace Fulbito_Rest
 {
@@ -39,7 +40,7 @@ namespace Fulbito_Rest
                     Version = "v1",
                     Description = "TFS: https://fulbito.visualstudio.com"
                 });
-                options.IncludeXmlComments(string.Format(@"{0}\FulbitoRest.xml", System.AppDomain.CurrentDomain.BaseDirectory));
+                options.IncludeXmlComments(Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "FulbitoRest.xml"));
             });
 
             services.AddDiServices();
