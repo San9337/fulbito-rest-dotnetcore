@@ -6,6 +6,10 @@
     <RootNamespace>FulbitoRest</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\netcoreapp2.0\FulbitoRest.xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Repositories\FulbitoContextFactory.cs" />
     <Compile Remove="Repositories\MySqlRepository.cs" />

@@ -61,13 +61,16 @@ namespace fulbitorest.Controllers
             return user.Map();
         }
 
+        /// <param name="id">User id</param>
+        /// <param name="types">Comma separated types</param>
         [HttpGet]
-        [Route("gender/{id:int}")]
-        public string GetGender(int id)
+        [Route("{id:int}/stats")]
+        public UserStatsData UserStats(int id, string types)
         {
-            var user = _userRepository.Get(id);
-            return user.Gender.GetDescription();
+            return new UserStatsData()
+            {
+                GamesPlayed = 0,
+            };
         }
-
     }
 }
