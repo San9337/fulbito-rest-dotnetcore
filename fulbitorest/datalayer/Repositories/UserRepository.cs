@@ -26,6 +26,7 @@ namespace datalayer.Repositories
                 .Include(u => u.Country)
                 .Include(u => u.State)
                 .Include(u => u.City)
+                .Include(u => u.RealTeam)
                 .FirstOrDefault();
 
             if (user == null)
