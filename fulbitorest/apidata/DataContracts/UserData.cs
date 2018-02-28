@@ -18,13 +18,13 @@ namespace apidata.DataContracts
         public int Age { get; set; }
 
         [DataMember(Name = "gender")]
-        public int GenderId { get; set; }
+        public GenderData Gender { get; set; }
 
         [DataMember(Name = "urlProfilePicture")]
         public string ProfilePictureUrl { get; set; }
 
-        [DataMember(Name = "teamId")]
-        public int? RealTeamId { get; set; }
+        [DataMember(Name = "teamFanId")]
+        public int? TeamFanId { get; set; }
 
         [DataMember(Name = "foot")]
         public FootData Foot { get; set; }

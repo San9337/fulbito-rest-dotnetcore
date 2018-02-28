@@ -31,8 +31,7 @@ namespace apidata.tests.Mapping
         public void TeamMapping()
         {
             var team = TeamFactory.Get();
-            AssertIdMapped(team.Map());
-            AssertDescriptionMapped(team.Map());
+            Assert.IsNotNull(team.Map());
         }
 
         [TestMethod]

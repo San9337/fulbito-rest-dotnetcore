@@ -17,8 +17,9 @@ namespace apidata.Mapping
             data.StateName = user.State?.Name;
             data.CityName = user.City?.Name;
 
-            data.RealTeamId = user.RealTeam?.Id;
+            data.TeamFanId = user.RealTeam?.Id;
             data.Foot = user.SkilledFoot.Map();
+            data.Gender = user.Gender.Map();
 
             return data;
         }

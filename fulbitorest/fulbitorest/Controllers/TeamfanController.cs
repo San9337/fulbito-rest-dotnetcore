@@ -1,25 +1,23 @@
-﻿using System;
+﻿using apidata.DataContracts;
+using apidata.Mapping;
+using datalayer.Contracts.Repositories;
+using FulbitoRest.Controllers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using FulbitoRest.Controllers;
-using Microsoft.AspNetCore.Authorization;
-using datalayer.Contracts.Repositories;
-using apidata.Mapping;
-using apidata.DataContracts;
 
 namespace fulbitorest.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Team")]
+    [Route("api/teamfan")]
     [Authorize]
-    public class TeamController : BaseController
+    public class TeamfanController : BaseController
     {
         private readonly ITeamRepository _teamRepository;
 
-        public TeamController(ITeamRepository teamRepository)
+        public TeamfanController(ITeamRepository teamRepository)
         {
             _teamRepository = teamRepository;
         }
@@ -35,6 +33,15 @@ namespace fulbitorest.Controllers
         {
             var team = _teamRepository.Get(id);
             return team.Map();
+        }
+
+        [HttpGet]
+        [Route("")]
+        public async Task<List<TeamData>> Search(string searchQuery)
+        {
+            var results = await _teamRepository.GetMatchingTeams(searchQuery);
+
+            return results.Select(t => t.Map()).ToList();
         }
     }
 }

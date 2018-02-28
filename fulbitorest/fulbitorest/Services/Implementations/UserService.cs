@@ -27,13 +27,13 @@ namespace FulbitoRest.Services
             var user = _userRepository.Get(id);
 
             user.Age = data.Age;
-            user.Gender = (Gender)data.GenderId;
+            user.Gender = (Gender)data.Gender.Id;
             user.ProfilePictureUrl = data.ProfilePictureUrl;
             user.SkilledFoot = (Foot)data.Foot.Id;
 
-            if (data.RealTeamId != null)
+            if (data.TeamFanId != null)
             {
-                var team = _teamRepository.Get(data.RealTeamId ?? 0);
+                var team = _teamRepository.Get(data.TeamFanId ?? 0);
                 user.RealTeam = team;
             }
 

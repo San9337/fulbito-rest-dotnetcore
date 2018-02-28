@@ -46,14 +46,5 @@ namespace fulbitorest.Controllers
             };
             return result;
         }
-
-        [HttpGet]
-        [Route("teamfan")]
-        public async Task<List<TeamData>> GetTeam(string searchQuery)
-        {
-            var results = await _teamRepository.GetMatchingTeams(searchQuery);
-
-            return results.Select(t => t.Map()).ToList();
-        }
     }
 }
