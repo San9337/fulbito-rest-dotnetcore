@@ -14,7 +14,7 @@ namespace fulbitorest.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/user")]
-    //[Authorize]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
