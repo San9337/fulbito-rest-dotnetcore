@@ -13,6 +13,5 @@ namespace model.Enums
         Male = 1,
         [Description("USER_GENDER_FEMALE")]
         Female = 2,
-        
     }
 }

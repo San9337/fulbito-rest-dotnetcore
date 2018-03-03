@@ -10,6 +10,8 @@ namespace model.Enums
         [Description("normal")]
         Fulbito,
         [Description("facebook")]
-        Facebook
+        Facebook,
+        [Description("google")]
+        Google
     }
 }
