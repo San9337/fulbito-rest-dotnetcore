@@ -7,8 +7,10 @@
 
   <ItemGroup>
     <Compile Remove="Contracts\IEntity.cs" />
+    <Compile Remove="Contracts\Repositories\ITeamRepository.cs" />
     <Compile Remove="Contracts\Repositories\ITokenRepository.cs" />
     <Compile Remove="Contracts\Repositories\UserRepository.cs" />
+    <Compile Remove="Repositories\TeamRepository.cs" />
     <Compile Remove="Repositories\TokenRepository.cs" />
   </ItemGroup>
 

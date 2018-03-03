@@ -41,7 +41,7 @@ namespace FulbitoRest.Configuration
             //services.RegisterTypesByInterfaceConvention("fulbitorest", "IService");
 
             services.AddScoped<LoginService>();
-            services.AddScoped<LocationService>();
+            services.AddScoped<ILocationService,LocationService>();
             services.AddScoped<IUserService,UserService>();
         }
 

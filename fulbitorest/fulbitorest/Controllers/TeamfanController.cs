@@ -15,9 +15,9 @@ namespace fulbitorest.Controllers
     [Authorize]
     public class TeamfanController : BaseController
     {
-        private readonly ITeamRepository _teamRepository;
+        private readonly IProfessionalTeamRepository _teamRepository;
 
-        public TeamfanController(ITeamRepository teamRepository)
+        public TeamfanController(IProfessionalTeamRepository teamRepository)
         {
             _teamRepository = teamRepository;
         }

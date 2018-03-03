@@ -2,11 +2,9 @@
 using apidata.Mapping;
 using apidata.Utils;
 using datalayer.Contracts.Repositories;
-using FulbitoRest.Services;
 using FulbitoRest.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using model.Utils;
 
 namespace fulbitorest.Controllers
 {
@@ -15,7 +13,7 @@ namespace fulbitorest.Controllers
     /// </summary>
     [Produces("application/json")]
     [Route("api/user")]
-    //[Authorize]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;

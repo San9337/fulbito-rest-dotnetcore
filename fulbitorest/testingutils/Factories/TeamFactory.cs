@@ -7,13 +7,14 @@ namespace testingutils.Factories
 {
     public static class TeamFactory
     {
-        public static Team Get()
+        public static ProfessionalTeam Get()
         {
-            return new Team()
+            return new ProfessionalTeam()
             {
                 CountryName = "Argentina",
                 Id = 1,
-                Name = "San Lorenzo"
+                Name = "San Lorenzo",
+                LogoUrl = "logoUrl"
             };
         }
     }

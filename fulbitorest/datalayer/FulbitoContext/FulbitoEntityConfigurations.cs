@@ -14,7 +14,7 @@ namespace datalayer.FulbitoContext
             modelBuilder.Entity<UserCredentials>().HasIndex(uc => uc.Email);
             modelBuilder.Entity<User>().HasIndex(u => u.Id);
 
-            modelBuilder.Entity<Team>().HasIndex(u => new { u.Name, u.CountryName });
+            modelBuilder.Entity<ProfessionalTeam>().HasIndex(u => new { u.Name, u.CountryName });
 
             modelBuilder.Entity<AuthContext>().HasIndex(c => c.RefreshToken);
         }

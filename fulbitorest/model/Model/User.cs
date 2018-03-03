@@ -28,7 +28,7 @@ namespace model.Model
         public virtual UserCredentials Credentials { get; set; }
         public string Email => Credentials.Email;
 
-        public virtual Team RealTeam { get; set; }
+        public virtual ProfessionalTeam RealTeam { get; set; }
 
         public virtual Country Country { get; set; }
         public virtual State State { get; set; }

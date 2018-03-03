@@ -14,28 +14,28 @@ namespace apidata.tests.Mapping
 
 
         [TestMethod]
-        public void FootMapping()
+        public void Map_Foot()
         {
             AssertIdMapped(Foot.Both.Map());
             AssertDescriptionMapped(Foot.Both.Map());
         }
 
         [TestMethod]
-        public void GenderMapping()
+        public void Map_Gender()
         {
             AssertIdMapped(Gender.Male.Map());
             AssertDescriptionMapped(Gender.Female.Map());
         }
 
         [TestMethod]
-        public void TeamMapping()
+        public void Map_Team()
         {
             var team = TeamFactory.Get();
-            Assert.IsNotNull(team.Map());
+            AssertNoNulls(team.Map());
         }
 
         [TestMethod]
-        public void UserMapping()
+        public void Map_User()
         {
             var user = UserFactory.Get();
             AssertNoNulls(user.Map());

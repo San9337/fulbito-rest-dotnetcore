@@ -11,6 +11,7 @@ using apidata.DataContracts;
 using testingutils.Givens;
 using model.Model;
 using Moq;
+using apidata.Mapping;
 
 namespace fulbitorest.tests.Controllers
 {
@@ -28,7 +29,5 @@ namespace fulbitorest.tests.Controllers
             _userService = UserServiceMockProvider.Get();
             _sut = new UserController(_userRepo.Object, _userService.Object);
         }
-
-        
     }
 }

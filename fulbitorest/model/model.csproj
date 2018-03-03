@@ -11,6 +11,7 @@
     <Compile Remove="Model\Player.cs" />
     <Compile Remove="Model\RealTeam.cs" />
     <Compile Remove="Model\Security\Token.cs" />
+    <Compile Remove="Model\TeamFan.cs" />
   </ItemGroup>
 
 </Project>

@@ -8,14 +8,9 @@ namespace apidata.Mapping
 {
     public static class TeamMapping
     {
-        public static TeamData Map(this Team team)
+        public static TeamData Map(this ProfessionalTeam team)
         {
-            return new TeamData()
-            {
-                Id = team.Id,
-                Name = team.Name,
-                CountryName = team.CountryName
-            };
+            return team.MapTo<TeamData>();
         }
     }
 }

@@ -16,9 +16,9 @@ namespace fulbitorest.Controllers
     [Authorize]
     public class DataController : Controller
     {
-        private readonly ITeamRepository _teamRepository;
+        private readonly IProfessionalTeamRepository _teamRepository;
 
-        public DataController(ITeamRepository teamRepo)
+        public DataController(IProfessionalTeamRepository teamRepo)
         {
             _teamRepository = teamRepo;
         }

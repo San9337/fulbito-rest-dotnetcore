@@ -14,5 +14,7 @@ namespace apidata.DataContracts
         public string Name { get; set; }
         [DataMember(Name="countryname")]
         public string CountryName { get; set; }
+        [DataMember(Name = "logourl")]
+        public string LogoUrl { get; set; }
     }
 }

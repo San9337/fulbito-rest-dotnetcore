@@ -1,4 +1,5 @@
 ﻿using datalayer.Contracts.Repositories;
+using FulbitoRest.Services.Contracts;
 using model.Business;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FulbitoRest.Services
 {
-    public class LocationService : IService
+    public class LocationService : ILocationService
     {
         private readonly ILocationRepository _locationRepository;
 
