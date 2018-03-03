@@ -24,7 +24,7 @@ namespace FulbitoRest.Services
             _locationService = locationService;
         }
 
-        public User Update(int id, UserData data)
+        public User Update(int id, EditProfileData data)
         {
             var user = _userRepository.Get(id);
 
@@ -37,15 +37,14 @@ namespace FulbitoRest.Services
             return user;
         }
 
-        private static void UpdateBasicData(UserData data, User user)
+        private static void UpdateBasicData(EditProfileData data, User user)
         {
             user.BirthDate = DataStandards.FormatDate(data.BirthDate);
             user.Gender = (Gender)data.Gender.Id;
-            user.ProfilePictureUrl = data.ProfilePictureUrl;
             user.SkilledFoot = (Foot)data.Foot.Id;
         }
 
-        private void UpdateLocation(UserData data, User user)
+        private void UpdateLocation(EditProfileData data, User user)
         {
             var location = _locationService.GetOrCreate(data.CountryName, data.StateName, data.CityName);
             user.SetLocation(location);
@@ -58,6 +57,13 @@ namespace FulbitoRest.Services
                             _teamRepository.GetDefaultValue();
 
             user.RealTeam = team;
+        }
+
+        public void UpdateProfilePicture(int id, string profilePictureUrl)
+        {
+            var user = _userRepository.Get(id);
+            user.ProfilePictureUrl = profilePictureUrl;
+            _userRepository.Save(user);
         }
     }
 }

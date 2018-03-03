@@ -15,5 +15,15 @@ namespace apidata.Utils
             if (body == null)
                 throw new ConfigurationException("Couldnt parse "+typeof(TData).Name+" from body: null");
         }
+
+        public static void ValidateBodyNotNulls<TData>(this TData body)
+        {
+            body.ValidateBody();
+            foreach(var prop in typeof(TData).GetProperties())
+            {
+                if (prop.GetValue(body) == null)
+                    throw new UnexpectedInputException("Nulls are not allowed in this methods body");
+            }
+        }
     }
 }

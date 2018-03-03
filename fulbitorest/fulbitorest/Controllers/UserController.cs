@@ -2,9 +2,11 @@
 using apidata.Mapping;
 using apidata.Utils;
 using datalayer.Contracts.Repositories;
+using FulbitoRest.Controllers;
 using FulbitoRest.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http;
 
 namespace fulbitorest.Controllers
 {
@@ -14,7 +16,7 @@ namespace fulbitorest.Controllers
     [Produces("application/json")]
     [Route("api/user")]
     [Authorize]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserService _userService;
@@ -47,20 +49,36 @@ namespace fulbitorest.Controllers
 
         [HttpPost]
         [Route("{id:int}")]
-        public UserData Post(int id, [FromBody]UserData data)
+        public UserData Post(int id, [FromBody]EditProfileData data)
         {
             return Put(id, data);
         }
 
         [HttpPut]
         [Route("{id:int}")]
-        public UserData Put(int id, [FromBody]UserData data)
+        public UserData Put(int id, [FromBody]EditProfileData data)
         {
             data.ValidateBody();
 
             var user = _userService.Update(id,data);
 
             return user.Map();
+        }
+
+        [HttpPut]
+        [Route("{id:int}/profilePicture")]
+        public HttpResponseMessage PutProfilePicture(int id, [FromBody]ProfilePictureData data)
+        {
+            data.ValidateBodyNotNulls();
+            _userService.UpdateProfilePicture(id, data.ProfilePictureUrl);
+
+            var response = new HttpResponseMessage()
+            {
+                StatusCode = System.Net.HttpStatusCode.RedirectMethod,
+            };
+            response.Headers.Add("location", "api/user/" + id);
+
+            return response;
         }
 
         /// <param name="id">User id</param>

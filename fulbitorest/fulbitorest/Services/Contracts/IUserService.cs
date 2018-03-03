@@ -9,6 +9,7 @@ namespace FulbitoRest.Services.Contracts
 {
     public interface IUserService : IService
     {
-        User Update(int id, UserData data);
+        User Update(int id, EditProfileData data);
+        void UpdateProfilePicture(int id, string profilePictureUrl);
     }
 }

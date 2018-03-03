@@ -5,6 +5,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 using model.Enums;
+using model.Exceptions;
 
 namespace FulbitoRest.Controllers
 {
@@ -105,13 +106,21 @@ namespace FulbitoRest.Controllers
         {
             return View("Index");
         }
+
+        [HttpGet]
+        [Route("httpreq")]
+        public async void DoHttpRequest()
+        {
+            var client = new HttpClient();
+            var response = await client.GetAsync(new Uri("https://www.facebook.com/"));
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var contentError = await response.Content.ReadAsStringAsync();
+                throw new FulbitoException(contentError);
+            }
+        }
     }
 }
 
 
-
-
-
-//Popular tablas equipos de futbol
-//Investigar refresh tokens
-//Login facebook
