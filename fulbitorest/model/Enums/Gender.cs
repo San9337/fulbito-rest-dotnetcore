@@ -7,7 +7,7 @@ namespace model.Enums
 {
     public enum Gender
     {
-        [Description("USER_GENDER_OTHER")]
+        [Description("USER_GENDER_UNDEFINED")]
         Undefined = 0,
         [Description("USER_GENDER_MALE")]
         Male = 1,
