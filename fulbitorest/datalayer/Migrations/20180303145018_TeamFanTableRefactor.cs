@@ -24,8 +24,8 @@ namespace datalayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     CountryName = table.Column<string>(nullable: true),
-                    LogoUrl = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    LogoUrl = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -45,7 +45,7 @@ namespace datalayer.Migrations
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
-            migrationBuilder.Sql("INSERT INTO professionalteams VALUES(1,'" + ProfessionalTeam.UNDEFINED_NAME + "','" + Country.UNDEFINED_NAME + "','" + ProfessionalTeam.UNDEFINED_LOGO + "')");
+            migrationBuilder.Sql("INSERT INTO professionalteams VALUES(1,'" + Country.UNDEFINED_NAME + "','" + ProfessionalTeam.UNDEFINED_NAME + "','" + ProfessionalTeam.UNDEFINED_LOGO + "')");
 
             migrationBuilder.Sql(@"
 INSERT INTO `professionalteams` VALUES ('2', 'Argentina', 'Argentino Juniors',null);

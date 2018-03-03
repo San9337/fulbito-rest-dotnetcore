@@ -15,9 +15,9 @@ namespace FulbitoRest.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IProfessionalTeamRepository _teamRepository;
-        private readonly LocationService _locationService;
+        private readonly ILocationService _locationService;
 
-        public UserService(IUserRepository userRepository, IProfessionalTeamRepository teamRepository, LocationService locationService)
+        public UserService(IUserRepository userRepository, IProfessionalTeamRepository teamRepository, ILocationService locationService)
         {
             _userRepository = userRepository;
             _teamRepository = teamRepository;
