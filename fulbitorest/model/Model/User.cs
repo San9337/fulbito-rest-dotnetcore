@@ -19,9 +19,9 @@ namespace model.Model
         public string Name { get; set; }
         public string LastName { get; set; }
         public string NickName { get; set; }
-        public int Age { get; set; }
         public string ProfilePictureUrl { get; set; }
 
+        public DateTime BirthDate { get; set; }
         public Foot SkilledFoot { get; set; }
         public Gender Gender { get; set; }
 

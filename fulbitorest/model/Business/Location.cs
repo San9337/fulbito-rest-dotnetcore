@@ -1,4 +1,5 @@
-﻿using model.Model;
+﻿using model.Exceptions;
+using model.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,8 +12,17 @@ namespace model.Business
     /// </summary>
     public class Location
     {
+        public static Location NonExistent => new Location();
+
+        protected Location()
+        {
+        }
+
         public Location(string country, string state, string city)
         {
+            if (country == null || state == null || city == null)
+                throw new DevException("Locations can't have undefined attributes");
+
             CountryName = country;
             StateName = state;
             CityName = city;

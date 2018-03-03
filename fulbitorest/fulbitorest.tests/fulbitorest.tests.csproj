@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\fulbitorest\fulbitorest.csproj" />
+    <ProjectReference Include="..\testingutils\testingutils.csproj" />
   </ItemGroup>
 
 </Project>

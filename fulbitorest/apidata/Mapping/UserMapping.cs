@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using apidata.Mapping;
+using apidata.Utils;
 
 namespace apidata.Mapping
 {
@@ -20,6 +21,8 @@ namespace apidata.Mapping
             data.TeamFanId = user.RealTeam?.Id;
             data.Foot = user.SkilledFoot.Map();
             data.Gender = user.Gender.Map();
+
+            data.BirthDate = DataStandards.FormatDate(user.BirthDate);
 
             return data;
         }

@@ -11,6 +11,7 @@ using model.Model;
 using model.Model.Security;
 using System.Reflection;
 using System.Linq;
+using FulbitoRest.Services.Contracts;
 
 namespace FulbitoRest.Configuration
 {
@@ -41,7 +42,7 @@ namespace FulbitoRest.Configuration
 
             services.AddScoped<LoginService>();
             services.AddScoped<LocationService>();
-            services.AddScoped<UserService>();
+            services.AddScoped<IUserService,UserService>();
         }
 
         private static void RegisterTypesByInterfaceConvention(this IServiceCollection services, string assemblyname, string baseInterface)

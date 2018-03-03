@@ -5,7 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\datalayer\datalayer.csproj" />
+    <ProjectReference Include="..\fulbitorest\fulbitorest.csproj" />
     <ProjectReference Include="..\model\model.csproj" />
+    <PackageReference Include="Moq" Version="4.8.2" />
   </ItemGroup>
 
 </Project>

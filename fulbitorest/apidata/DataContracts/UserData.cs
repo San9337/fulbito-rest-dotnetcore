@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace apidata.DataContracts
 {
@@ -14,8 +15,8 @@ namespace apidata.DataContracts
         [DataMember(Name = "nickName")]
         public string NickName { get; set; }
 
-        [DataMember(Name = "age")]
-        public int Age { get; set; }
+        [DataMember(Name = "birthdate")]
+        public string BirthDate { get; set; }
 
         [DataMember(Name = "gender")]
         public GenderData Gender { get; set; }
@@ -35,6 +36,5 @@ namespace apidata.DataContracts
         public string StateName { get; set; }
         [DataMember(Name = "city")]
         public string CityName { get; set; }
-        
     }
 }

@@ -6,10 +6,12 @@ using apidata.DataContracts;
 using model.Model;
 using datalayer.Contracts.Repositories;
 using model.Enums;
+using FulbitoRest.Services.Contracts;
+using apidata.Utils;
 
 namespace FulbitoRest.Services
 {
-    public class UserService : IService
+    public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
         private readonly ITeamRepository _teamRepository;
@@ -22,11 +24,11 @@ namespace FulbitoRest.Services
             _locationService = locationService;
         }
 
-        internal User Update(int id, UserData data)
+        public User Update(int id, UserData data)
         {
             var user = _userRepository.Get(id);
 
-            user.Age = data.Age;
+            user.BirthDate = DataStandards.FormatDate(data.BirthDate);
             user.Gender = (Gender)data.Gender.Id;
             user.ProfilePictureUrl = data.ProfilePictureUrl;
             user.SkilledFoot = (Foot)data.Foot.Id;

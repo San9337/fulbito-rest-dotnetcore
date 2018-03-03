@@ -12,7 +12,7 @@ namespace testingutils.Factories
         {
             return new User()
             {
-                Age = 24,
+                BirthDate = DateTime.Now.AddYears(-24),
                 City = LocationFactory.GetCity(),
                 Country = LocationFactory.GetCountry(),
                 Credentials = new UserCredentials("Santiago","pass","san@san"),

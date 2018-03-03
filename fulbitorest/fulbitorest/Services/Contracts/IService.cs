@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FulbitoRest.Services
 {
-    public class IService
+    public interface IService
     {
     }
 }

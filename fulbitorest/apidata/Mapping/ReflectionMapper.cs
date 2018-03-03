@@ -21,9 +21,11 @@ namespace apidata.Mapping
                 var toProp = toProperties.FirstOrDefault(p => p.Name == fromProp.Name);
                 if(toProp != null)
                 {
+                    //Matching types
                     if(fromProp.PropertyType == toProp.PropertyType)
                         toProp.SetValue(to, fromProp.GetValue(from));
-                    else if(toProp.PropertyType == typeof(string) && fromProp != null)
+                    //Anything to a string
+                    else if(toProp.PropertyType == typeof(string) && fromProp != null && fromProp.PropertyType!=typeof(DateTime))
                         toProp.SetValue(to, fromProp.GetValue(from).ToString());
                 }
             }
