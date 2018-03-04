@@ -27,16 +27,5 @@ namespace fulbitorest.tests.Services
             _teamRepo = ProfessionalTeamRepositoryMockProvider.Get();
             _sut = new UserService(_userRepo.Object, _teamRepo.Object, _locationServ);
         }
-
-        [TestMethod]
-        public void GivenNullTeam_SetsDefaultTeamToUser()
-        {
-            var updatedUser = UserFactory.Get();
-
-            _sut.UpdateTeam(null, updatedUser);
-
-            _teamRepo.Verify(tr => tr.GetDefaultValue(), Times.Once);
-            Assert.AreEqual(updatedUser.RealTeam.FormattedName, ProfessionalTeam.UNDEFINED.FormattedName);
-        }
     }
 }

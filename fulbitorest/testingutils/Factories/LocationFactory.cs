@@ -11,7 +11,7 @@ namespace testingutils.Factories
         public static Location Get()
         {
             var location = new Location("Argentina","Buenos Aires","Atte Brown"); 
-            location.CompleteLocation(GetCountry(), GetState(), GetCity());
+            location.CompleteLocation(GetCity());
             return location;
         }
 

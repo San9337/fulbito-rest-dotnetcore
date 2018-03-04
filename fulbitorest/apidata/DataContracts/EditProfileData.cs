@@ -21,7 +21,7 @@ namespace apidata.DataContracts
         public GenderData Gender { get; set; }
 
         [DataMember(Name = "teamFanId")]
-        public int? TeamFanId { get; set; }
+        public int TeamFanId { get; set; }
 
         [DataMember(Name = "foot")]
         public FootData Foot { get; set; }

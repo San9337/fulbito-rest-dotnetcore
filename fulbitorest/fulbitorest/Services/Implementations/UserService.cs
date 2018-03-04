@@ -42,6 +42,7 @@ namespace FulbitoRest.Services
             user.BirthDate = DataStandards.FormatDate(data.BirthDate);
             user.Gender = (Gender)data.Gender.Id;
             user.SkilledFoot = (Foot)data.Foot.Id;
+            user.NickName = data.NickName;
         }
 
         private void UpdateLocation(EditProfileData data, User user)
@@ -50,13 +51,12 @@ namespace FulbitoRest.Services
             user.SetLocation(location);
         }
 
-        internal void UpdateTeam(int? teamFanId, User user)
+        internal void UpdateTeam(int teamFanId, User user)
         {
-            var team = teamFanId != null ?
-                            _teamRepository.Get(teamFanId ?? 0) :
-                            _teamRepository.GetDefaultValue();
-
-            user.RealTeam = team;
+            if(teamFanId != user.RealTeamId)
+            {
+                user.RealTeam = _teamRepository.Get(teamFanId);
+            }
         }
 
         public void UpdateProfilePicture(int id, string profilePictureUrl)

@@ -22,7 +22,7 @@ namespace datalayer.Repositories
             var state = GetOrStateCreate(newLocation.StateName, country);
             var city = GetOrCreateCity(newLocation.CityName, state, country);
 
-            newLocation.CompleteLocation(country, state, city);
+            newLocation.CompleteLocation(city);
 
             return newLocation;
         }
@@ -73,6 +73,17 @@ namespace datalayer.Repositories
             }
 
             return city;
+        }
+
+        public Location GetDefaultValue()
+        {
+            var defaultCity = FulbitoContext.Cities
+                .Where(c => c.Id == Location.UNDEFINED.City.Id)
+                .Include(c => c.State)
+                .Include(c => c.State.Country)
+                .First();
+
+            return new Location(defaultCity);
         }
     }
 }

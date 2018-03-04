@@ -7,6 +7,10 @@ using FulbitoRest.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
+using System;
+using System.Linq;
+using FulbitoRest.Technical.Security;
+using System.Security;
 
 namespace fulbitorest.Controllers
 {
@@ -22,13 +26,13 @@ namespace fulbitorest.Controllers
         private readonly IUserService _userService;
 
         public UserController(
-            IUserRepository userRepo, 
+            IUserRepository userRepo,
             IUserService userService)
         {
             _userRepository = userRepo;
             _userService = userService;
         }
-        
+
         [HttpGet]
         [Route("{id:int}")]
         public UserData Get(int id)
@@ -42,16 +46,10 @@ namespace fulbitorest.Controllers
         [Route("{id:int}")]
         public string Delete(int id)
         {
+            ValidateUserIsUsingHisEndpoint(id);
             _userRepository.Delete(id);
 
             return "user deleted";
-        }
-
-        [HttpPost]
-        [Route("{id:int}")]
-        public UserData Post(int id, [FromBody]EditProfileData data)
-        {
-            return Put(id, data);
         }
 
         [HttpPut]
@@ -59,8 +57,9 @@ namespace fulbitorest.Controllers
         public UserData Put(int id, [FromBody]EditProfileData data)
         {
             data.ValidateBody();
+            ValidateUserIsUsingHisEndpoint(id);
 
-            var user = _userService.Update(id,data);
+            var user = _userService.Update(id, data);
 
             return user.Map();
         }
@@ -70,6 +69,7 @@ namespace fulbitorest.Controllers
         public HttpResponseMessage PutProfilePicture(int id, [FromBody]ProfilePictureData data)
         {
             data.ValidateBodyNotNulls();
+            ValidateUserIsUsingHisEndpoint(id);
             _userService.UpdateProfilePicture(id, data.ProfilePictureUrl);
 
             var response = new HttpResponseMessage()
@@ -91,6 +91,15 @@ namespace fulbitorest.Controllers
             {
                 GamesPlayed = 0,
             };
+        }
+
+        private void ValidateUserIsUsingHisEndpoint(int id)
+        {
+            var idClaim = HttpContext.User.Claims.First(c => c.Type == FulbitoClaims.UserId);
+            if(idClaim.Value != id.ToString())
+            {
+                throw new SecurityException("Unauthorized operation");
+            }
         }
     }
 }

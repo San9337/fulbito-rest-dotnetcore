@@ -25,8 +25,12 @@ namespace apidata.Mapping
                     if(fromProp.PropertyType == toProp.PropertyType)
                         toProp.SetValue(to, fromProp.GetValue(from));
                     //Anything to a string
-                    else if(toProp.PropertyType == typeof(string) && fromProp != null && fromProp.PropertyType!=typeof(DateTime))
-                        toProp.SetValue(to, fromProp.GetValue(from).ToString());
+                    else if(toProp.PropertyType == typeof(string) && fromProp.PropertyType != typeof(DateTime))
+                    {
+                        var fromValue = fromProp.GetValue(from);
+                        toProp.SetValue(to, fromValue?.ToString() ?? "");
+                    }
+                        
                 }
             }
 

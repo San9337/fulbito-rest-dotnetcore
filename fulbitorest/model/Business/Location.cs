@@ -1,9 +1,5 @@
 ﻿using model.Exceptions;
 using model.Model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace model.Business
 {
@@ -12,11 +8,20 @@ namespace model.Business
     /// </summary>
     public class Location
     {
-        public static Location NonExistent => new Location();
+        public static Location UNDEFINED => new Location(City.UNDEFINED);
 
-        protected Location()
+        public Location(City city)
         {
+            this.CompleteLocation(city);
         }
+
+        public Country Country { get; private set; }
+        public State State { get; private set; }
+        public City City { get; private set; }
+
+        public string CountryName { get; set; }
+        public string StateName { get; set; }
+        public string CityName { get; set; }
 
         public Location(string country, string state, string city)
         {
@@ -28,22 +33,18 @@ namespace model.Business
             CityName = city;
         }
 
-        public string CountryName { get; set; }
-        public string StateName { get; set; }
-        public string CityName { get; set; }
-
         /// <summary>
         /// Preformed by the repository
         /// </summary>
-        public void CompleteLocation(Country country, State state, City city)
+        public void CompleteLocation(City city)
         {
-            Country = country;
-            State = state;
-            City = city;
-        }
+            City = city ?? throw new DevException("Null parameters in location");
+            State = city.State ?? throw new DevException("Null parameters in location");
+            Country = State.Country ?? throw new DevException("Null parameters in location");
 
-        public Country Country { get; private set; }
-        public State State { get; private set; }
-        public City City { get; private set; }
+            CountryName = Country.Name;
+            StateName = State.Name;
+            CityName = city.Name;
+        }
     }
 }

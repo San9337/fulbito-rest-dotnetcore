@@ -21,17 +21,27 @@ namespace model.Model
         public string NickName { get; set; }
         public string ProfilePictureUrl { get; set; }
 
-        public DateTime BirthDate { get; set; }
+        public DateTime? BirthDate { get; set; }
         public Foot SkilledFoot { get; set; }
         public Gender Gender { get; set; }
 
         public virtual UserCredentials Credentials { get; set; }
         public string Email => Credentials.Email;
 
+        [ForeignKey(nameof(RealTeam))]
+        public int RealTeamId { get; set; }
         public virtual ProfessionalTeam RealTeam { get; set; }
 
+        [ForeignKey(nameof(Country))]
+        public int CountryId { get; set; }
         public virtual Country Country { get; set; }
+
+        [ForeignKey(nameof(State))]
+        public int StateId { get; set; }
         public virtual State State { get; set; }
+
+        [ForeignKey(nameof(City))]
+        public int CityId { get; set; }
         public virtual City City { get; set; }
 
         public User()

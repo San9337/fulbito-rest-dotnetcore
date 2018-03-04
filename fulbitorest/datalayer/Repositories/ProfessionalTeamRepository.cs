@@ -26,7 +26,7 @@ namespace datalayer.Repositories
 
         public ProfessionalTeam GetDefaultValue()
         {
-            var @default = FulbitoContext.ProfessionalTeams.First(tf => tf.Name == ProfessionalTeam.UNDEFINED_NAME);
+            var @default = FulbitoContext.ProfessionalTeams.First(tf => tf.Name == ProfessionalTeam.UNDEFINED.Name);
             if (@default == null)
                 throw new DevException("No default value for teams, missing migration");
             return @default;
@@ -36,7 +36,9 @@ namespace datalayer.Repositories
         {
             var teamNameMatches = await FulbitoContext
                 .ProfessionalTeams
-                .Where(t => t.Name.StartsWith(query))
+                .Where(t => t.Name.StartsWith(query) && 
+                    t.Id != ProfessionalTeam.UNDEFINED.Id
+                )
                 .OrderBy(t => t.Name)
                 .Take(5)
                 .ToListAsync();
@@ -46,7 +48,10 @@ namespace datalayer.Repositories
             {
                 var countryNameMatches = await FulbitoContext
                     .ProfessionalTeams
-                    .Where(t => !teamNameMatches.Any(m => m.Id == t.Id) && t.CountryName.StartsWith(query))
+                    .Where(t => t.Id != ProfessionalTeam.UNDEFINED.Id && 
+                        !teamNameMatches.Any(m => m.Id == t.Id) && 
+                        t.CountryName.StartsWith(query)
+                    )
                     .OrderBy(t => t.Name)
                     .Take(5 - teamsFoundCount)
                     .ToListAsync();

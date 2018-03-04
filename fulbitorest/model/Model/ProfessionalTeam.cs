@@ -1,4 +1,5 @@
-﻿using model.Interfaces;
+﻿using model.Business;
+using model.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,11 +23,10 @@ namespace model.Model
         [NotMapped]
         public string FormattedName => Name + " - " + CountryName;
 
-        public static string UNDEFINED_NAME => "TEAM_FAN_UNDEFINED";
-        public static string UNDEFINED_LOGO => "LOGO_UNDEFINED";
         public static ProfessionalTeam UNDEFINED { get {
-                var undef = new ProfessionalTeam(UNDEFINED_NAME, Country.UNDEFINED_NAME);
-                undef.LogoUrl = UNDEFINED_LOGO;
+                var undef = new ProfessionalTeam("TEAM_FAN_UNDEFINED", Location.UNDEFINED.CountryName);
+                undef.Id = 1;
+                undef.LogoUrl = "LOGO_UNDEFINED";
                 return undef;
             } } 
 

@@ -9,6 +9,15 @@ namespace apidata.tests.Utils
     [TestClass]
     public class DataStandardsTests
     {
+        [TestMethod]
+        public void GivenNullDate_FormatDate_ReturnsNull()
+        {
+            DateTime? date = null;
+
+            var dateFormat = DataStandards.FormatDate(date);
+
+            Assert.AreEqual(null, dateFormat);
+        }
 
         [TestMethod]
         public void DatesAreCorrectlyFormatted_ToData_YYYY_MM_DD()
@@ -29,7 +38,7 @@ namespace apidata.tests.Utils
             var dateFormat = expectedDate.ToString("yyyy-MM-dd");
             var realDate = DataStandards.FormatDate(dateFormat);
 
-            Assert.AreEqual(expectedDate.Date, realDate.Date);
+            Assert.AreEqual(expectedDate.Date, ((DateTime)realDate).Date);
         }
     }
 }

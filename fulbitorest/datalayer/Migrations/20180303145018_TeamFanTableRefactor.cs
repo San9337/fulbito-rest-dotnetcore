@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using model.Business;
 using model.Model;
 using System;
 using System.Collections.Generic;
@@ -45,7 +46,8 @@ namespace datalayer.Migrations
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
-            migrationBuilder.Sql("INSERT INTO professionalteams VALUES(1,'" + Country.UNDEFINED_NAME + "','" + ProfessionalTeam.UNDEFINED_NAME + "','" + ProfessionalTeam.UNDEFINED_LOGO + "')");
+            var undefinedTeam = ProfessionalTeam.UNDEFINED;
+            migrationBuilder.Sql("INSERT INTO professionalteams VALUES("+ undefinedTeam.Id + ",'" + undefinedTeam.CountryName + "','" + undefinedTeam.Name + "','" + undefinedTeam.LogoUrl + "')");
 
             migrationBuilder.Sql(@"
 INSERT INTO `professionalteams` VALUES ('2', 'Argentina', 'Argentino Juniors',null);

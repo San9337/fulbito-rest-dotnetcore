@@ -5,7 +5,7 @@ using System.Text;
 
 namespace datalayer.Contracts
 {
-    public interface IWithDefaultValue<T> where T:IEntity
+    public interface IWithDefaultValue<T>
     {
         T GetDefaultValue();
     }

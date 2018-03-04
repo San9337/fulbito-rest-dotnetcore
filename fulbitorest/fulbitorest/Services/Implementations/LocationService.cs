@@ -20,7 +20,7 @@ namespace FulbitoRest.Services
         public Location GetOrCreate(string country, string state, string city)
         {
             if (string.IsNullOrEmpty(country) || string.IsNullOrEmpty(state) || string.IsNullOrEmpty(city))
-                return Location.NonExistent;
+                return _locationRepository.GetDefaultValue();
 
             return _locationRepository.SaveLocation(new Location(country,state,city));
         }

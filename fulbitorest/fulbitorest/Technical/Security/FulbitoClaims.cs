@@ -18,13 +18,19 @@ namespace FulbitoRest.Technical.Security
             var userCredentials = user.Credentials;
             return new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Email, userCredentials.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),
-                new Claim("loginmethod",authMethod.GetDescription())
+                new Claim(Email, userCredentials.Email),
+                new Claim(UniqueRandomId, Guid.NewGuid().ToString()),
+                new Claim(UserId, user.Id.ToString()),
+                new Claim(LoginMethod,authMethod.GetDescription())
             };
         }
 
-
+        /// <summary>
+        /// The id of the user in the DB
+        /// </summary>
+        public static string UserId => JwtRegisteredClaimNames.NameId;
+        public static string Email => JwtRegisteredClaimNames.Email;
+        public static string LoginMethod => "loginmethod";
+        public static string UniqueRandomId => JwtRegisteredClaimNames.Jti;
     }
 }
