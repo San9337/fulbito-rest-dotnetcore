@@ -1,11 +1,14 @@
-﻿using model.Enums;
+﻿using model.Business.Structures;
+using model.Enums;
+using model.Exceptions;
 using model.Interfaces;
-using model.Model;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using System.Text;
+
+//TODO: refactor this into an abstract class (reinforced by the UserFactory design), using hashed password as auth deleate for tokens (Conceptual bug)
 
 namespace model.Model.Security
 {
@@ -25,25 +28,30 @@ namespace model.Model.Security
         {
         }
 
-        public UserCredentials(string userName, string password, string email)
+        /// <summary>
+        /// Create credentials using FULBITO schema
+        /// </summary>
+        public UserCredentials(FulbitoUser fulbitoUser)
         {
-            Email = email;
+            Email = fulbitoUser.Email;
 
-            if(!string.IsNullOrEmpty(password))
-                HashedPassword = GetHash(password);
+            if (!string.IsNullOrEmpty(fulbitoUser.Password))
+                ResetPassword(fulbitoUser.Password);
 
             AuthMethod = AuthenticationMethod.Fulbito;
         }
-        public UserCredentials(string email)
-        {
-            Email = email;
-            HashedPassword = null;
-            AuthMethod = AuthenticationMethod.Facebook;
-        }
 
-        public bool AreCredentialsValid(string email, string password)
+        /// <summary>
+        /// Create credentials using a schema OTHER than fulbito
+        /// </summary>
+        public UserCredentials(string email, AuthenticationMethod authMethod, string externalToken)
         {
-            return email == Email && Matches(password, HashedPassword);
+            if (authMethod == AuthenticationMethod.Fulbito)
+                throw new DevException("Wrong use of credentials constructor");
+
+            Email = email;
+            ResetPassword(externalToken);
+            AuthMethod = authMethod;
         }
 
         public ValidationResult Validate()
@@ -55,6 +63,24 @@ namespace model.Model.Security
                 return new ValidationResult("Password is required");
 
             return ValidationResult.Success;
+        }
+
+        public bool AreCredentialsValid(string email, string password)
+        {
+            return email == Email && Matches(password, HashedPassword);
+        }
+
+        public void ResetPassword(string newPassword)
+        {
+            HashedPassword = GetHash(newPassword);
+        }
+
+        /// <summary>
+        /// The result of this method MUST change if the user modifies his login in any way (password, method, etc)
+        /// </summary>
+        public string GetPasswordDelegate()
+        {
+            return HashedPassword;
         }
 
         private bool IsValidField(string field)

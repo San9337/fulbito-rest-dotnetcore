@@ -29,7 +29,7 @@ namespace fulbitorest.tests.Technical.Security
             var key = "key";
 
             var formatedToken = sut.FormatToken(refreshToken, key);
-            var result = sut.ValidateAndRetrieve(formatedToken, key);
+            var result = sut.ValidateAndRemoveSignature(formatedToken, key);
 
             Assert.AreEqual(refreshToken, result);
         }

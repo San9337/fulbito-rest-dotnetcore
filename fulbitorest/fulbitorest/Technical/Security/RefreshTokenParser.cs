@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace FulbitoRest.Technical.Security
 {
-    public class RefreshTokenParser
+    public interface IRefreshTokenParser
+    {
+        string ValidateAndRemoveSignature(string tokenWithSignature, string key);
+        string FormatToken(string refreshToken, string key);
+    }
+
+    public class RefreshTokenParser : IRefreshTokenParser
     {
         private readonly IContentSecurityHelper _helper;
 
@@ -15,21 +21,22 @@ namespace FulbitoRest.Technical.Security
             _helper = helper;
         }
 
-        internal string FormatToken(string refreshToken, string key)
+        /// <returns>The formatted refresh token, with a validation signature</returns>
+        public string FormatToken(string refreshToken, string key)
         {
             var signature = _helper.SignRefreshToken(refreshToken, key);
             return refreshToken + "-" + signature;
         }
 
-        /// <returns>The original refresh token</returns>
-        internal string ValidateAndRetrieve(string tokenWithSignature, string key)
+        /// <returns>The original refresh token, validated</returns>
+        public string ValidateAndRemoveSignature(string tokenWithSignature, string key)
         {
             var split = tokenWithSignature.IndexOf("-");
             var refreshToken = tokenWithSignature.Substring(0, split);
             var signature = tokenWithSignature.Substring(split + 1, tokenWithSignature.Length - split - 1);
 
             if (!_helper.IsValidSignature(refreshToken, signature, key))
-                throw new SecurityException("Invalide signature");
+                throw new SecurityException("Invalid signature");
 
             return refreshToken;
         }

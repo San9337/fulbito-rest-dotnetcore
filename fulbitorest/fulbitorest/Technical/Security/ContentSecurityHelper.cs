@@ -29,9 +29,9 @@ namespace FulbitoRest.Technical.Security
             return Convert.ToBase64String(signatureInBytes);
         }
 
-        public bool IsValidSignature(string token, string signature, string key2)
+        public bool IsValidSignature(string token, string signature, string key)
         {
-            if (signature != SignRefreshToken(token, key2))
+            if (signature != SignRefreshToken(token, key))
                 return false;
 
             return true;

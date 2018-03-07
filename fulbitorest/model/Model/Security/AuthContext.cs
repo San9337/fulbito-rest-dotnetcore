@@ -52,6 +52,8 @@ namespace model.Model.Security
         
         private void RenewToken(double expirationInMinutes)
         {
+            if (Id == 0)
+                throw new DevException("Cant create token with Id 0");
             var newToken = GenerateNewToken();
 
             RefreshToken = newToken;
@@ -61,7 +63,8 @@ namespace model.Model.Security
 
         private static string GenerateNewToken()
         {
-            return Guid.NewGuid().ToString().Replace("-","");
+            var randomString = Guid.NewGuid().ToString().Replace("-", "");
+            return randomString;
         }
     }
 }

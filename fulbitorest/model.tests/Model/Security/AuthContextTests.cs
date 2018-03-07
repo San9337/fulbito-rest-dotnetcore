@@ -31,7 +31,8 @@ namespace model.tests.Model.Security
         {
             return new AuthContext()
             {
-                ExpireDate = DateTime.Now.AddDays(1)
+                ExpireDate = DateTime.Now.AddDays(1),
+                Id = 123
             };
         }
         private static AuthContext GivenExpiredToken()

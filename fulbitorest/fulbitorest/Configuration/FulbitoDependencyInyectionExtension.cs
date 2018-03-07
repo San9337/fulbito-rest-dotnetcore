@@ -1,17 +1,9 @@
-﻿using datalayer.Contracts;
-using datalayer.Contracts.Repositories;
-using datalayer.Repositories;
-using FulbitoRest.Repositories;
-using FulbitoRest.Services;
-using FulbitoRest.Technical.Interception;
+﻿using FulbitoRest.Technical.Interception;
 using FulbitoRest.Technical.Logging;
 using FulbitoRest.Technical.Security;
 using Microsoft.Extensions.DependencyInjection;
-using model.Model;
-using model.Model.Security;
-using System.Reflection;
 using System.Linq;
-using FulbitoRest.Services.Contracts;
+using System.Reflection;
 
 namespace FulbitoRest.Configuration
 {
@@ -23,13 +15,14 @@ namespace FulbitoRest.Configuration
         public static void AddDiServices(this IServiceCollection services)
         {
             services.AddSingleton<ICustomLogger, Logger>();
-            services.AddSingleton<RefreshTokenParser>();
+            services.AddSingleton<IRefreshTokenParser, RefreshTokenParser>();
             services.AddSingleton<IContentSecurityHelper, ContentSecurityHelper>();
 
             services.AddScoped<LoggingFilterAttribute>();
 
             services.RegisterRepositories();
             services.RegisterServices();
+            services.RegisterHelpers();
         }
 
         private static void RegisterRepositories(this IServiceCollection services)
@@ -38,16 +31,19 @@ namespace FulbitoRest.Configuration
         }
         private static void RegisterServices(this IServiceCollection services)
         {
-            //services.RegisterTypesByInterfaceConvention("fulbitorest", "IService");
-
-            services.AddScoped<LoginService>();
-            services.AddScoped<ILocationService,LocationService>();
-            services.AddScoped<IUserService,UserService>();
+            services.RegisterTypesByInterfaceConvention("FulbitoRest", "IService");
         }
+        private static void RegisterHelpers(this IServiceCollection services)
+        {
+            services.RegisterTypesByInterfaceConvention("FulbitoRest", "IHelper");
+        }
+
 
         private static void RegisterTypesByInterfaceConvention(this IServiceCollection services, string assemblyname, string baseInterface)
         {
-            var assemblies = Assembly.GetEntryAssembly().GetReferencedAssemblies();
+            var assemblies = Assembly.GetEntryAssembly().GetReferencedAssemblies().ToList();
+            assemblies.Add(Assembly.GetEntryAssembly().GetName());
+
             var datalayerAssembly = assemblies.First(a => a.Name == assemblyname);
 
             var allTypes = Assembly.Load(datalayerAssembly).DefinedTypes;

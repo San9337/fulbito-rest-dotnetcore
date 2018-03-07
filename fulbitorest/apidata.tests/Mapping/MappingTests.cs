@@ -1,10 +1,13 @@
-﻿using apidata.Mapping;
+﻿using apidata.DataContracts;
+using apidata.DataContracts.External;
+using apidata.Mapping;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using model.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using testingutils.Factories;
+using testingutils.Mocking;
 
 namespace apidata.tests.Mapping
 {
@@ -39,6 +42,28 @@ namespace apidata.tests.Mapping
         {
             var user = UserFactory.Get();
             AssertNoNulls(user.Map());
+        }
+
+        [TestMethod]
+        public void Map_UserCredentials_FulbitoUser()
+        {
+            var userCredentials = Mocker.MockAllValues(new UserCredentialsData());
+            var mapResult = userCredentials.MapToFulbitoUser();
+
+            AssertNoNulls(mapResult);
+            Assert.AreEqual(userCredentials.Email, mapResult.Email);
+            Assert.AreEqual(userCredentials.NickName, mapResult.NickName);
+            Assert.AreEqual(userCredentials.Password, mapResult.Password);
+        }
+
+        [TestMethod]
+        public void Map_FacebookUser()
+        {
+            var fbUser = Mocker.MockAllValues(new FacebookUserViewModel());
+            var mapResult = fbUser.Map("randomToken");
+            AssertNoNulls(mapResult);
+            Assert.AreEqual(fbUser.Email, mapResult.Email);
+            Assert.AreEqual(fbUser.UserName, mapResult.UserName);
         }
 
         private void AssertIdMapped<T>(T result)
