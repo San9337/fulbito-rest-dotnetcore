@@ -21,7 +21,7 @@ namespace model.Model
         public string LogoUrl { get; set; }
 
         [NotMapped]
-        public string FormattedName => Name + " - " + CountryName;
+        public string DisplayName => Name + ", " + CountryName;
 
         public static ProfessionalTeam UNDEFINED { get {
                 var undef = new ProfessionalTeam("TEAM_FAN_UNDEFINED", Location.UNDEFINED.CountryName);
