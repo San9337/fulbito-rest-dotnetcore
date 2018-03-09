@@ -30,9 +30,14 @@ namespace FulbitoRest.Helpers.Implementations
             }
 
             var content = await response.Content.ReadAsStringAsync();
-            var fbUser = JsonConvert.DeserializeObject<FacebookUserViewModel>(content);
+            var fbUser = Deserialize(content);
 
             return fbUser.Map(fbToken);
+        }
+
+        public FacebookUserViewModel Deserialize(string fbUser)
+        {
+            return JsonConvert.DeserializeObject<FacebookUserViewModel>(fbUser);
         }
     }
 }

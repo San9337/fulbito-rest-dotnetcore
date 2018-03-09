@@ -1,21 +1,22 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace apidata.DataContracts.External
 {
+    [DataContract]
     public class FacebookUserViewModel
     {
-        [JsonProperty("id")]
+        [DataMember(Name = "id")]
         public string ID { get; set; }
-        [JsonProperty("first_name")]
+        [DataMember(Name = "first_name")]
         public string FirstName { get; set; }
-        [JsonProperty("last_name")]
+        [DataMember(Name = "last_name")]
         public string LastName { get; set; }
-        [JsonProperty("name")]
+        [DataMember(Name = "name")]
         public string UserName { get; set; }
-        [JsonProperty("email")]
+        [DataMember(Name = "email")]
         public string Email { get; set; }
     }
 }
