@@ -16,7 +16,8 @@ namespace fulbitorest.tests.Controllers
             ValidateAttribute(new List<Type> {
                 typeof(UserController),
                 typeof(DataController),
-                typeof(TeamfanController)
+                typeof(TeamfanController),
+                typeof(MatchController)
             }, typeof(AuthorizeAttribute));
         }
 

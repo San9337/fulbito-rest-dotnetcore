@@ -40,5 +40,18 @@ namespace apidata.tests.Utils
 
             Assert.AreEqual(expectedDate.Date, ((DateTime)realDate).Date);
         }
+
+        [TestMethod]
+        public void DatesAreCorrectlyFormatted_FromData_YYYY_MM_DD_HH_MM()
+        {
+            var expectedDate = DateTime.Now;
+
+            var dateFormat = expectedDate.ToString(DataStandards.DATE_TIME_FORMAT);
+            var realDate = DataStandards.FormatDateTime(dateFormat);
+
+            Assert.AreEqual(expectedDate.Date, ((DateTime)realDate).Date);
+            Assert.AreEqual(expectedDate.Hour, ((DateTime)realDate).Hour);
+            Assert.AreEqual(expectedDate.Minute, ((DateTime)realDate).Minute);
+        }
     }
 }

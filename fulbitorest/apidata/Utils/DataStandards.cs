@@ -7,11 +7,19 @@ namespace apidata.Utils
 {
     public static class DataStandards
     {
+        public static string DATE_TIME_FORMAT = "yyyy-MM-dd:HH-mm";
+        public static string DATE_FORMAT = "yyyy-MM-dd";
+
         public static DateTime? DATE_UNDEFINED => null;
 
         public static string FormatDate(DateTime? date)
         {
-            return date?.ToString("yyyy-MM-dd");
+            return date?.ToString(DATE_FORMAT);
+        }
+
+        public static string FormatDateTime(DateTime? dateTime)
+        {
+            return dateTime?.ToString(DATE_TIME_FORMAT);
         }
 
         public static DateTime? FormatDate(string birthDate)
@@ -21,11 +29,27 @@ namespace apidata.Utils
 
             try
             {
-                return DateTime.ParseExact(birthDate, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture);
+                return DateTime.ParseExact(birthDate, DATE_FORMAT, System.Globalization.CultureInfo.InvariantCulture);
             }
             catch (FormatException)
             {
-                throw new UnexpectedInputException("Couldnt parse date format, expected valid gregorian date with format: yyyy-MM-dd, got: " + birthDate);
+                throw new UnexpectedInputException("Couldnt parse date format, expected valid gregorian date with format: "+ DATE_FORMAT + ", got: " + birthDate);
+            }
+        }
+
+        public static DateTime? FormatDateTime(string dateTime)
+        {
+            if (dateTime == null)
+                return DataStandards.DATE_UNDEFINED;
+
+            try
+            {
+                var date = DateTime.ParseExact(dateTime, DATE_TIME_FORMAT, System.Globalization.CultureInfo.InvariantCulture);
+                return date;
+            }
+            catch (FormatException)
+            {
+                throw new UnexpectedInputException("Couldnt parse date format, expected valid gregorian date with format: "+ DATE_TIME_FORMAT + ", got: " + dateTime);
             }
         }
 

@@ -45,6 +45,13 @@ namespace apidata.tests.Mapping
         }
 
         [TestMethod]
+        public void Map_Match()
+        {
+            var match = MatchFactory.Get();
+            AssertNoNulls(match.Map());
+        }
+
+        [TestMethod]
         public void Map_UserCredentials_FulbitoUser()
         {
             var userCredentials = Mocker.MockAllValues(new UserCredentialsData());
