@@ -1,5 +1,6 @@
 ﻿using model.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using System;
 
 namespace model.Model
 {
@@ -23,5 +24,10 @@ namespace model.Model
 
         public string Name { get; set; }
         public virtual State State { get; set; }
+
+        public bool IsUndefined()
+        {
+            return this.Name == City.UNDEFINED.Name;
+        }
     }
 }

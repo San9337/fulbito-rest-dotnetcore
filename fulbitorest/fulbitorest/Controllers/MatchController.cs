@@ -17,7 +17,7 @@ namespace fulbitorest.Controllers
 {
     [Produces("application/json")]
     [Route("api/Match")]
-    //[Authorize]
+    [Authorize]
     public class MatchController : BaseController
     {
 

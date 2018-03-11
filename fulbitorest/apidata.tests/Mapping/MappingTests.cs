@@ -4,19 +4,14 @@ using apidata.Mapping;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using model.Business;
 using model.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using testingutils.Factories;
 using testingutils.Mocking;
 
 namespace apidata.tests.Mapping
 {
     [TestClass]
-    public class MappingTests
+    public class MappingTests : BaseMappingTest
     {
-
-
         [TestMethod]
         public void Map_Foot()
         {
@@ -36,13 +31,6 @@ namespace apidata.tests.Mapping
         {
             var team = TeamFactory.Get();
             AssertNoNulls(team.Map());
-        }
-
-        [TestMethod]
-        public void Map_User()
-        {
-            var user = UserFactory.Get();
-            AssertNoNulls(user.Map());
         }
 
         [TestMethod]
@@ -79,25 +67,6 @@ namespace apidata.tests.Mapping
             AssertNoNulls(mapResult);
             Assert.AreEqual(fbUser.Email, mapResult.Email);
             Assert.AreEqual(fbUser.UserName, mapResult.UserName);
-        }
-
-        private void AssertIdMapped<T>(T result)
-        {
-            var mappedId = (int) result.GetType().GetProperty("Id").GetValue(result);
-            Assert.IsNotNull(mappedId);
-            Assert.IsFalse(mappedId == 0);
-        }
-        private void AssertDescriptionMapped<T>(T result)
-        {
-            var mappedDesc = (string)result.GetType().GetProperty("Description").GetValue(result);
-            Assert.IsFalse(string.IsNullOrEmpty(mappedDesc));
-        }
-        private void AssertNoNulls<T>(T result)
-        {
-            foreach(var property in typeof(T).GetProperties())
-            {
-                Assert.IsNotNull(property.GetValue(result), property.Name +" of type " + property.PropertyType.Name);
-            }
         }
     }
 }

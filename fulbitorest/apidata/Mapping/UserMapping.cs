@@ -14,9 +14,7 @@ namespace apidata.Mapping
         {
             var data = user.MapTo<UserData>();
 
-            data.CountryName = user.Country?.Name;
-            data.StateName = user.State?.Name;
-            data.CityName = user.City?.Name;
+            MapLocation(user, data);
 
             data.TeamFanId = user.RealTeam?.Id;
             data.Foot = user.SkilledFoot.Map();
@@ -25,6 +23,17 @@ namespace apidata.Mapping
             data.BirthDate = DataStandards.FormatDate(user.BirthDate);
 
             return data;
+        }
+
+        private static void MapLocation(User user, UserData data)
+        {
+            //City.UNDEFINED implies all the other location attributes are undefined as well
+            if (!user.City.IsUndefined())
+            {
+                data.CountryName = user.Country.Name;
+                data.StateName = user.State.Name;
+                data.CityName = user.City.Name;
+            }
         }
 
         public static User Map(this UserData data)
