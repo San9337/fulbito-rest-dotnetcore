@@ -21,6 +21,8 @@ namespace datalayer.FulbitoContext
             modelBuilder.Entity<ProfessionalTeam>().HasIndex(u => new { u.Name, u.CountryName });
 
             modelBuilder.Entity<AuthContext>().HasIndex(c => c.RefreshToken);
+
+            modelBuilder.Entity<Match>().HasMany(u => u.Players).WithOne(sp => sp.Match);
         }
     }
 }

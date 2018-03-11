@@ -12,9 +12,10 @@ using System;
 namespace datalayer.Migrations
 {
     [DbContext(typeof(FulbitoDbContext))]
-    partial class FulbitoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180310125710_MatchAndPlayers")]
+    partial class MatchAndPlayers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

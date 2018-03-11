@@ -2,6 +2,7 @@
 using apidata.DataContracts.External;
 using apidata.Mapping;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using model.Business;
 using model.Enums;
 using System;
 using System.Collections.Generic;
@@ -49,6 +50,13 @@ namespace apidata.tests.Mapping
         {
             var match = MatchFactory.Get();
             AssertNoNulls(match.Map());
+        }
+
+        [TestMethod]
+        public void Map_MatchSummary()
+        {
+            var match = new MatchSummary(MatchFactory.Get());
+            AssertNoNulls(match.MapSummary());
         }
 
         [TestMethod]

@@ -43,7 +43,7 @@ namespace datalayer.Repositories
         {
             T entity = FulbitoContext.Set<T>().FirstOrDefault(x => x.Id == id);
             if (entity == null)
-                throw new FulbitoException(nameof(T) + " with id "+id+" doesnt exist");
+                ThrowNonExistException(id);
             return entity;
         }
 
@@ -73,6 +73,9 @@ namespace datalayer.Repositories
             return FulbitoContext.Set<T>();
         }
 
-        
+        protected void ThrowNonExistException(int id)
+        {
+            throw new FulbitoException(nameof(T) + " with id " + id + " doesnt exist");
+        }
     }
 }

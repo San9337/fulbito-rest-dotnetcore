@@ -10,34 +10,67 @@ using apidata.DataContracts;
 using model.Model;
 using apidata.Utils;
 using apidata.Mapping;
+using FulbitoRest.Services.Contracts;
+using System.Net.Http;
 
 namespace fulbitorest.Controllers
 {
     [Produces("application/json")]
     [Route("api/Match")]
-    [Authorize]
+    //[Authorize]
     public class MatchController : BaseController
     {
 
+        private readonly IMatchService _matchService;
+
+        public MatchController(IMatchService matchServ)
+        {
+            _matchService = matchServ;
+        }
+
         [HttpPost]
         [Route("")]
-        public MatchData Create(MatchData data)
+        public MatchData Create([FromBody] MatchData data)
         {
-            var match = new Match()
-            {
-                Owner = new model.Model.User() { Id = int.Parse(base.UserIdClaim.Value) },
-
-                Id = 1,
-                GameAddress = data.GameAddress,
-                StartDateTime = DataStandards.FormatDateTime(data.StartDateTime) ?? DateTime.Now,
-                DurationInMinutes = data.DurationInMinutes,
-                GameFieldSize = data.GameFieldSize,
-                MainPlayersTeamSize = data.MainPlayersTeamSize,
-                SubstitutePlayersTeamSize = data.SubstitutePlayersTeamSize,
-                RequiresApproval = data.RequiresApproval
-            };
-
+            var match = _matchService.CreateMatch(data, int.Parse(base.UserIdClaim.Value));
             return match.Map();
+        }
+        
+        [HttpGet]
+        [Route("list")]
+        public List<MatchSummaryData> ListRelatedMatches([FromQuery] int userId)
+        {
+            return _matchService.GetRelatedMatches(userId)
+                .Select(ms => ms.MapSummary())
+                .ToList();
+        }
+
+        [HttpPost]
+        [Route("{matchId:int}/join")]
+        public HttpResponseMessage JoinMatch(int matchId, [FromBody] JoinMatchData data)
+        {
+            data.ValidateBody();
+            _matchService.JoinMatch(matchId, data);
+
+            return new HttpResponseMessage()
+            {
+                StatusCode = System.Net.HttpStatusCode.Created,
+                ReasonPhrase = "Player sucessfully added"
+            };
+        }
+
+        [HttpPost]
+        [Route("{matchId:int}/leave")]
+        public HttpResponseMessage LeaveMatch(int matchId, [FromBody] JoinMatchData data)
+        {
+            data.ValidateBody();
+            _matchService.LeaveMatch(matchId, data);
+
+            return new HttpResponseMessage()
+            {
+                StatusCode = System.Net.HttpStatusCode.Created,
+                ReasonPhrase = "Player sucessfully removed"
+            };
         }
     }
 }

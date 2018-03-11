@@ -10,10 +10,8 @@ namespace testingutils.Factories
     {
         public static model.Model.Match Get()
         {
-            return new model.Model.Match()
+            return new model.Model.Match(UserFactory.Get())
             {
-                Owner = UserFactory.Get(),
-
                 Id = 1,
                 GameAddress = "address",
                 StartDateTime = DateTime.Now,

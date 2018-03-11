@@ -35,5 +35,8 @@ namespace datalayer.FulbitoContext
         public DbSet<City> Cities { get; set; }
         public DbSet<ProfessionalTeam> ProfessionalTeams { get; set; }
         public DbSet<AuthContext> AuthContexts { get; set; }
+        public DbSet<Match> Matches { get; set; }
+        public DbSet<Player> Players { get; set; }
+
     }
 }

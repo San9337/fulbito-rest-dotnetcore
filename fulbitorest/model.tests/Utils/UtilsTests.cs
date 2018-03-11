@@ -25,5 +25,12 @@ namespace model.tests.Utils
 
             Assert.AreEqual("normal", method.GetDescription());
         }
+
+        [TestMethod]
+        public void GetSlotEnumFromCore()
+        {
+            var slot = AttibuteUtils.GetEnumValueFromCode("A-Main");
+            Assert.AreEqual(SlotEnum.Team_A_Main, slot);
+        }
     }
 }

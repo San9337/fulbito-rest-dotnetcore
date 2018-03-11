@@ -8,6 +8,8 @@ namespace apidata.DataContracts
     [DataContract]
     public class MatchData
     {
+        [DataMember(Name ="id")]
+        public int Id { get; set; }
         [DataMember(Name = "ownerId")]
         public int OwnerId { get; set; }
         [DataMember(Name = "gameAddress")]

@@ -1,5 +1,6 @@
 ﻿using apidata.DataContracts;
 using apidata.Utils;
+using model.Business;
 using model.Model;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,15 @@ namespace apidata.Mapping
             var data = match.MapTo<MatchData>();
 
             data.StartDateTime = DataStandards.FormatDateTime(match.StartDateTime);
+
+            return data;
+        }
+
+        public static MatchSummaryData MapSummary(this MatchSummary summary)
+        {
+            var data = summary.MapTo<MatchSummaryData>();
+
+            data.StartDateTime = DataStandards.FormatDateTime(summary.StartDateTime);
 
             return data;
         }

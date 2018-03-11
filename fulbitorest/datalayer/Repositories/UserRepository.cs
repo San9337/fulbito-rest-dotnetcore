@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using model.Exceptions;
 using model;
 using model.Model.Security;
+using System.Security;
 
 namespace datalayer.Repositories
 {
@@ -47,7 +48,7 @@ namespace datalayer.Repositories
                 .Select(c => c.Id);
 
             if (!matchingCredentialsId.Any())
-                return null;
+                throw new SecurityException("Invalid credentials");
 
             return Get(matchingCredentialsId.First());
         }

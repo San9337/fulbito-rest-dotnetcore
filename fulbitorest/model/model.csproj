@@ -9,7 +9,6 @@
     <Compile Remove="Business\SecurityHandler.cs" />
     <Compile Remove="Business\Structures\FacebookUserViewModel.cs" />
     <Compile Remove="Exceptions\SecurityException.cs" />
-    <Compile Remove="Model\Player.cs" />
     <Compile Remove="Model\RealTeam.cs" />
     <Compile Remove="Model\Security\Token.cs" />
     <Compile Remove="Model\TeamFan.cs" />
