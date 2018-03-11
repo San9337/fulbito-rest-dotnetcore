@@ -1,10 +1,6 @@
 ﻿using apidata.DataContracts;
-using model.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using apidata.Mapping;
 using apidata.Utils;
+using model.Model;
 
 namespace apidata.Mapping
 {
@@ -27,13 +23,12 @@ namespace apidata.Mapping
 
         private static void MapLocation(User user, UserData data)
         {
-            //City.UNDEFINED implies all the other location attributes are undefined as well
             if (!user.City.IsUndefined())
-            {
-                data.CountryName = user.Country.Name;
-                data.StateName = user.State.Name;
                 data.CityName = user.City.Name;
-            }
+            if (!user.State.IsUndefined())
+                data.StateName = user.State.Name;
+            if (!user.Country.IsUndefined())
+                data.CountryName = user.Country.Name;
         }
 
         public static User Map(this UserData data)

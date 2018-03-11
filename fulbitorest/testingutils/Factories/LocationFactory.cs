@@ -18,5 +18,16 @@ namespace testingutils.Factories
         public static Country GetCountry() => new Country() { Id = 1, Name = "Argentina" };
         public static State GetState() => new State() { Id = 1, Name = "Buenos Aires", Country = GetCountry() };
         public static City GetCity() => new City() { Id = 1, Name = "Atte Brown", State = GetState() };
+
+        public static Location GetWithNullCity()
+        {
+            var city = City.UNDEFINED;
+            city.State = GetCity().State;
+
+            var location = Get();
+            location.CompleteLocation(city);
+
+            return location;
+        }
     }
 }

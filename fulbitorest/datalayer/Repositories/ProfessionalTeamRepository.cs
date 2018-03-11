@@ -34,31 +34,46 @@ namespace datalayer.Repositories
 
         public async Task<IList<ProfessionalTeam>> GetMatchingTeams(string query)
         {
-            var teamNameMatches = await FulbitoContext
-                .ProfessionalTeams
-                .Where(t => t.Name.StartsWith(query) && 
-                    t.Id != ProfessionalTeam.UNDEFINED.Id
-                )
-                .OrderBy(t => t.Name)
-                .Take(5)
-                .ToListAsync();
+            query = query.ToLower();
 
-            var teamsFoundCount = teamNameMatches.Count();
-            if (teamsFoundCount < 5)
+            var splits = query.Split(' ');
+            if (splits.Length == 1)
             {
-                var countryNameMatches = await FulbitoContext
-                    .ProfessionalTeams
-                    .Where(t => t.Id != ProfessionalTeam.UNDEFINED.Id && 
-                        !teamNameMatches.Any(m => m.Id == t.Id) && 
-                        t.CountryName.StartsWith(query)
-                    )
-                    .OrderBy(t => t.Name)
-                    .Take(5 - teamsFoundCount)
-                    .ToListAsync();
-                teamNameMatches.AddRange(countryNameMatches);
+                var sqlQuery = new RawSqlString(@"
+SET @search = @p0;
+
+SELECT * FROM ProfessionalTeams 
+WHERE Id <> 1 AND
+(Name LIKE CONCAT('%',@search,'%')
+OR CountryName LIKE CONCAT('%',@search,'%'))
+ORDER BY Name ASC,CountryName ASC
+LIMIT 5
+");
+                return await FulbitoContext.ProfessionalTeams.FromSql(sqlQuery, query).ToListAsync();
+            }
+            if (splits.Length > 1)
+            {
+                //Assuming right most word is the country, else is team
+                var country = splits[splits.Length - 1];
+                var team = query.Substring(0, query.LastIndexOf(' '));
+
+                var sqlQuery = new RawSqlString(@"
+SET @team = @p0;
+SET @country = @p1;
+
+SELECT * FROM ProfessionalTeams 
+WHERE Id <> 1 AND
+(LOWER(Name) LIKE CONCAT('%',@team,'%')
+AND LOWER(CountryName) LIKE CONCAT('%',@country,'%'))
+ORDER BY Name ASC,CountryName ASC
+LIMIT 5
+");
+
+                var results = await FulbitoContext.ProfessionalTeams.FromSql(sqlQuery, team, country).ToListAsync();
+                return results;
             }
 
-            return teamNameMatches;
+            throw new UnexpectedInputException("The query string is in a non expected format: " + query);
         }
     }
 }

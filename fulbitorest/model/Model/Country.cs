@@ -24,5 +24,10 @@ namespace model.Model
         public int Id { get; set; }
 
         public string Name { get; set; }
+
+        public bool IsUndefined()
+        {
+            return this.Name == Country.UNDEFINED.Name;
+        }
     }
 }

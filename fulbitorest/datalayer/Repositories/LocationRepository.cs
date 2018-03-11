@@ -7,6 +7,7 @@ using model.Model;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using model.Business;
+using model.Exceptions;
 
 namespace datalayer.Repositories
 {
@@ -16,15 +17,40 @@ namespace datalayer.Repositories
         {
         }
 
-        public Location SaveLocation(Location newLocation)
+        public Location SaveCompleteLocation(Location newLocation)
         {
+            if (!newLocation.HasCompleteSpecification)
+                throw new DevException("Attempting to create a location with UNDEFINED attributes");
+
             var country = GetOrCreateCountry(newLocation.CountryName);
-            var state = GetOrStateCreate(newLocation.StateName, country);
+            var state = GetOrCreateState(newLocation.StateName, country);
             var city = GetOrCreateCity(newLocation.CityName, state, country);
 
             newLocation.CompleteLocation(city);
 
             return newLocation;
+        }
+
+        public Location CreateRelatedValidEntities(Location location)
+        {
+            if (location.HasCompleteSpecification)
+                return SaveCompleteLocation(location);
+
+            var undefinedLocation = GetDefaultValue();
+
+            if (string.IsNullOrEmpty(location.CountryName))
+                return undefinedLocation;
+            var validCountry = GetOrCreateCountry(location.CountryName);
+
+            if (string.IsNullOrEmpty(location.StateName))
+            {
+                location.CompleteLocation(undefinedLocation.City, undefinedLocation.State, validCountry);
+                return location;
+            }
+            var validState = GetOrCreateState(location.StateName, validCountry);
+
+            location.CompleteLocation(undefinedLocation.City, validState, validCountry);
+            return location;
         }
 
         private Country GetOrCreateCountry(string name)
@@ -43,7 +69,7 @@ namespace datalayer.Repositories
             return country;
         }
 
-        private State GetOrStateCreate(string name, Country country)
+        private State GetOrCreateState(string name, Country country)
         {
             var state = FulbitoContext.States
                 .Where(s => s.Name == name && s.Country.Name == country.Name)
