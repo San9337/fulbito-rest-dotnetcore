@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "apidata.tests", "apidata.te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "testingutils", "testingutils\testingutils.csproj", "{A143F7F4-71CA-436F-8CCD-E5C53AFB097D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fulbitorest.tests", "fulbitorest.tests\fulbitorest.tests.csproj", "{C3EEC43A-EA29-4CA3-B222-3D0549D4B71E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fulbitorest.tests", "fulbitorest.tests\fulbitorest.tests.csproj", "{C3EEC43A-EA29-4CA3-B222-3D0549D4B71E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

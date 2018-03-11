@@ -31,6 +31,7 @@ namespace FulbitoRest.Configuration
                 {
                     jwtOptions.RequireHttpsMetadata = false;
                     jwtOptions.SaveToken = true;
+                    jwtOptions.IncludeErrorDetails = true;
 
                     jwtOptions.TokenValidationParameters = new TokenValidationParameters
                     {
