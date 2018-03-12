@@ -1,15 +1,14 @@
-﻿using FulbitoRest.Services.Contracts;
+﻿using apidata.DataContracts;
+using apidata.Utils;
+using datalayer.Contracts.Repositories;
+using FulbitoRest.HubServices;
+using FulbitoRest.Services.Contracts;
+using model.Business;
+using model.Exceptions;
+using model.Model;
+using model.Utils;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using apidata.DataContracts;
-using model.Model;
-using datalayer.Contracts.Repositories;
-using apidata.Utils;
-using model.Exceptions;
-using model.Business;
-using model.Utils;
 
 namespace FulbitoRest.Services.Implementations
 {
@@ -17,12 +16,18 @@ namespace FulbitoRest.Services.Implementations
     {
         private readonly IMatchRepository _matchRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IMatchHubService _matchHubService;
 
 
-        public MatchService(IMatchRepository matchRepo, IUserRepository userRepo)
+        public MatchService(
+            IMatchRepository matchRepo, 
+            IUserRepository userRepo,
+            IMatchHubService matchHub
+        )
         {
             _matchRepository = matchRepo;
             _userRepository = userRepo;
+            _matchHubService = matchHub;
         }
 
         public Match CreateMatch(MatchData data, int ownerUserId)
@@ -63,18 +68,33 @@ namespace FulbitoRest.Services.Implementations
         {
             var match = _matchRepository.GetWithPlayers(matchId);
 
-            var newPlayer = _userRepository.Get(data.PlayerId);
+            var user = _userRepository.Get(data.PlayerId);
             var slot = AttibuteUtils.GetEnumValueFromCode(data.SlotCode);
 
-            match.AddPlayer(newPlayer, slot);
+            var newPlayer = match.AddPlayer(user, slot);
             _matchRepository.Save(match);
+
+            _matchHubService.PlayerJoined(newPlayer);
+            if (match.SlotsFree == 0)
+                _matchHubService.MatchIsFull(match);
         }
 
         public void LeaveMatch(int matchId, JoinMatchData data)
         {
             var match = _matchRepository.GetWithPlayers(matchId);
-            match.RemovePlayer(data.PlayerId);
+
+            var removedPlayer = match.RemovePlayer(data.PlayerId);
             _matchRepository.Save(match);
+
+            _matchHubService.PlayerLeft(removedPlayer);
+        }
+
+        public void CancelMatch(int matchId)
+        {
+            //Validating if it exists
+            var match = _matchRepository.Get(matchId);
+            _matchHubService.MatchCancelled(match);
+            _matchRepository.Delete(matchId);
         }
     }
 }

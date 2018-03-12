@@ -14,5 +14,6 @@ namespace FulbitoRest.Services.Contracts
         IEnumerable<MatchSummary> GetRelatedMatches(int userId);
         void JoinMatch(int matchId, JoinMatchData data);
         void LeaveMatch(int matchId, JoinMatchData data);
+        void CancelMatch(int matchId);
     }
 }

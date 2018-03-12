@@ -1,4 +1,8 @@
-﻿using FulbitoRest.Technical.Interception;
+﻿using datalayer.Contracts;
+using FulbitoRest.Helpers;
+using FulbitoRest.HubServices.Contracts;
+using FulbitoRest.Services;
+using FulbitoRest.Technical.Interception;
 using FulbitoRest.Technical.Logging;
 using FulbitoRest.Technical.Security;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,21 +27,25 @@ namespace FulbitoRest.Configuration
             services.RegisterRepositories();
             services.RegisterServices();
             services.RegisterHelpers();
+            services.RegisterHubs();
         }
 
         private static void RegisterRepositories(this IServiceCollection services)
         {
-            services.RegisterTypesByInterfaceConvention("datalayer", "IRepository");
+            services.RegisterTypesByInterfaceConvention("datalayer", nameof(IRepository));
         }
         private static void RegisterServices(this IServiceCollection services)
         {
-            services.RegisterTypesByInterfaceConvention("FulbitoRest", "IService");
+            services.RegisterTypesByInterfaceConvention("FulbitoRest", nameof(IService));
         }
         private static void RegisterHelpers(this IServiceCollection services)
         {
-            services.RegisterTypesByInterfaceConvention("FulbitoRest", "IHelper");
+            services.RegisterTypesByInterfaceConvention("FulbitoRest", nameof(IHelper));
         }
-
+        private static void RegisterHubs(this IServiceCollection services)
+        {
+            services.RegisterTypesByInterfaceConvention("FulbitoRest", nameof(IHubService));
+        }
 
         private static void RegisterTypesByInterfaceConvention(this IServiceCollection services, string assemblyname, string baseInterface)
         {

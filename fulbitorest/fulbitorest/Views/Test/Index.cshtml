@@ -18,20 +18,42 @@
     <h1>Fulbito</h1>
     <button id="connect">Connect to Hub</button>
     <button id="send">Send message and receive notif</button>
+
+    <br />
+    <label>Match Id: </label><input id="joinMatchAsOwnerInput" type="text" />
+    <button id="joinMatchAsOwner">Join Match</button>
+
     <script type="text/javascript">
 
-        let connection = new signalR.HubConnection('/NotificationTest');
+        let testCon = new signalR.HubConnection('/NotificationTest');
 
         //From Server to Client
-        connection.on('receive', data => {
+        testCon.on('receive', data => {
             console.log(data);
         });
 
         $("#connect").click(function () {
-            connection.start();
+            testCon.start();
         });
         $("#send").click(function () {
-            connection.invoke('test', 'Notification message');
+            testCon.invoke('test', 'Notification message');
+        });
+
+        let matchCon = new signalR.HubConnection('/Match');
+        matchCon.start();
+        $("#joinMatchAsOwner").click(function () {
+            var matchId = $("#joinMatchAsOwnerInput").val();
+            matchCon.invoke('joinAsOwner', parseInt(matchId));
+            console.log('Connected with match hub');
+        });
+        matchCon.on('userJoined', message => {
+            console.log(message);
+        });
+        matchCon.on('userLeft', message => {
+            console.log(message);
+        });
+        matchCon.on('matchIsFull', message => {
+            console.log(message);
         });
 
     </script>

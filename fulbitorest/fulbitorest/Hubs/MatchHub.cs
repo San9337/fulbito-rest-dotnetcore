@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace FulbitoRest.Hubs
 {
-    public class MatchHub : BaseHub<IMatchClient>
+    public class MatchHub : BaseHub<IMatchRoomClient>
     {
         private readonly ICustomLogger _logger;
         public MatchHub(ICustomLogger logger)
@@ -17,23 +17,31 @@ namespace FulbitoRest.Hubs
             _logger = logger;
         }
 
-        public async Task<string> ListenMatch(int matchId) 
+        public async Task JoinAsOwner(int matchId)
         {
-            //Assumming the one listening is the match owner
-            //userRepo
-            //matchRepo
-            //crear el room
-            //agregar user al room
-            await Groups.AddAsync(Context.ConnectionId, HubGroup.ForMatch(matchId));
-            //room => match, usuarios, metodo para contactar usuarios
-            
-            return "OK";
+            await Groups.AddAsync(Context.ConnectionId, GroupName.ForMatchOwner(matchId));
+        }
+
+        public async Task JoinAsPlayer(int matchId)
+        {
+            await Groups.AddAsync(Context.ConnectionId, GroupName.ForMatchPlayer(matchId));
         }
     }
 
-    public interface IMatchClient
+    public interface IMatchRoomClient : IMatchOwnerClient, IMatchPlayerClient
+    {
+    }
+
+    public interface IMatchOwnerClient
     {
         void UserJoined(string message);
+        void UserLeft(string message);
+    }
+    public interface IMatchPlayerClient
+    {
         void MatchIsFull(string message);
+        void MatchCancelled(string message);
     }
 }
+
+

@@ -80,7 +80,9 @@ namespace Fulbito_Rest
             app.UseSignalR(routes =>
             {
                 //npm install @aspnet/signalr-client
-                routes.MapHub<NotificationTestHub>(nameof(NotificationTestHub).Replace("Hub", "")); //Hub name used for registration
+                routes.MapHub<NotificationTestHub>(nameof(NotificationTestHub).Replace("Hub", ""));
+                routes.MapHub<MatchHub>(nameof(MatchHub).Replace("Hub", ""));
+                routes.MapHub<UserHub>(nameof(UserHub).Replace("Hub", ""));
             });
 
             app.UseSwagger();

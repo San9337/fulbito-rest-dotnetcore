@@ -72,5 +72,18 @@ namespace fulbitorest.Controllers
                 ReasonPhrase = "Player sucessfully removed"
             };
         }
+
+        [HttpPost]
+        [Route("{matchId:int}/cancel")]
+        public HttpResponseMessage CancelMatch(int matchId)
+        {
+            _matchService.CancelMatch(matchId);
+
+            return new HttpResponseMessage()
+            {
+                StatusCode = System.Net.HttpStatusCode.Created,
+                ReasonPhrase = "Match was cancelled"
+            };
+        }
     }
 }

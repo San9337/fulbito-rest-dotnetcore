@@ -11,7 +11,7 @@ namespace FulbitoRest.HubServices
     {
         private IHubContext<THub> _hubContext;
 
-        protected IHubClients<TClient> Clients => _hubContext.Clients as IHubClients<TClient>;
+        protected IHubClients Clients => _hubContext.Clients;
         protected IGroupManager Groups => _hubContext.Groups;
 
         public HubService(IHubContext<THub> hubContext)
