@@ -6,11 +6,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using model.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace model.Model
 {
     public class Match : IEntity
     {
+        public static readonly int MIN_DURATION = 10;
+
         public int Id { get; set; }
 
         [ForeignKey(nameof(Owner))]
@@ -58,6 +61,11 @@ namespace model.Model
 
         public void SetTime(DateTime startDateTime, int durationInMinutes)
         {
+            if (startDateTime < DateTime.Now)
+                throw new ValidationException(Errors.Match_InvalidDate);
+            if (durationInMinutes < MIN_DURATION)
+                throw new ValidationException(Errors.Match_InvalidDuration);
+
             StartDateTime = startDateTime;
             DurationInMinutes = durationInMinutes;
             EndDateTime = StartDateTime.AddMinutes(durationInMinutes);
