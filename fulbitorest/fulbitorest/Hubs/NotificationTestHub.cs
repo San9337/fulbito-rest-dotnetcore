@@ -1,11 +1,15 @@
 ﻿using FulbitoRest.Technical.Interception;
 using FulbitoRest.Technical.Logging;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Microsoft.AspNetCore.Hosting.Internal.HostingApplication;
 
 namespace FulbitoRest.Hubs
 {
@@ -33,6 +37,8 @@ namespace FulbitoRest.Hubs
 
         public Task Test(string message)
         {
+            var req = Context.Connection.GetHttpContext().Request;
+
             _logger.Log("Message received from client " + message);
             return Task
                 .Delay(3000)

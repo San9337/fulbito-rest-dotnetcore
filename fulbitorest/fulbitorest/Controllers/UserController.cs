@@ -7,7 +7,6 @@ using FulbitoRest.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
-using System.Security;
 
 namespace fulbitorest.Controllers
 {
@@ -88,15 +87,6 @@ namespace fulbitorest.Controllers
             {
                 GamesPlayed = 0,
             };
-        }
-
-        private void ValidateUserIsUsingHisEndpoint(int id)
-        {
-            var idClaim = base.UserIdClaim;
-            if(idClaim.Value != id.ToString())
-            {
-                throw new SecurityException("Unauthorized operation");
-            }
         }
     }
 }

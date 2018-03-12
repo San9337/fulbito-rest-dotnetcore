@@ -39,7 +39,5 @@ namespace model.Model
             Name = name;
             CountryName = countryName;
         }
-
-        public override string ToString() => $"{Name} - {CountryName}";
     }
 }

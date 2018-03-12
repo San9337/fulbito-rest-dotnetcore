@@ -22,9 +22,16 @@ namespace model.Model
         public int DurationInMinutes { get; set; }
         public DateTime EndDateTime { get; set; }
         public int GameFieldSize { get; set; }
-        public int MainPlayersTeamSize { get; set; }
-        public int SubstitutePlayersTeamSize { get; set; }
         public bool RequiresApproval { get; set; }
+
+        /// <summary>
+        /// Main players per team
+        /// </summary>
+        public int MainPlayersTeamSize { get; set; }
+        /// <summary>
+        /// Substitute players per team
+        /// </summary>
+        public int SubstitutePlayersTeamSize { get; set; }
 
         public IList<Player> Players { get; set; }
 
@@ -56,33 +63,39 @@ namespace model.Model
             EndDateTime = StartDateTime.AddMinutes(durationInMinutes);
         }
 
-        public void AddPlayer(User newPlayer, SlotEnum slot)
+        public Player AddPlayer(User user, SlotEnum slot)
         {
-            if (Players.Any(p => p.UserId == newPlayer.Id))
+            if (Players.Any(p => p.UserId == user.Id))
                 throw new FulbitoException("Player is already present on that team");
 
             switch (slot)
             {
                 case SlotEnum.Team_A_Main:
                 case SlotEnum.Team_A_Subs:
-                    ValidatePlayersArraySize(MainPlayers, MainPlayersTeamSize);
+                    ValidatePlayersArraySize(MainPlayers, MainPlayersTeamSize + SubstitutePlayersTeamSize);
                     break;
                 case SlotEnum.Team_B_Main:
                 case SlotEnum.Team_B_Subs:
-                    ValidatePlayersArraySize(SubstitutePlayers, SubstitutePlayersTeamSize);
+                    ValidatePlayersArraySize(SubstitutePlayers, SubstitutePlayersTeamSize + SubstitutePlayersTeamSize);
                     break;
                 case SlotEnum.UNDEFINED:
                     throw new FulbitoException("No definimos como usar un join undefined");
             }
-            Players.Add(new Player(this, newPlayer, slot));
+
+            var newPlayer = new Player(this, user, slot);
+            Players.Add(newPlayer);
+
+            return newPlayer;
         }
 
-        public void RemovePlayer(int userId)
+        public Player RemovePlayer(int userId)
         {
             var removedPlayer = Players.Where(p => p.UserId == userId).FirstOrDefault();
             if (removedPlayer == null)
                 throw new FulbitoException("Player doesnt exists in this match");
             Players.Remove(removedPlayer);
+
+            return removedPlayer;
         }
 
         private void ValidatePlayersArraySize(IEnumerable<Player> playerArray, int limit)
