@@ -2,9 +2,6 @@
 using apidata.Utils;
 using model.Business;
 using model.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace apidata.Mapping
 {
@@ -15,6 +12,7 @@ namespace apidata.Mapping
             var data = match.MapTo<MatchData>();
 
             data.StartDateTime = DataStandards.FormatDateTime(match.StartDateTime);
+            data.Location = match.Location.Map();
 
             return data;
         }

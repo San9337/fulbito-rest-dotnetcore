@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace apidata.DataContracts
 {
@@ -32,9 +31,5 @@ namespace apidata.DataContracts
 
         [DataMember(Name = "country")]
         public string CountryName { get; set; }
-        [DataMember(Name = "state")]
-        public string StateName { get; set; }
-        [DataMember(Name = "city")]
-        public string CityName { get; set; }
     }
 }

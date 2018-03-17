@@ -31,12 +31,10 @@ namespace datalayer.FulbitoContext
         public DbSet<User> Users { get; set; }
         public DbSet<UserCredentials> UserCredentials { get; set; }
         public DbSet<Country> Countries { get; set; }
-        public DbSet<State> States { get; set; }
-        public DbSet<City> Cities { get; set; }
         public DbSet<ProfessionalTeam> ProfessionalTeams { get; set; }
         public DbSet<AuthContext> AuthContexts { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<Player> Players { get; set; }
-
+        public DbSet<Location> Locations { get; set; }
     }
 }

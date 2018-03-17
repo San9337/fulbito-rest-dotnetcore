@@ -24,7 +24,7 @@ namespace model.Model
         public string DisplayName => Name + ", " + CountryName;
 
         public static ProfessionalTeam UNDEFINED { get {
-                var undef = new ProfessionalTeam("TEAM_FAN_UNDEFINED", Location.UNDEFINED.CountryName);
+                var undef = new ProfessionalTeam("TEAM_FAN_UNDEFINED", Country.UNDEFINED.Name);
                 undef.Id = 1;
                 undef.LogoUrl = "LOGO_UNDEFINED";
                 return undef;

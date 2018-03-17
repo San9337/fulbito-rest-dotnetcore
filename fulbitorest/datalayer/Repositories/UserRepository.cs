@@ -25,8 +25,6 @@ namespace datalayer.Repositories
                 .Where(u => u.Id == id)
                 .Include(u => u.Credentials)
                 .Include(u => u.Country)
-                .Include(u => u.State)
-                .Include(u => u.City)
                 .Include(u => u.RealTeam)
                 .FirstOrDefault();
 

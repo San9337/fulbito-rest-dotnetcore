@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Text;
+﻿using System.Runtime.Serialization;
 
 namespace apidata.DataContracts
 {
@@ -26,11 +23,7 @@ namespace apidata.DataContracts
         [DataMember(Name = "foot")]
         public FootData Foot { get; set; }
 
-        [DataMember(Name = "country")]
-        public string CountryName { get; set; }
-        [DataMember(Name = "state")]
-        public string StateName { get; set; }
-        [DataMember(Name = "city")]
-        public string CityName { get; set; }
+        [DataMember(Name = "location")]
+        public LocationData Location { get; set; }
     }
 }

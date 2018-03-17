@@ -12,8 +12,6 @@ namespace apidata.DataContracts
         public int Id { get; set; }
         [DataMember(Name = "ownerId")]
         public int OwnerId { get; set; }
-        [DataMember(Name = "gameAddress")]
-        public string GameAddress { get; set; }
         [DataMember(Name = "startDateTime")]
         public string StartDateTime { get; set; }
         [DataMember(Name = "durationInMinutes")]
@@ -26,5 +24,10 @@ namespace apidata.DataContracts
         public int SubstitutePlayersTeamSize { get; set; }
         [DataMember(Name = "requiresApproval")]
         public bool RequiresApproval { get; set; }
+
+        [DataMember(Name = "gameAddress")]
+        public string GameAddress { get; set; }
+        [DataMember(Name ="location")]
+        public LocationData Location { get; set; }
     }
 }

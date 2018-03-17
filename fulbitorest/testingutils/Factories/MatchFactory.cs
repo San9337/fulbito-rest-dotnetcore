@@ -10,7 +10,7 @@ namespace testingutils.Factories
     {
         public static model.Model.Match Get()
         {
-            return new model.Model.Match(UserFactory.Get())
+            return new model.Model.Match(UserFactory.Get(), LocationFactory.Get())
             {
                 Id = 1,
                 GameAddress = "address",

@@ -23,10 +23,6 @@ namespace apidata.Mapping
 
         private static void MapLocation(User user, UserData data)
         {
-            if (!user.City.IsUndefined())
-                data.CityName = user.City.Name;
-            if (!user.State.IsUndefined())
-                data.StateName = user.State.Name;
             if (!user.Country.IsUndefined())
                 data.CountryName = user.Country.Name;
         }

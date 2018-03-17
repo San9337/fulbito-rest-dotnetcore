@@ -12,6 +12,8 @@
     <Compile Remove="Model\RealTeam.cs" />
     <Compile Remove="Model\Security\Token.cs" />
     <Compile Remove="Model\TeamFan.cs" />
+    <Compile Remove="Utils\GeoLocalization.cs" />
+    <Compile Remove="Utils\GeoUtils.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,13 +1,10 @@
-﻿using model.Business;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using apidata.DataContracts;
+using model.Model;
 
 namespace FulbitoRest.Services.Contracts
 {
     public interface ILocationService : IService
     {
-        Location GetOrCreate(string country, string state, string city);
+        Location CreateFrom(LocationData location);
     }
 }

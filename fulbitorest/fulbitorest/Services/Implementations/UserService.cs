@@ -47,8 +47,8 @@ namespace FulbitoRest.Services
 
         private void UpdateLocation(EditProfileData data, User user)
         {
-            var location = _locationService.GetOrCreate(data.CountryName, data.StateName, data.CityName);
-            user.SetLocation(location);
+            var location = _locationService.CreateFrom(data.Location);
+            user.Location = location;
         }
 
         internal void UpdateTeam(int teamFanId, User user)

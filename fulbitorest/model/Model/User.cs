@@ -1,13 +1,11 @@
-﻿using model.Enums;
+﻿using model.Business;
+using model.Enums;
 using model.Exceptions;
 using model.Interfaces;
+using model.Model.Security;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using model.Business;
-using model.Model.Security;
 
 namespace model.Model
 {
@@ -36,29 +34,19 @@ namespace model.Model
         public int CountryId { get; set; }
         public virtual Country Country { get; set; }
 
-        [ForeignKey(nameof(State))]
-        public int StateId { get; set; }
-        public virtual State State { get; set; }
-
-        [ForeignKey(nameof(City))]
-        public int CityId { get; set; }
-        public virtual City City { get; set; }
+        [ForeignKey(nameof(Location))]
+        public int LocationId { get; set; }
+        public virtual Location Location { get; set; }
 
         public User()
         {
         }
+
         public User(UserCredentials credentials)
         {
             Credentials = credentials ?? throw new DevException("Creating user with null credentials");
 
             credentials.User = this;
-        }
-
-        public void SetLocation(Location location)
-        {
-            Country = location.Country;
-            State = location.State;
-            City = location.City;
         }
     }
 }

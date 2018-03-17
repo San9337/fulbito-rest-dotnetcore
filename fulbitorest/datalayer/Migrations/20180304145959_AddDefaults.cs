@@ -25,10 +25,6 @@ namespace datalayer.Migrations
                 name: "FK_Users_States_StateId",
                 table: "Users");
 
-            migrationBuilder.Sql("INSERT INTO Countries VALUES(" +Country.UNDEFINED.Id+",'"+Country.UNDEFINED.Name+"')");
-            migrationBuilder.Sql("INSERT INTO States VALUES(" + State.UNDEFINED.Id + ","+ Country.UNDEFINED.Id + ",'" + State.UNDEFINED.Name + "')");
-            migrationBuilder.Sql("INSERT INTO Cities VALUES(" + City.UNDEFINED.Id + ",'" + City.UNDEFINED.Name + "',"+ State.UNDEFINED.Id + ")");
-
             migrationBuilder.AlterColumn<int>(
                 name: "StateId",
                 table: "Users",

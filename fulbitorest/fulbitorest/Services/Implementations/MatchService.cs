@@ -17,24 +17,28 @@ namespace FulbitoRest.Services.Implementations
         private readonly IMatchRepository _matchRepository;
         private readonly IUserRepository _userRepository;
         private readonly IMatchHubService _matchHubService;
+        private readonly ILocationService _locationService;
 
 
         public MatchService(
             IMatchRepository matchRepo, 
             IUserRepository userRepo,
-            IMatchHubService matchHub
+            IMatchHubService matchHub,
+            ILocationService locationServ
         )
         {
             _matchRepository = matchRepo;
             _userRepository = userRepo;
             _matchHubService = matchHub;
+            _locationService = locationServ;
         }
 
         public Match CreateMatch(MatchData data, int ownerUserId)
         {
             var owner = _userRepository.Get(ownerUserId);
+            var location = _locationService.CreateFrom(data.Location);
 
-            var match = new Match(owner)
+            var match = new Match(owner, location)
             {
                 GameAddress = data.GameAddress,
                 GameFieldSize = data.GameFieldSize,

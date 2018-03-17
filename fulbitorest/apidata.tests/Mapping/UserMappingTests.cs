@@ -24,13 +24,10 @@ namespace apidata.tests.Mapping
         public void Map_User_UndefinedLocationAsNullsInData()
         {
             var user = UserFactory.Get();
-            var location = LocationFactory.GetWithNullCity();
-            user.SetLocation(location);
+            user.Location = Location.UNDEFINED;
 
             var data = user.Map();
 
-            Assert.IsNull(data.CityName);
-            Assert.IsNotNull(data.StateName);
             Assert.IsNotNull(data.CountryName);
         }
     }

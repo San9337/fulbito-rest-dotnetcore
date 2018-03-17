@@ -1,18 +1,17 @@
-﻿using model.Exceptions;
+﻿using model.Enums;
+using model.Exceptions;
 using model.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Text;
-using model.Enums;
-using System.ComponentModel.DataAnnotations;
 
 namespace model.Model
 {
     public class Match : IEntity
     {
-        public static readonly int MIN_DURATION = 10;
+        public static readonly int MIN_DURATION_IN_MINUTES = 10;
 
         public int Id { get; set; }
 
@@ -21,6 +20,10 @@ namespace model.Model
         public virtual User Owner { get; set; }
 
         public string GameAddress { get; set; }
+        [ForeignKey(nameof(Location))]
+        public int LocationId { get; set; }
+        public Location Location { get; set; }
+
         public DateTime StartDateTime { get; set; }
         public int DurationInMinutes { get; set; }
         public DateTime EndDateTime { get; set; }
@@ -51,10 +54,12 @@ namespace model.Model
         {
         }
 
-        public Match(User owner)
+        public Match(User owner, Location location)
         {
             Owner = owner;
             OwnerId = owner.Id;
+            Location = location;
+            LocationId = location.Id;
 
             Players = new List<Player>();
         }
@@ -63,7 +68,7 @@ namespace model.Model
         {
             if (startDateTime < DateTime.Now)
                 throw new ValidationException(Errors.Match_InvalidDate);
-            if (durationInMinutes < MIN_DURATION)
+            if (durationInMinutes < MIN_DURATION_IN_MINUTES)
                 throw new ValidationException(Errors.Match_InvalidDuration);
 
             StartDateTime = startDateTime;

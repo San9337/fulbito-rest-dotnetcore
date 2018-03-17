@@ -14,8 +14,6 @@ namespace testingutils.Factories
             return new User()
             {
                 BirthDate = DateTime.Now.AddYears(-24),
-                City = LocationFactory.GetCity(),
-                Country = LocationFactory.GetCountry(),
                 Credentials = new UserCredentials(new FulbitoUser() {
                     NickName = "Santiago",
                     Password = "pass",
@@ -29,7 +27,8 @@ namespace testingutils.Factories
                 ProfilePictureUrl = "",
                 RealTeam = TeamFactory.Get(),
                 SkilledFoot = model.Enums.Foot.Right,
-                State = LocationFactory.GetState()
+                Country = LocationFactory.GetCountry(),
+                Location = LocationFactory.Get()
             };
         }
     }
