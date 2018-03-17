@@ -39,20 +39,15 @@ namespace datalayer.Repositories
             var splits = query.Split(' ');
             if (splits.Length == 1)
             {
-                var sqlQuery = new RawSqlString(@"
-SET @search = @p0;
-
-SELECT * FROM ProfessionalTeams 
-WHERE Id <> 1 AND
-(Name LIKE CONCAT('%',@search,'%')
-OR CountryName LIKE CONCAT('%',@search,'%'))
-ORDER BY Name ASC,CountryName ASC
-LIMIT 5
-");
-                return await FulbitoContext.ProfessionalTeams.FromSql(sqlQuery, query).ToListAsync();
+                return await FindBySingleSearchElement(query);
             }
             if (splits.Length > 1)
             {
+                //Assuming all is team
+                var results = await FindByTeamName(query);
+                if (results.Any())
+                    return results;
+
                 //Assuming right most word is the country, else is team
                 var country = splits[splits.Length - 1];
                 var team = query.Substring(0, query.LastIndexOf(' '));
@@ -68,12 +63,39 @@ AND LOWER(CountryName) LIKE CONCAT('%',@country,'%'))
 ORDER BY Name ASC,CountryName ASC
 LIMIT 5
 ");
-
-                var results = await FulbitoContext.ProfessionalTeams.FromSql(sqlQuery, team, country).ToListAsync();
-                return results;
+                 return await FulbitoContext.ProfessionalTeams.FromSql(sqlQuery, team, country).ToListAsync();
             }
 
             throw new UnexpectedInputException("The query string is in a non expected format: " + query);
+        }
+
+        private async Task<IList<ProfessionalTeam>> FindBySingleSearchElement(string searchQuery)
+        {
+            var sqlQuery = new RawSqlString(@"
+SET @search = @p0;
+
+SELECT * FROM ProfessionalTeams 
+WHERE Id <> 1 AND
+(Name LIKE CONCAT('%',@search,'%')
+OR CountryName LIKE CONCAT('%',@search,'%'))
+ORDER BY Name ASC,CountryName ASC
+LIMIT 5
+");
+            return await FulbitoContext.ProfessionalTeams.FromSql(sqlQuery, searchQuery).ToListAsync();
+        }
+
+        private async Task<IList<ProfessionalTeam>> FindByTeamName(string teamName)
+        {
+            var sqlQuery = new RawSqlString(@"
+SET @search = @p0;
+
+SELECT * FROM ProfessionalTeams 
+WHERE Id <> 1 AND
+LOWER(Name) LIKE CONCAT('%',@search,'%')
+ORDER BY Name ASC,CountryName ASC
+LIMIT 5
+");
+            return await FulbitoContext.ProfessionalTeams.FromSql(sqlQuery, teamName).ToListAsync();
         }
     }
 }
