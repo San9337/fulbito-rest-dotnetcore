@@ -15,7 +15,6 @@ namespace apidata.Mapping
             data.TeamFanId = user.RealTeam?.Id;
             data.Foot = user.SkilledFoot.Map();
             data.Gender = user.Gender.Map();
-
             data.BirthDate = DataStandards.FormatDate(user.BirthDate);
 
             return data;
@@ -25,6 +24,8 @@ namespace apidata.Mapping
         {
             if (!user.Country.IsUndefined())
                 data.CountryName = user.Country.Name;
+
+            data.Location = user.Location.Map();
         }
 
         public static User Map(this UserData data)

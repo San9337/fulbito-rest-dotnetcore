@@ -18,8 +18,8 @@ namespace FulbitoRest.Services
         {
             var location = new Location(
                 description: locationData.Description,
-                latitude: double.Parse(locationData.Latitude.Replace('.',',')),
-                longitude: double.Parse(locationData.Longitude.Replace('.', ','))
+                latitude: locationData.Latitude,
+                longitude: locationData.Longitude
                 );
 
             _locationRepository.Add(location);

@@ -31,5 +31,9 @@ namespace apidata.DataContracts
 
         [DataMember(Name = "country")]
         public string CountryName { get; set; }
+
+        [DataMember(Name = "location")]
+        public LocationData Location { get; set; }
+
     }
 }
