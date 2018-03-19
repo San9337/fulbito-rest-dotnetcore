@@ -20,7 +20,7 @@ namespace FulbitoRest.Technical.Interception
             context.Result = new ContentResult()
             {
                 StatusCode = (int)HttpStatusCode.InternalServerError,
-                Content = exception.Message,
+                Content = exception.Message + ":" + exception.StackTrace,
                 ContentType = "text/plain"
             };
         }
