@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using model.Exceptions;
 
 namespace apidata.Mapping
 {
@@ -12,6 +13,9 @@ namespace apidata.Mapping
         /// </summary>
         internal static TTo MapTo<TTo>(this object from) where TTo : class,new()
         {
+            if (from == null)
+                throw new DevException("Cannot map a null Entity when attempting to create: " + typeof(TTo).Name);
+
             var to = (TTo)Activator.CreateInstance(typeof(TTo));
 
             var fromProperties = from.GetType().GetProperties();

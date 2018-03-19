@@ -17,6 +17,8 @@ namespace model.Business.Factories
             return new User(newCredentials)
             {
                 NickName = fulbitoUser.NickName,
+                LocationId = Location.UNDEFINED.Id,
+                RealTeamId = ProfessionalTeam.UNDEFINED.Id
             };
         }
 
@@ -24,7 +26,9 @@ namespace model.Business.Factories
         {
             return new User(new UserCredentials(fbUser.Email, AuthenticationMethod.Facebook, fbUser.IssuedToken))
             {
-                Name = fbUser.UserName
+                Name = fbUser.UserName,
+                LocationId = Location.UNDEFINED.Id,
+                RealTeamId = ProfessionalTeam.UNDEFINED.Id
             };
         }
 
